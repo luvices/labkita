@@ -1,0 +1,15 @@
+# Paket apt, bukan Snap. Tidak perlu internet saat menjalankan contoh bawaan.
+build-essential
+python3
+python3-venv
+python3-doc
+geany
+git
+nano
+htop
+man-db
+manpages
+manpages-dev
+xdg-utils
+libglib2.0-bin
+dconf-cli

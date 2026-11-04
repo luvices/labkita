@@ -1,0 +1,10 @@
+dist/*.iso
+dist/*.tar.gz
+__pycache__/
+*.pyc
+*.iso
+*.vdi
+*.vmdk
+cubic-project/
+build/
+*.credentials.json
