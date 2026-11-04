@@ -1,0 +1,17 @@
+[Unit]
+Description=Ruang praktikum sementara LabKita Linux
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/true
+RemainAfterExit=yes
+RuntimeDirectory=labkita
+RuntimeDirectoryMode=1777
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+
+[Install]
+WantedBy=multi-user.target

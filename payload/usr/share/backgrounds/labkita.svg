@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<rect width="1920" height="1080" fill="#dce8f6"/>
+<path d="M1280 0h640v1080h-640z" fill="#235bba"/>
+<path d="M1360 160h400v760h-400z" fill="none" stroke="#719bdc" stroke-width="2"/>
+<g fill="#18334d" font-family="DejaVu Sans, sans-serif">
+<text x="180" y="430" font-size="104" font-weight="700">LabKita Linux</text>
+<text x="186" y="510" font-size="36">Ruang belajar. Siap offline.</text>
+<text x="186" y="870" font-size="24">Python / C / Linux</text></g>
+<g fill="#fff" font-family="DejaVu Sans Mono, monospace" font-size="100">
+<text x="1425" y="470">&gt;_</text><text x="1410" y="640">{ }</text></g></svg>

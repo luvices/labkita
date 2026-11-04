@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Panduan LabKita
+Comment=Materi dan latihan pemrograman tanpa internet
+Exec=xdg-open /usr/share/labkita/guide/index.html
+Icon=accessories-text-editor
+Terminal=false
+Categories=Education;Development;
