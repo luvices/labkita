@@ -30,8 +30,31 @@ apt-get update
 mapfile -t packages < <(sed 's/#.*//; /^[[:space:]]*$/d' "$kit_dir/config/packages.txt")
 apt-get install -y --no-install-recommends "${packages[@]}"
 
+# Konfigurasi Locale Bahasa Indonesia
+locale-gen id_ID.UTF-8
+update-locale LANG=id_ID.UTF-8 LANGUAGE=id_ID:id LC_ALL=id_ID.UTF-8
+
+cat > /etc/default/locale <<'EOF'
+LANG="id_ID.UTF-8"
+LANGUAGE="id_ID:id"
+LC_ALL="id_ID.UTF-8"
+EOF
+
+# Konfigurasi Zona Waktu Asia/Jakarta
+ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+echo "Asia/Jakarta" > /etc/timezone
+
+# Konfigurasi Layout Keyboard US
+cat > /etc/default/keyboard <<'EOF'
+XKBMODEL="pc105"
+XKBLAYOUT="us"
+XKBVARIANT=""
+XKBOPTIONS=""
+BACKSPACE="guess"
+EOF
+
 cp -a "$kit_dir/payload/." /
-chmod 0755 /usr/local/bin/labkita-check /usr/local/sbin/labkita-postinstall
+chmod 0755 /usr/local/bin/labkita-check /usr/local/bin/labkita-guide /usr/local/sbin/labkita-postinstall
 find /usr/share/labkita -type d -exec chmod 0755 {} +
 find /usr/share/labkita -type f -exec chmod 0644 {} +
 chmod 0644 /etc/systemd/system/labkita-runtime.service
@@ -39,15 +62,15 @@ chmod 0644 /usr/share/applications/labkita-guide.desktop
 
 cat > /etc/labkita-release <<'EOF'
 NAME="LabKita Linux"
-VERSION="0.1"
+VERSION="0.2"
 BASE="Ubuntu 24.04 LTS"
 PURPOSE="Praktikum pemrograman dasar offline"
 EOF
 cat > /etc/motd <<'EOF'
-LabKita Linux | Praktikum pemrograman offline
-Panduan: /usr/share/labkita/guide/index.html
+LabKita Linux 0.2 | Praktikum pemrograman offline (Bahasa Indonesia)
+Panduan: Jalankan 'labkita-guide' atau buka menu 'Panduan LabKita'
 Uji kesiapan: labkita-check
-Ruang sementara: /run/labkita (tidak disimpan setelah reboot)
+Ruang sementara: /run/labkita (RAM disk sementara)
 EOF
 
 # Pertahankan /etc/os-release Ubuntu agar installer dan deteksi paket konsisten.
@@ -59,8 +82,12 @@ elif ! grep -qxF 'system-db:local' /etc/dconf/profile/user; then
 fi
 dconf update
 getent group labkita >/dev/null || groupadd --system labkita
+
+# Siapkan skel untuk user baru (termasuk praktikan)
 install -d -m 0755 /etc/skel/Praktikum
 cp -a /usr/share/labkita/examples/. /etc/skel/Praktikum/
+install -d -m 0755 /etc/skel/.local/share/labkita/guide
+cp -a /usr/share/labkita/guide/. /etc/skel/.local/share/labkita/guide/
 
 # Enable tanpa start: systemd tidak berjalan dalam chroot Cubic.
 install -d -m 0755 /etc/systemd/system/multi-user.target.wants
