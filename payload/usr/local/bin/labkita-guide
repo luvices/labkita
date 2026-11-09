@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Utilitas peluncur panduan LabKita Linux (kompatibel penuh dengan Firefox Snap dan sandbox)
+set -euo pipefail
+
+DEST_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/labkita/guide"
+mkdir -p "$DEST_DIR"
+
+# Salin materi panduan ke ruang home pengguna agar peramban Snap (Firefox) dapat membacanya tanpa terhalang sandbox AppArmor
+if [[ -d /usr/share/labkita/guide ]]; then
+    cp -ru /usr/share/labkita/guide/* "$DEST_DIR/" 2>/dev/null || cp -r /usr/share/labkita/guide/* "$DEST_DIR/"
+fi
+
+# Luncurkan peramban default pengguna
+if command -v xdg-open >/dev/null 2>&1; then
+    exec xdg-open "$DEST_DIR/index.html"
+elif command -v firefox >/dev/null 2>&1; then
+    exec firefox "$DEST_DIR/index.html"
+elif command -v geany >/dev/null 2>&1; then
+    exec geany "$DEST_DIR/index.html"
+else
+    printf 'Panduan tersedia di: %s/index.html\n' "$DEST_DIR"
+fi

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Uji lokal tanpa mengunduh paket atau menghubungi jaringan."""
+"""Suite pengujian mandiri LabKita Linux (Offline Self-Diagnostic Suite)."""
 import os
 from pathlib import Path
 import shutil
@@ -13,46 +13,93 @@ def main():
     failures = []
 
     def report(label, ok, detail=""):
-        print(f"{'LULUS' if ok else 'GAGAL'} | {label}" + (f" | {detail}" if detail else ""))
+        status = "LULUS" if ok else "GAGAL"
+        msg = f"[{status}] {label}"
+        if detail:
+            msg += f" ({detail})"
+        print(msg)
         if not ok:
             failures.append(label)
 
+    print("=== Pemeriksaan Kesiapan LabKita Linux ===")
+
+    # 1. Pemeriksaan Toolchain & Aplikasi Dasar
     for command in ("python3", "gcc", "g++", "make", "geany", "git", "man"):
         report(f"Program {command}", shutil.which(command) is not None)
-    base = Path("/usr/share/labkita")
-    report("Panduan lokal", (base / "guide/index.html").is_file())
-    report("Dokumentasi Python", Path("/usr/share/doc/python3/html/index.html").is_file())
 
+    # 2. Materi Panduan & Dokumentasi Offline
+    base = Path("/usr/share/labkita")
+    report("Berkas panduan lokal", (base / "guide/index.html").is_file())
+    report("Skrip peluncur panduan", Path("/usr/local/bin/labkita-guide").is_file())
+    report("Dokumentasi Python offline", Path("/usr/share/doc/python3/html/index.html").is_file())
+
+    # 3. Konfigurasi Bahasa dan Zona Waktu
+    try:
+        locales = subprocess.check_output(["locale", "-a"], text=True, stderr=subprocess.DEVNULL)
+        has_id = any(loc in locales for loc in ("id_ID", "id_ID.utf8", "id_ID.UTF-8"))
+        report("Dukungan Bahasa Indonesia (id_ID.UTF-8)", has_id)
+    except Exception as e:
+        report("Dukungan Bahasa Indonesia (id_ID.UTF-8)", False, str(e))
+
+    try:
+        tz = ""
+        if Path("/etc/timezone").is_file():
+            tz = Path("/etc/timezone").read_text(encoding="utf-8").strip()
+        elif Path("/etc/localtime").is_symlink():
+            tz = str(Path("/etc/localtime").resolve())
+        report("Zona waktu Asia/Jakarta", "Jakarta" in tz or "WIB" in tz or "GMT+7" in tz or "Asia/Jakarta" in tz)
+    except Exception as e:
+        report("Zona waktu Asia/Jakarta", False, str(e))
+
+    # 4. Pengujian Kompilasi dan Eksekusi Kode Praktikum
     with tempfile.TemporaryDirectory(prefix="labkita-check-") as directory:
         work = Path(directory)
         for label, args, expected in (
-            ("Contoh Python", [sys.executable, str(base / "examples/hello.py")], "Halo dari LabKita Linux!"),
-            ("Proses anak", [sys.executable, str(base / "examples/processes.py")], "Semua proses anak selesai."),
+            ("Eksekusi contoh Python", [sys.executable, str(base / "examples/hello.py")], "Halo dari LabKita Linux!"),
+            ("Eksekusi proses anak (fork/multiprocess)", [sys.executable, str(base / "examples/processes.py")], "Semua proses anak selesai."),
         ):
             try:
                 result = subprocess.run(args, capture_output=True, text=True, timeout=15, cwd=work)
                 report(label, result.returncode == 0 and expected in result.stdout, result.stderr.strip())
             except (OSError, subprocess.TimeoutExpired) as error:
                 report(label, False, str(error))
+
         if shutil.which("gcc"):
             try:
                 binary = work / "hello"
-                subprocess.run(["gcc", "-Wall", "-Wextra", "-Werror", str(base / "examples/hello.c"), "-o", str(binary)], check=True, capture_output=True, text=True, timeout=30)
+                subprocess.run(
+                    ["gcc", "-Wall", "-Wextra", "-Werror", str(base / "examples/hello.c"), "-o", str(binary)],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                    timeout=30,
+                )
                 result = subprocess.run([str(binary)], capture_output=True, text=True, timeout=10)
-                report("Compile dan jalankan C", result.returncode == 0 and result.stdout.strip() == "Halo dari LabKita Linux!")
+                report(
+                    "Kompilasi dan eksekusi C",
+                    result.returncode == 0 and result.stdout.strip() == "Halo dari LabKita Linux!",
+                )
             except (OSError, subprocess.SubprocessError) as error:
-                report("Compile dan jalankan C", False, str(error))
+                report("Kompilasi dan eksekusi C", False, str(error))
 
+    # 5. Keamanan Ruang Kerja Sementara & Layanan Systemd
     runtime = Path("/run/labkita")
     ready = runtime.is_dir() and stat.S_IMODE(runtime.stat().st_mode) == 0o1777
-    report("Ruang sementara dengan sticky bit", ready)
+    report("Ruang kerja sementara tmpfs (/run/labkita) dengan sticky bit 1777", ready)
+
     try:
         active = subprocess.run(["systemctl", "is-active", "--quiet", "labkita-runtime.service"], timeout=10).returncode == 0
-        report("Layanan systemd", active)
+        report("Status aktif layanan labkita-runtime.service", active)
     except (OSError, subprocess.SubprocessError) as error:
-        report("Layanan systemd", False, str(error))
-    print(f"\n{len(failures)} pemeriksaan gagal. Jalankan di LabKita yang sudah boot.")
-    return 1 if failures else 0
+        report("Status aktif layanan labkita-runtime.service", False, str(error))
+
+    print("=========================================")
+    if failures:
+        print(f"Hasil: {len(failures)} pemeriksaan GAGAL. Harap periksa konfigurasi sistem.")
+        return 1
+    else:
+        print("Hasil: SEMUA PEMERIKSAAN LULUS (Sistem siap digunakan untuk praktikum).")
+        return 0
 
 
 if __name__ == "__main__":

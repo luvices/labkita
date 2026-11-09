@@ -13,3 +13,9 @@ manpages-dev
 xdg-utils
 libglib2.0-bin
 dconf-cli
+
+# Lokalisasi dan Dukungan Bahasa Indonesia
+language-pack-id
+language-pack-gnome-id
+hunspell-id
+firefox-locale-id

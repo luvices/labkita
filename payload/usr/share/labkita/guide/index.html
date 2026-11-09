@@ -1,42 +1,204 @@
 <!doctype html>
 <html lang="id">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panduan LabKita Linux</title>
-<style>
-  :root{color-scheme:light;--ink:#18334d;--blue:#235bba;--paper:#f5f8fc;--line:#ced9e7}
-  *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.65 "DejaVu Sans",sans-serif}
-  header,main,footer{max-width:1000px;margin:auto;padding:28px 32px}header{border-bottom:3px solid var(--blue)}
-  header p{margin:0;color:var(--blue)}h1{font-size:clamp(36px,7vw,64px);line-height:1.1;letter-spacing:-2px;margin:20px 0}
-  h2{font-size:26px;margin-top:0}section{padding:28px 0;border-bottom:1px solid var(--line)}p{max-width:70ch}
-  nav{display:flex;gap:10px 24px;flex-wrap:wrap}a{color:var(--blue);text-underline-offset:4px}a:focus-visible{outline:3px solid #b0550c;outline-offset:4px}
-  pre{padding:20px;background:#e6eef9;border-left:4px solid var(--blue);overflow:auto;font:15px/1.6 "DejaVu Sans Mono",monospace}
-  code{font-family:"DejaVu Sans Mono",monospace}footer{font-size:14px}@media(max-width:560px){header,main,footer{padding:22px}pre{font-size:13px}}
-</style>
-<header><p>LabKita Linux / Buku praktikum</p><h1>Mulai ngoding.<br>Internet boleh mati.</h1>
-<p>Materi dan contoh di halaman ini tersimpan di komputer.</p>
-<nav aria-label="Isi panduan"><a href="#mulai">Mulai latihan</a><a href="#python">Python</a><a href="#c">Bahasa C</a><a href="#proses">Proses</a><a href="#bantuan">Bantuan</a></nav></header>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panduan Praktikum - LabKita Linux</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18334d;
+      --blue: #0071e3;
+      --paper: #f5f8fc;
+      --line: #d2dbe6;
+      --card-bg: #ffffff;
+      --code-bg: #f0f4f9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "DejaVu Sans", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    header, main, footer {
+      max-width: 900px;
+      margin: auto;
+      padding: 24px 32px;
+    }
+    header {
+      border-bottom: 2px solid var(--blue);
+      padding-top: 36px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #e1edfe;
+      color: var(--blue);
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin: 10px 0;
+      color: #0b1f33;
+    }
+    header p {
+      margin: 8px 0 20px;
+      color: #435b75;
+      font-size: 18px;
+    }
+    nav {
+      display: flex;
+      gap: 12px 24px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    nav a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    section {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    h2 {
+      font-size: 22px;
+      margin-top: 0;
+      color: #0b1f33;
+    }
+    p {
+      max-width: 72ch;
+      color: #2c4159;
+    }
+    pre {
+      padding: 16px 20px;
+      background: var(--code-bg);
+      border-left: 4px solid var(--blue);
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #1a202c;
+    }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      background: #e8eef5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    pre code {
+      background: transparent;
+      padding: 0;
+    }
+    .tip {
+      background: #eef7ff;
+      border: 1px solid #c8e1fb;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+    footer {
+      font-size: 14px;
+      color: #6a7f96;
+      text-align: center;
+      padding: 32px 0 48px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="badge">LabKita Linux 0.2</span>
+  <h1>Praktikum Pemrograman Mandiri.<br>Tanpa Ketergantungan Internet.</h1>
+  <p>Seluruh compiler, pustaka, dan dokumentasi di panduan ini sudah tersimpan secara lokal di sistem.</p>
+  <nav aria-label="Daftar Isi">
+    <a href="#mulai">1. Folder Kerja</a>
+    <a href="#python">2. Pemrograman Python</a>
+    <a href="#c">3. Pemrograman C</a>
+    <a href="#proses">4. Multiprocessing</a>
+    <a href="#tmpfs">5. Ruang Sementara</a>
+    <a href="#bantuan">6. Bantuan Offline</a>
+  </nav>
+</header>
+
 <main>
-<section id="mulai"><h2>Siapkan folder latihan</h2><p>Buka Terminal, lalu salin contoh ke folder pribadi agar dapat diedit.</p>
-<pre>mkdir -p "$HOME/Praktikum"
+  <section id="mulai">
+    <h2>1. Menyiapkan Folder Latihan</h2>
+    <p>Buka aplikasi <strong>Terminal</strong> (pintasan <code>Ctrl + Alt + T</code>), lalu siapkan folder praktikum pribadi di direktori home Anda:</p>
+    <pre>mkdir -p "$HOME/Praktikum"
 cp -n /usr/share/labkita/examples/* "$HOME/Praktikum/"
 cd "$HOME/Praktikum"
-geany hello.py</pre><p>Geany adalah editor. Simpan perubahan sebelum menjalankan program di terminal.</p></section>
-<section id="python"><h2>Jalankan Python</h2><pre>cd "$HOME/Praktikum"
-python3 hello.py</pre><p>Keluaran awal: <code>Halo dari LabKita Linux!</code> Ubah pesan, simpan, lalu jalankan lagi.</p>
-<p><a href="file:///usr/share/doc/python3/html/index.html">Buka dokumentasi Python lokal</a></p></section>
-<section id="c"><h2>Compile bahasa C</h2><pre>cd "$HOME/Praktikum"
+geany hello.py &</pre>
+    <div class="tip">
+      <strong>Catatan:</strong> <code>Geany</code> adalah editor teks pemrograman yang ringan dan sudah siap pakai. Simpan berkas sebelum menjalankan kode di terminal.
+    </div>
+  </section>
+
+  <section id="python">
+    <h2>2. Menjalankan Kode Python</h2>
+    <p>Eksekusi kode Python 3 secara langsung melalui terminal tanpa perlu mengunduh package manager online:</p>
+    <pre>cd "$HOME/Praktikum"
+python3 hello.py</pre>
+    <p>Keluaran standar: <code>Halo dari LabKita Linux!</code>. Silakan modifikasi isi pesan di Geany, simpan, dan jalankan kembali.</p>
+  </section>
+
+  <section id="c">
+    <h2>3. Mengompilasi dan Menjalankan Bahasa C</h2>
+    <p>Gunakan GNU C Compiler (GCC) untuk mengompilasi berkas kode sumber C ke dalam binary executable:</p>
+    <pre>cd "$HOME/Praktikum"
 gcc -Wall -Wextra hello.c -o hello
-./hello</pre><p>GCC mengubah kode C menjadi program yang dapat dijalankan. Edit pesan di dalam <code>puts</code> lalu compile ulang.</p></section>
-<section id="proses"><h2>Amati proses sistem operasi</h2><pre>python3 "$HOME/Praktikum/processes.py"
-ps -u "$USER" -o pid,ppid,comm
-free -h
-df -h
-systemctl status labkita-runtime.service --no-pager</pre><p>Contoh Python membuat dua proses anak. Bandingkan PID dan PPID pada keluarannya. <code>free</code> menampilkan memori, sedangkan <code>df</code> menampilkan penyimpanan.</p>
-<p><code>/run/labkita</code> adalah ruang sementara bersama dengan sticky bit. Isinya hilang saat reboot atau layanan dihentikan. Simpan tugas di folder pribadi.</p></section>
-<section id="bantuan"><h2>Bantuan tanpa internet</h2><pre>man gcc
-man 3 printf
-python3 -m pydoc print
-labkita-check</pre><p>Tekan <code>q</code> untuk keluar dari manual. Pengunduhan paket tambahan dan pembaruan sistem tetap memerlukan internet.</p></section>
-</main><footer>LabKita Linux 0.1 · Turunan Ubuntu untuk praktikum pemrograman dasar.</footer>
+./hello</pre>
+    <p>Perintah <code>-Wall -Wextra</code> menyalakan seluruh peringatan standar kompiler untuk membantu mendeteksi kesalahan penulisan kode sejak awal.</p>
+  </section>
+
+  <section id="proses">
+    <h2>4. Mengamati Konsep Proses Sistem Operasi</h2>
+    <p>Berkas <code>processes.py</code> mendemonstrasikan pembuatan proses anak secara paralel (forking/multiprocessing):</p>
+    <pre>python3 "$HOME/Praktikum/processes.py"
+ps -u "$USER" -o pid,ppid,comm,state</pre>
+    <p>Amati nomor Process ID (PID) dan Parent Process ID (PPID) pada terminal untuk memahami hierarki proses pada sistem operasi Linux.</p>
+  </section>
+
+  <section id="tmpfs">
+    <h2>5. Memanfaatkan Ruang Kerja Sementara (/run/labkita)</h2>
+    <p>Sistem menyediakan direktori RAM Disk berkecepatan tinggi di <code>/run/labkita</code> dengan izin <code>1777</code> (sticky bit):</p>
+    <pre>ls -ld /run/labkita
+cp hello "$HOME/Praktikum/"
+systemctl status labkita-runtime.service --no-pager</pre>
+    <div class="tip">
+      <strong>Penting:</strong> Seluruh berkas yang disimpan di dalam <code>/run/labkita</code> akan terhapus otomatis saat sistem direstart atau dimatikan. Simpan tugas penting Anda di <code>~/Praktikum</code>.
+    </div>
+  </section>
+
+  <section id="bantuan">
+    <h2>6. Akses Manual dan Diagnostik Offline</h2>
+    <p>Ketika tidak ada sambungan internet, gunakan manual bawaan Linux dan utilitas pemeriksaan sistem:</p>
+    <pre>labkita-check      # Memverifikasi 14 item kesiapan sistem praktikum
+man gcc            # Manual resmi kompiler GCC
+man 3 printf       # Manual standar library bahasa C
+python3 -m pydoc   # Dokumentasi interaktif fungsi Python</pre>
+    <p>Tekan tombol <code>q</code> pada keyboard untuk keluar dari tampilan manual.</p>
+  </section>
+</main>
+
+<footer>
+  LabKita Linux 0.2 &bull; Distribusi Mandiri Praktikum Pemrograman Dasar &amp; Sistem Operasi.
+</footer>
+
+</body>
 </html>

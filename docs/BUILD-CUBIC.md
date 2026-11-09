@@ -62,14 +62,18 @@ Skrip menolak berjalan di luar chroot atau pada basis selain Ubuntu 24.04.
 Jangan menjalankannya di terminal biasa VM atau WSL. Jika deteksi chroot
 gagal, hentikan dan periksa lingkungan; jangan menonaktifkan pemeriksaannya.
 
-## 5. Generate ISO
+## 5. Konfigurasi Boot & Generate ISO
 
-Lanjutkan wizard Cubic setelah skrip selesai. Pertahankan kernel, komponen
-installer, dan pengaturan boot bawaan pada build pertama. Jangan menghapus
-`snapd` atau Snap installer. Paket kit dipasang melalui apt, bukan Snap.
-
-Pada halaman pemilihan paket, pastikan paket kit tidak ditandai untuk dihapus
-oleh installer. Generate ISO dan catat checksum SHA256 serta versi Cubic.
+1. Pada halaman Boot di wizard Cubic (atau pengeditan `boot/grub/grub.cfg` pada custom-disk), tambahkan parameter locale Bahasa Indonesia pada baris kernel:
+   ```grub
+   menuentry "Coba atau Pasang LabKita Linux (Bahasa Indonesia)" {
+       set gfxpayload=keep
+       linux /casper/vmlinuz locale=id_ID.UTF-8 keyboard-configuration/layoutcode=us console-setup/layoutcode=us --- quiet splash
+       initrd /casper/initrd.gz
+   }
+   ```
+2. Pastikan paket lokalisasi (`language-pack-id`, `language-pack-gnome-id`, `hunspell-id`, `firefox-locale-id`) tidak ditandai untuk dihapus pada halaman Packages.
+3. Selesaikan wizard generate ISO dan catat checksum SHA256 serta versi Cubic.
 
 Dokumentasi Cubic mencatat bahwa overlay installer Ubuntu baru dapat menutupi
 sebagian kustomisasi pada sesi live. Karena itu cek **sesi live dan sistem

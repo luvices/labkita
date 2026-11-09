@@ -2,3 +2,9 @@
 picture-uri='file:///usr/share/backgrounds/labkita.svg'
 picture-uri-dark='file:///usr/share/backgrounds/labkita.svg'
 picture-options='zoom'
+
+[org/gnome/system/locale]
+region='id_ID.UTF-8'
+
+[org/gnome/desktop/input-sources]
+sources=[('xkb', 'us')]
