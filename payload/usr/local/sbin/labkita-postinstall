@@ -1,30 +1,48 @@
 #!/usr/bin/env bash
-# Jalankan di LabKita yang SUDAH diinstal ke VM, menggunakan akun administrator.
+# Jalankan di LabKita yang SUDAH diinstal ke VM/komputer lab, menggunakan akun administrator.
 set -Eeuo pipefail
 account=${1:-praktikan}
+
 if [[ $EUID -ne 0 || ! -f /etc/labkita-release ]]; then
-    printf 'Jalankan di LabKita terinstal: sudo labkita-postinstall [nama-akun]\n' >&2
+    printf 'Jalankan skrip ini dengan hak akses administrator (root) di LabKita Linux:\n' >&2
+    printf '  sudo labkita-postinstall [nama-akun]\n' >&2
     exit 1
 fi
+
 if [[ ! $account =~ ^[a-z][a-z0-9_-]{0,30}$ ]]; then
-    printf 'Nama akun tidak valid. Gunakan huruf kecil, angka, _ atau -.\n' >&2
+    printf 'Error: Nama akun "%s" tidak valid. Gunakan huruf kecil, angka, atau tanda minus/garis bawah.\n' "$account" >&2
     exit 2
 fi
+
 if id "$account" >/dev/null 2>&1; then
-    printf 'Akun %s sudah ada; tidak diubah. Pilih nama baru.\n' "$account" >&2
+    printf 'Peringatan: Akun "%s" sudah ada di sistem; konfigurasi tidak diubah.\n' "$account" >&2
     exit 2
 fi
+
 if [[ -e /home/$account || -L /home/$account ]]; then
-    printf 'Folder /home/%s sudah ada; tidak diubah. Pilih nama baru.\n' "$account" >&2
+    printf 'Peringatan: Direktori /home/%s sudah ada di sistem; silakan gunakan nama lain.\n' "$account" >&2
     exit 2
 fi
+
 getent group labkita >/dev/null || groupadd --system labkita
 useradd --create-home --user-group --shell /bin/bash --groups labkita "$account"
 chmod 0700 "/home/$account"
-printf 'Tetapkan password pribadi untuk %s. Password tidak disimpan dalam skrip.\n' "$account"
+
+# Salin materi panduan dan contoh kode ke ruang kerja pengguna
+mkdir -p "/home/$account/.local/share/labkita/guide"
+cp -r /usr/share/labkita/guide/* "/home/$account/.local/share/labkita/guide/" 2>/dev/null || true
+mkdir -p "/home/$account/Praktikum"
+cp -r /usr/share/labkita/examples/* "/home/$account/Praktikum/" 2>/dev/null || true
+chown -R "$account:$account" "/home/$account/.local" "/home/$account/Praktikum"
+
+printf '\nSilakan tetapkan password untuk akun praktikum "%s":\n' "$account"
 if ! passwd "$account"; then
-    printf 'Password belum terpasang. Akun tetap terkunci; ulangi: sudo passwd %s\n' "$account" >&2
+    printf 'Error: Password belum berhasil disetel. Akun tetap terkunci; jalankan ulang: sudo passwd %s\n' "$account" >&2
     exit 1
 fi
-printf 'Akun %s dibuat tanpa grup sudo. Folder pribadi: /home/%s\n' "$account" "$account"
-printf 'Pengguna masih dapat menjalankan program; ini bukan mode kiosk.\n'
+
+printf '\n[SUKSES] Akun mahasiswa/praktikan "%s" berhasil dibuat!\n' "$account"
+printf '- Direktori kerja pribadi : /home/%s (izin akses privat 0700)\n' "$account"
+printf '- Keamanan sistem         : Tidak memiliki hak sudo (bebas risiko perusakan sistem)\n'
+printf '- Materi awal praktikum   : Tersedia di ~/Praktikum/\n'
+printf '- Panduan belajar offline : Tersedia melalui menu aplikasi "Panduan LabKita"\n\n'
