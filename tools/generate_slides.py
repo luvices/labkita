@@ -61,7 +61,7 @@ def create_deck():
     p.font.color.rgb = c_accent
 
     p = tf1.add_paragraph()
-    p.text = "LabKita Linux 0.1"
+    p.text = "LabKita Linux 0.2"
     p.font.size = Pt(44)
     p.font.bold = True
     p.font.color.rgb = c_white
@@ -352,20 +352,12 @@ def create_deck():
     p.space_after = Pt(10)
 
     checks = [
-        "LULUS | Program python3 (Python 3.12.3)",
-        "LULUS | Program gcc (GCC 13.3.0)",
-        "LULUS | Program g++ (G++ 13.3.0)",
-        "LULUS | Program make (GNU Make 4.3)",
-        "LULUS | Program geany (Geany IDE 2.0)",
-        "LULUS | Program git (Git 2.43)",
-        "LULUS | Program man (man-db & developer pages)",
-        "LULUS | Panduan lokal HTML terpasang",
-        "LULUS | Dokumentasi Python offline",
-        "LULUS | Contoh Python praktikum",
-        "LULUS | Modul multiprocessing / proses anak",
-        "LULUS | Kompilasi & eksekusi C",
-        "LULUS | Ruang sementara dengan sticky bit 1777",
-        "LULUS | Unit layanan systemd aktif"
+        "LULUS | Toolchain C/Python: gcc, g++, make, python3, geany, git, man",
+        "LULUS | Panduan & Dokumentasi: modul offline & skrip peluncur labkita-guide",
+        "LULUS | Lokalisasi: Bahasa Indonesia (id_ID.UTF-8) & Zona Waktu Asia/Jakarta",
+        "LULUS | Antarmuka WhiteSur: Tema GTK, Set Ikon, Tema Kursor, & Wallpaper LabKita",
+        "LULUS | Eksekusi Praktikum: Contoh Python, fork multiproses, & kompilasi C",
+        "LULUS | Keamanan & Sistem: Ruang kerja tmpfs 1777 & unit layanan labkita-runtime"
     ]
     for c in checks:
         p = tf.add_paragraph()
@@ -375,7 +367,7 @@ def create_deck():
         p.space_after = Pt(2)
 
     p_summary = tf.add_paragraph()
-    p_summary.text = "STATUS AKHIR: 0 pemeriksaan gagal (14/14 Lulus Sempurna)"
+    p_summary.text = "STATUS AKHIR: 0 pemeriksaan gagal (21/21 Lulus Sempurna (100%))"
     p_summary.font.size = Pt(13)
     p_summary.font.bold = True
     p_summary.font.color.rgb = c_primary
@@ -479,7 +471,7 @@ def create_deck():
     add_header(s10, "Struktur Tim & Pembagian Peran Kelompok")
 
     team = [
-        ("Dafa Zahran — 257006111188", "Ketua Kelompok, Manajer Proyek & Integrasi (Build)", "Mengoordinasikan seluruh tahapan proyek, pipeline build Cubic, mastering berkas ISO (labkita-linux-0.1-amd64.iso), repositori GitHub (github.com/luvices/labkita), dan kepatuhan silabus tugas."),
+        ("Dafa Zahran — 257006111188", "Ketua Kelompok, Manajer Proyek & Integrasi (Build)", "Mengoordinasikan seluruh tahapan proyek, pipeline build Cubic, mastering berkas ISO (labkita-linux-0.2-amd64.iso), repositori GitHub (github.com/luvices/labkita), dan kepatuhan silabus tugas."),
         ("Rafly Fauzi Pratama — 257006111152", "Pengembang Inti (Core Developer) & Toolchain", "Mengembangkan skrip kustomisasi Cubic (scripts/customize.sh), instalasi & konfigurasi compiler (GCC, G++, Python 3, Geany IDE), serta perancangan skrip pengujian labkita-check."),
         ("Muhammad Ilham Rizky — 257006111154", "Sistem, Keamanan & Penguji Kualitas (Sys, Sec & QA)", "Merancang layanan systemd labkita-runtime.service (tmpfs sticky bit 1777), skrip akun praktikan non-sudo (labkita-postinstall), isolasi izin 0700, serta tolok ukur benchmark RAM dan boot time."),
         ("Vadien Athallah Lukman — 257006111160", "Antarmuka, Dokumentasi & Media (UI/UX & Docs)", "Mendesain identitas visual distro (wallpaper SVG LabKita, konfigurasi dconf), modul materi panduan praktikum dan contoh kode (C/Python), penyusunan Laporan PDF Bab I-V, slide PPTX, dan naskah demo video.")
@@ -590,7 +582,7 @@ def create_deck():
     p.space_after = Pt(10)
 
     p = tf12.add_paragraph()
-    p.text = "LabKita Linux 0.1 — Ruang Belajar, Siap Offline."
+    p.text = "LabKita Linux 0.2 — Ruang Belajar, Siap Offline."
     p.font.size = Pt(22)
     p.font.color.rgb = c_accent
     p.space_after = Pt(20)

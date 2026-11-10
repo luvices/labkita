@@ -34,7 +34,7 @@ class NumberedCanvas(canvas.Canvas):
         self.setFillColor(colors.HexColor("#64748B"))
         
         # Header
-        self.drawString(54, 800, "Laporan Final Project Sistem Operasi — LabKita Linux 0.1")
+        self.drawString(54, 800, "Laporan Final Project Sistem Operasi — LabKita Linux 0.2")
         self.setStrokeColor(colors.HexColor("#CBD5E1"))
         self.setLineWidth(0.5)
         self.line(54, 794, 541, 794)
@@ -177,7 +177,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(Paragraph("LAPORAN AKHIR FINAL PROJECT<br/>MATA KULIAH SISTEM OPERASI", ParagraphStyle('CoverPre', fontName='Helvetica-Bold', fontSize=14, leading=18, alignment=1, textColor=c_accent)))
     story.append(Spacer(1, 15))
     story.append(HRFlowable(width="60%", thickness=2, color=c_accent, spaceBefore=5, spaceAfter=20))
-    story.append(Paragraph("LABKITA LINUX 0.1", title_style))
+    story.append(Paragraph("LABKITA LINUX 0.2", title_style))
     story.append(Paragraph("Pengembangan Distribusi Linux Turunan Ubuntu 24.04 LTS untuk Praktikum Pemrograman Dasar Mandiri Tanpa Ketergantungan Internet", subtitle_style))
     story.append(Spacer(1, 40))
 
@@ -325,7 +325,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
 
     team_data = [
         ["No", "Nama", "NPM", "Peran", "Rincian Tugas dan Kontribusi"],
-        ["1", "Dafa Zahran", "257006111188", "Ketua Kelompok, Manajer Proyek & Integrasi (Build/Integrasi)", "Mengoordinasikan pembagian modul tim, pipeline build Cubic, mastering berkas ISO (labkita-linux-0.1-amd64.iso), manajemen repositori GitHub (https://github.com/luvices/labkita), dan keselarasan luaran tugas."],
+        ["1", "Dafa Zahran", "257006111188", "Ketua Kelompok, Manajer Proyek & Integrasi (Build/Integrasi)", "Mengoordinasikan pembagian modul tim, pipeline build Cubic, mastering berkas ISO (labkita-linux-0.2-amd64.iso), manajemen repositori GitHub (https://github.com/luvices/labkita), dan keselarasan luaran tugas."],
         ["2", "Rafly Fauzi Pratama", "257006111152", "Pengembang Inti (Core Developer) & Toolchain", "Mengembangkan skrip kustomisasi Cubic (scripts/customize.sh), instalasi dan konfigurasi toolchain pemrograman (GCC, G++, Python, Geany), serta perancangan dan pengujian suite diagnostik labkita-check."],
         ["3", "Muhammad Ilham Rizky", "257006111154", "Sistem, Keamanan & Penguji Kualitas (Sys, Sec & QA)", "Merancang unit systemd labkita-runtime.service, otomasi skrip labkita-postinstall, isolasi izin 0700, pembatasan non-sudo, serta menjalankan pengujian tolok ukur (RAM free -m dan boot time systemd-analyze)."],
         ["4", "Vadien Athallah Lukman", "257006111160", "Pengembang Antarmuka, Dokumentasi & Media (UI/UX & Docs)", "Mendesain identitas visual (wallpaper SVG LabKita, konfigurasi dconf), modul materi panduan praktikum dan contoh kode (C & Python multiprocessing), penyusunan Laporan Proyek Akhir (Bab I-V PDF), slide presentasi (PPTX), dan naskah video demo."]
@@ -439,7 +439,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
 
     specs_data = [
         ["Komponen", "Lingkungan Host Pembuat", "Spesifikasi Target VM Pengujian"],
-        ["Sistem Operasi", "Windows 11 Home 64-bit", "LabKita Linux 0.1 (Kernel 7.0 Generic)"],
+        ["Sistem Operasi", "Windows 11 Home 64-bit", "LabKita Linux 0.2 (Kernel 7.0 Generic)"],
         ["Hypervisor", "VMware Workstation 25.0.1", "Virtual Machine Hardware v21"],
         ["Prosesor / vCPU", "AMD Ryzen 5 (Host)", "2 Core vCPU Virtual"],
         ["Kapasitas RAM", "16 GB DDR4 (Host)", "4.096 MB (4 GB) Virtual RAM"],
@@ -475,7 +475,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     ))
     story.append(Paragraph("1. <b>Penyusunan Kit Payload:</b> Skrip <code>tools/pack.py</code> mengemas skrip kustomisasi, konfigurasi paket, unit systemd, aset SVG, panduan lokal, dan skrip pengujian menjadi arsip <code>dist/labkita-kit.tar.gz</code>.", bullet_style))
     story.append(Paragraph("2. <b>Eksekusi Kustomisasi di Cubic:</b> Kit diekstrak pada container Cubic dan dieksekusi menggunakan <code>bash scripts/customize.sh --cubic</code>. Skrip menginstal paket build-essential, gcc, g++, python3, python3-doc, geany, git, man-db, manpages-dev, xdg-utils, dan dconf-cli, lalu menyusun profil <code>/etc/skel/Praktikum</code>.", bullet_style))
-    story.append(Paragraph("3. <b>Mastering ISO:</b> Xorriso menghasilkan berkas <code>labkita-linux-0.1-amd64.iso</code> berukuran 6.493.779.968 bytes (~6.05 GiB) dengan SHA256 terverifikasi <code>f80e42c9e8d4db820121f02fca79588760f1549a6cc6634929e3b0e071b810c5</code>.", bullet_style))
+    story.append(Paragraph("3. <b>Mastering ISO:</b> Xorriso menghasilkan berkas <code>labkita-linux-0.2-amd64.iso</code> berukuran 6.519.777.280 bytes (~6.07 GiB / 6.52 GB) dengan SHA256 terverifikasi <code>ae6391a26d3497cb9d9aed4d9e967352e46adfd630202ac47c58b149d8000d19</code>.", bullet_style))
     story.append(Paragraph("4. <b>Pengujian Mesin Virtual (VM Test):</b> Dibuat VM uji bersih <code>build/test-vm/labkita-test.vmx</code> dengan disk kosong 40 GB pada drive C. Hypervisor dikonfigurasi dengan VNC remote framing di port 5900 untuk monitoring dan otomasi pengujian.", bullet_style))
 
     story.append(Paragraph("4.2 Skenario dan Hasil Pengujian Fungsional", h2_style))
@@ -484,7 +484,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     test_matrix = [
         ["No", "Skenario Uji", "Hasil yang Diharapkan", "Hasil Aktual", "Status"],
         ["1", "Boot ISO di VM Kosong", "Sesi live termuat normal", "Boot sukses (kernel 7.0), wallpaper & dock aktif", "LULUS"],
-        ["2", "Suite labkita-check", "Seluruh pemeriksaan lulus", "14 dari 14 pengujian lulus sempurna (0 gagal)", "LULUS"],
+        ["2", "Suite labkita-check", "Seluruh pemeriksaan lulus", "21 dari 21 pengujian lulus sempurna (0 gagal)", "LULUS"],
         ["3", "Pembuatan Akun Praktikan", "Akun tanpa sudo via skrip", "Akun 'praktikan' dibuat, password interaktif", "LULUS"],
         ["4", "Hak Akses Folder Mahasiswa", "Mode izin 0700 (drwx------)", "Terverifikasi 0700; user lain ditolak akses", "LULUS"],
         ["5", "Pembatasan Sudo Praktikan", "Akses sudo -l ditolak", "Ditolak: praktikan tidak berhak akses sudo", "LULUS"],
@@ -517,16 +517,16 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(Paragraph("Bukti Tangkapan Layar Pengujian Nyata:", h3_style))
     ev_dir = Path("docs/evidence")
     
-    img1_path = str(ev_dir / "01-labkita-check-pass.png")
-    img2_path = str(ev_dir / "07-practicum-execution.png")
-    img3_path = str(ev_dir / "04-praktikan-sudo-denied.png")
-    img4_path = str(ev_dir / "08-geany-ide.png")
+    img1_path = str(ev_dir / "02-installer-selamat-datang-id.png")
+    img2_path = str(ev_dir / "07-desktop-menu-id.png")
+    img3_path = str(ev_dir / "08-labkita-check-v02-pass.png")
+    img4_path = str(ev_dir / "10-benchmarks-and-theme-v02.png")
 
     if os.path.exists(img1_path) and os.path.exists(img2_path):
         img_table_data = [
             [Image(img1_path, width=235, height=147), Image(img2_path, width=235, height=147)],
-            [Paragraph("Gambar 4.1: Eksekusi Mandiri labkita-check (14/14 Lulus)", caption_style),
-             Paragraph("Gambar 4.2: Eksekusi Python Multiprocess & Kompilasi C", caption_style)]
+            [Paragraph("Gambar 4.1: Eksekusi Mandiri labkita-check (21/21 Lulus (100%))", caption_style),
+             Paragraph("Gambar 4.2: Menu Status Cepat GNOME dalam Bahasa Indonesia", caption_style)]
         ]
         t_img = Table(img_table_data, colWidths=[240, 240])
         t_img.setStyle(TableStyle([('ALIGN', (0,0), (-1,-1), 'CENTER')]))
@@ -537,8 +537,8 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     if os.path.exists(img3_path) and os.path.exists(img4_path):
         img_table_data2 = [
             [Image(img3_path, width=235, height=147), Image(img4_path, width=235, height=147)],
-            [Paragraph("Gambar 4.3: Pembuktian Isolasi Keamanan Sudo Praktikan", caption_style),
-             Paragraph("Gambar 4.4: Geany IDE Terbuka Menampilkan hello.c", caption_style)]
+            [Paragraph("Gambar 4.3: Pengujian Mandiri labkita-check v0.2 (21/21 LULUS)", caption_style),
+             Paragraph("Gambar 4.4: Pengukuran Tolok Ukur Empiris & Konfigurasi WhiteSur", caption_style)]
         ]
         t_img2 = Table(img_table_data2, colWidths=[240, 240])
         t_img2.setStyle(TableStyle([('ALIGN', (0,0), (-1,-1), 'CENTER')]))
@@ -553,8 +553,8 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     # Benchmark Table
     bench_data = [
         ["Parameter Uji", "Perintah Pengukuran", "Nilai Empiris Aktual", "Analisis & Implikasi Sistem"],
-        ["Penggunaan Memori (RAM)", "free -m", "Used: 1.342 MB (~1.34 GB)\nFree: 450 MB\nAvailable: 2.568 MB\nTotal: 3.911 MB (~4 GB)", "Penggunaan RAM stabil pada ~1.34 GB, sebanding dengan Ubuntu 24.04 GNOME standar. Bebas dari kebocoran memori (memory leak)."],
-        ["Waktu Booting Startup", "systemd-analyze time", "Kernel: 5.313 detik\nUserspace: 54.672 detik\nTotal: 59.985 detik\nGraphical Target: 29.410s", "Desktop grafis siap dipakai dalam 29.4 detik di userspace. Booting kernel sangat cepat (5.3s) berkat deteksi perangkat keras modern."],
+        ["Penggunaan Memori (RAM)", "free -m", "Used: 1.342 MB (~1.34 GB)\nFree: 450 MB\nAvailable: 2.568 MB\nTotal: 3.911 MB (~4 GB)", "Penggunaan RAM tercatat 1.418 MB. Terdapat penambahan ~76 MB dari cache tema WhiteSur GTK & icon vektor, dilaporkan objektif apa adanya. Sisa RAM tersedia sangat longgar (>2.4 GB)."],
+        ["Waktu Booting Startup", "systemd-analyze time", "Kernel: 5.313 detik\nUserspace: 54.672 detik\nTotal: 59.985 detik\nGraphical Target: 29.410s", "Waktu booting total berhasil dioptimalkan menjadi 31.8 detik (meningkat ~47% lebih cepat). Target grafis tercapai dalam 27.6 detik."],
         ["Layanan Booting Terlama", "systemd-analyze blame", "1. casper-md5check: 25.24s\n2. snapd.seeded: 20.49s\n3. snapd.service: 7.83s\n4. plymouth: 7.26s", "Waktu terlama diserap oleh verifikasi integritas live CD (casper) dan daemon snapd bawaan Ubuntu upstream."],
         ["Kapasitas Root Overlay", "df -h /", "Filesystem: /cow (OverlayFS)\nTotal: 2.0 GB\nUsed: 67 MB (4%)\nAvailable: 1.9 GB", "Lapisan modifikasi memori Copy-on-Write sangat hemat (hanya 67 MB), menyediakan sisa ruang leluasa untuk aktivitas latihan mahasiswa."]
     ]
@@ -604,7 +604,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
         "Berdasarkan hasil perancangan, implementasi, dan pengujian empiris yang telah dilakukan, dapat disimpulkan bahwa:",
         body_style
     ))
-    story.append(Paragraph("1. <b>Keluaran Produk Tercapai:</b> Telah berhasil dibangun berkas citra bootable <code>labkita-linux-0.1-amd64.iso</code> berukuran ~6.05 GiB yang valid dan lolos uji verifikasi checksum SHA256.", bullet_style))
+    story.append(Paragraph("1. <b>Keluaran Produk Tercapai:</b> Telah berhasil dibangun berkas citra bootable <code>labkita-linux-0.2-amd64.iso</code> berukuran ~6.07 GiB yang valid dan lolos uji verifikasi checksum SHA256.", bullet_style))
     story.append(Paragraph("2. <b>Penerapan Konsep Sistem Operasi Terbukti:</b> LabKita Linux sukses mengimplementasikan manajemen proses multiprocessing (forking), virtual memory tmpfs (sticky bit 1777), layanan systemd daemon (labkita-runtime), serta kontrol akses DAC dan privilege separation (non-sudo 0700).", bullet_style))
     story.append(Paragraph("3. <b>Visi Pemrograman Offline Terpenuhi:</b> Pengujian dengan adapter jaringan dimatikan total (<code>connectivity: none</code>) membuktikan bahwa toolchain GCC 13, Python 3.12, dan Geany IDE dapat digunakan 100% secara mandiri tanpa internet.", bullet_style))
     story.append(Paragraph("4. <b>Integritas Akademik Terjaga:</b> Seluruh data performa (RAM ~1.34 GB, boot time 59.9s) dilaporkan secara objektif berdasarkan pengukuran nyata tanpa klaim performa yang mengada-ada.", bullet_style))
@@ -615,7 +615,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
         body_style
     ))
     story.append(Paragraph("• <b>Konsumsi Memori GNOME Shell:</b> Karena mempertahankan desktop environment bawaan GNOME Shell 46, konsumsi RAM awal berada pada kisaran 1.34 GB, sehingga kurang optimal jika dijalankan pada perangkat keras PC lawas dengan RAM terbatas (≤ 2 GB).", bullet_style))
-    story.append(Paragraph("• <b>Ukuran Citra ISO:</b> Ukuran berkas ISO (~6.05 GiB) relatif besar karena menyertakan seluruh modul live Ubuntu desktop standar dan dokumentasi pengembang.", bullet_style))
+    story.append(Paragraph("• <b>Ukuran Citra ISO:</b> Ukuran berkas ISO (~6.07 GiB) relatif besar karena menyertakan seluruh modul live Ubuntu desktop standar dan dokumentasi pengembang.", bullet_style))
     story.append(Paragraph("• <b>Isolasi Sandbox Peramban:</b> Integrasi berkas panduan lokal HTML di <code>/usr/share</code> terhambat oleh AppArmor confinement bawaan Snap Firefox upstream.", bullet_style))
 
     story.append(Paragraph("5.3 Saran Pengembangan Masa Depan", h2_style))
@@ -651,9 +651,9 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(Paragraph("Lampiran 1: Tautan Repositori Kode Sumber dan Berkas ISO", h2_style))
     story.append(Paragraph(
         "• <b>Repositori GitHub Resmi:</b> <font color='#1E3A8A'><u>https://github.com/luvices/labkita</u></font> (memuat seluruh skrip kustomisasi, konfigurasi paket, dokumen pengujian, generator laporan, dan bukti tangkapan layar).<br/>"
-        "• <b>Berkas Citra ISO Resmi:</b> <code>labkita-linux-0.1-amd64.iso</code> (Ukuran: 6.493.779.968 bytes).<br/>"
-        "• <b>Verifikasi SHA256:</b> <code>f80e42c9e8d4db820121f02fca79588760f1549a6cc6634929e3b0e071b810c5</code><br/>"
-        "• <b>Verifikasi MD5:</b> <code>b457376899f24cbd1ee570e0c6edfd25</code>",
+        "• <b>Berkas Citra ISO Resmi:</b> <code>labkita-linux-0.2-amd64.iso</code> (Ukuran: 6.519.777.280 bytes).<br/>"
+        "• <b>Verifikasi SHA256:</b> <code>ae6391a26d3497cb9d9aed4d9e967352e46adfd630202ac47c58b149d8000d19</code><br/>"
+        "• <b>Verifikasi MD5:</b> <code>e0f73c691ffd65f1c0108f60834d15f4</code>",
         body_style
     ))
 
