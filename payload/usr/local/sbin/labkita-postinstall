@@ -42,7 +42,7 @@ if ! passwd "$account"; then
 fi
 
 printf '\n[SUKSES] Akun mahasiswa/praktikan "%s" berhasil dibuat!\n' "$account"
-printf '- Direktori kerja pribadi : /home/%s (izin akses privat 0700)\n' "$account"
-printf '- Keamanan sistem         : Tidak memiliki hak sudo (bebas risiko perusakan sistem)\n'
-printf '- Materi awal praktikum   : Tersedia di ~/Praktikum/\n'
-printf '- Panduan belajar offline : Tersedia melalui menu aplikasi "Panduan LabKita"\n\n'
+printf -- '- Direktori kerja pribadi : /home/%s (izin akses privat 0700)\n' "$account"
+printf -- '- Keamanan sistem         : Tidak memiliki hak sudo (bebas risiko perusakan sistem)\n'
+printf -- '- Materi awal praktikum   : Tersedia di ~/Praktikum/\n'
+printf -- '- Panduan belajar offline : Tersedia melalui menu aplikasi "Panduan LabKita"\n\n'
