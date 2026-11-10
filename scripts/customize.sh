@@ -53,12 +53,28 @@ XKBOPTIONS=""
 BACKSPACE="guess"
 EOF
 
+# Salin seluruh payload (tema, ikon, kursor, background, skrip) ke sistem root
 cp -a "$kit_dir/payload/." /
+
+# Hak akses utilitas dan pustaka
 chmod 0755 /usr/local/bin/labkita-check /usr/local/bin/labkita-guide /usr/local/sbin/labkita-postinstall
 find /usr/share/labkita -type d -exec chmod 0755 {} +
 find /usr/share/labkita -type f -exec chmod 0644 {} +
 chmod 0644 /etc/systemd/system/labkita-runtime.service
 chmod 0644 /usr/share/applications/labkita-guide.desktop
+
+# Pastikan perizinan tema dan ikon terbuka untuk seluruh pengguna
+if [[ -d /usr/share/themes ]]; then
+    find /usr/share/themes -type d -exec chmod 0755 {} +
+    find /usr/share/themes -type f -exec chmod 0644 {} +
+fi
+if [[ -d /usr/share/icons ]]; then
+    find /usr/share/icons -type d -exec chmod 0755 {} +
+    find /usr/share/icons -type f -exec chmod 0644 {} +
+    gtk-update-icon-cache -q -t -f /usr/share/icons/WhiteSur 2>/dev/null || true
+    gtk-update-icon-cache -q -t -f /usr/share/icons/WhiteSur-dark 2>/dev/null || true
+    gtk-update-icon-cache -q -t -f /usr/share/icons/WhiteSur-light 2>/dev/null || true
+fi
 
 cat > /etc/labkita-release <<'EOF'
 NAME="LabKita Linux"

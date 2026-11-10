@@ -1,7 +1,43 @@
+# Konfigurasi Tampilan dan Lingkungan LabKita Linux 0.2 (Gaya macOS Bersih & Minimalis)
+
 [org/gnome/desktop/background]
-picture-uri='file:///usr/share/backgrounds/labkita.svg'
-picture-uri-dark='file:///usr/share/backgrounds/labkita.svg'
+picture-uri='file:///usr/share/backgrounds/labkita-gradient.png'
+picture-uri-dark='file:///usr/share/backgrounds/labkita-gradient.png'
 picture-options='zoom'
+primary-color='#0f172a'
+secondary-color='#1e1b4b'
+
+[org/gnome/desktop/interface]
+gtk-theme='WhiteSur-Light'
+icon-theme='WhiteSur'
+cursor-theme='WhiteSur-cursors'
+cursor-size=24
+font-name='Inter 11'
+document-font-name='Inter 11'
+monospace-font-name='DejaVu Sans Mono 10'
+font-antialiasing='rgba'
+font-hinting='slight'
+
+[org/gnome/desktop/wm/preferences]
+button-layout='close,minimize,maximize:'
+titlebar-font='Inter Semi-Bold 11'
+theme='WhiteSur-Light'
+
+[org/gnome/shell]
+favorite-apps=['labkita-guide.desktop', 'geany.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop']
+
+[org/gnome/shell/extensions/dash-to-dock]
+dock-position='BOTTOM'
+extend-height=false
+dock-fixed=false
+autohide=true
+intellihide=true
+custom-theme-shrink=true
+dash-max-icon-size=48
+show-trash=false
+show-mounts=false
+running-indicator-style='DOTS'
+transparency-mode='DYNAMIC'
 
 [org/gnome/system/locale]
 region='id_ID.UTF-8'

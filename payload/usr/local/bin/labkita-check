@@ -21,7 +21,7 @@ def main():
         if not ok:
             failures.append(label)
 
-    print("=== Pemeriksaan Kesiapan LabKita Linux ===")
+    print("=== Pemeriksaan Kesiapan LabKita Linux 0.2 ===")
 
     # 1. Pemeriksaan Toolchain & Aplikasi Dasar
     for command in ("python3", "gcc", "g++", "make", "geany", "git", "man"):
@@ -51,7 +51,13 @@ def main():
     except Exception as e:
         report("Zona waktu Asia/Jakarta", False, str(e))
 
-    # 4. Pengujian Kompilasi dan Eksekusi Kode Praktikum
+    # 4. Tema Antarmuka & Visual (WhiteSur & Wallpaper Orisinal)
+    report("Tema GTK WhiteSur", Path("/usr/share/themes/WhiteSur-Light").is_dir())
+    report("Set Ikon WhiteSur", Path("/usr/share/icons/WhiteSur").is_dir())
+    report("Tema Kursor WhiteSur", Path("/usr/share/icons/WhiteSur-cursors").is_dir())
+    report("Wallpaper Orisinal LabKita", Path("/usr/share/backgrounds/labkita-gradient.png").is_file() or Path("/usr/share/backgrounds/labkita.svg").is_file())
+
+    # 5. Pengujian Kompilasi dan Eksekusi Kode Praktikum
     with tempfile.TemporaryDirectory(prefix="labkita-check-") as directory:
         work = Path(directory)
         for label, args, expected in (
@@ -82,7 +88,7 @@ def main():
             except (OSError, subprocess.SubprocessError) as error:
                 report("Kompilasi dan eksekusi C", False, str(error))
 
-    # 5. Keamanan Ruang Kerja Sementara & Layanan Systemd
+    # 6. Keamanan Ruang Kerja Sementara & Layanan Systemd
     runtime = Path("/run/labkita")
     ready = runtime.is_dir() and stat.S_IMODE(runtime.stat().st_mode) == 0o1777
     report("Ruang kerja sementara tmpfs (/run/labkita) dengan sticky bit 1777", ready)
