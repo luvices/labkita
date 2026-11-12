@@ -67,6 +67,7 @@ for arg in sys.argv[1:]:
     elif arg.startswith('mouse:') or arg.startswith('click:'):
         x, y = map(int, arg.split(':')[1].split(','))
         client.mouseMove(x, y)
-        client.mousePress(1)
-        time.sleep(0.05)
-        client.mousePress(0)
+        time.sleep(0.1)
+        client.mouseDown(1)
+        time.sleep(0.1)
+        client.mouseUp(1)
