@@ -7,16 +7,14 @@ client = api.connect('127.0.0.1::5900')
 
 def press_char(ch):
     shift_map = {
-        '_': 'minus', '+': 'equal', ':': 'semicolon', '"': 'apostrophe',
-        '<': 'comma', '>': 'period', '?': 'slash', '~': 'grave',
+        '_': 'minus', '+': '=', ':': ';', '"': "'",
+        '<': ',', '>': '.', '?': 'fslash', '~': '`',
         '!': '1', '@': '2', '#': '3', '$': '4', '%': '5',
         '^': '6', '&': '7', '*': '8', '(': '9', ')': '0',
-        '{': 'bracketleft', '}': 'bracketright', '|': 'backslash'
+        '{': '[', '}': ']', '|': 'bslash'
     }
     char_map = {
-        ' ': 'space', '-': 'minus', '=': 'equal', ';': 'semicolon',
-        "'": 'apostrophe', ',': 'comma', '.': 'period', '/': 'slash',
-        '`': 'grave', '[': 'bracketleft', ']': 'bracketright', '\\': 'backslash'
+        ' ': 'space', '-': 'minus', '/': 'fslash', '\\': 'bslash'
     }
 
     if ch in shift_map:
