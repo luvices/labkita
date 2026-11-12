@@ -64,7 +64,9 @@ for arg in sys.argv[1:]:
         client.keyPress(keys[-1])
         for k in reversed(keys[:-1]):
             client.keyUp(k)
-    elif arg.startswith('mouse:'):
-        x, y = map(int, arg[6:].split(','))
+    elif arg.startswith('mouse:') or arg.startswith('click:'):
+        x, y = map(int, arg.split(':')[1].split(','))
         client.mouseMove(x, y)
         client.mousePress(1)
+        time.sleep(0.05)
+        client.mousePress(0)
