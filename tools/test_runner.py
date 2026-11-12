@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 from vncdotool import api
@@ -42,6 +43,13 @@ for arg in sys.argv[1:]:
         type_cmd(arg[5:])
     elif arg.startswith('rawtype:'):
         for ch in arg[8:]:
+            press_char(ch)
+    elif arg.startswith('envtype:'):
+        val = os.environ[arg[8:]]
+        type_cmd(val)
+    elif arg.startswith('envrawtype:'):
+        val = os.environ[arg[11:]]
+        for ch in val:
             press_char(ch)
     elif arg.startswith('pause:'):
         time.sleep(float(arg[6:]))
