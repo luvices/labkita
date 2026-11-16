@@ -13,9 +13,9 @@
 | **1. Pembuka & Booting** | 00:00 – 00:45 (45s) | Slide Judul, Identitas Tim, Menu Boot GRUB Bahasa Indonesia | Pengenalan proyek LabKita Linux 0.2, latar belakang praktikum offline, dan bootloader GRUB berbahasa Indonesia. |
 | **2. Antarmuka macOS & Bahasa Indonesia** | 00:45 – 01:30 (45s) | Desktop LabKita, Tema WhiteSur, Dock Bawah, Top Bar Bersih | Demonstrasi antarmuka modern bernuansa macOS (bebas aset proprietary Apple), tombol jendela di kiri, dock bawah terpusat, dan menu berbahasa Indonesia. |
 | **3. Uji Mandiri (`labkita-check`)** | 01:30 – 02:15 (45s) | Terminal eksekusi `labkita-check` | Pembuktian kelulusan 21 pemeriksaan otomatis kesiapan sistem (GCC, Python, Geany, locale id_ID, timezone Jakarta, tema GTK, ikon, tmpfs). |
-| **4. Uji Offline Total & Eksekusi Program** | 02:15 – 03:00 (45s) | `nmcli networking off`, kompilasi C & Python | Mematikan adapter jaringan VM secara total, membuktikan kompilasi program C (`hello.c`), Python multiproses (`processes.py`), dan panduan lokal berjalan 100% luring. |
-| **5. Keamanan & Akun Praktikan** | 03:00 – 03:50 (50s) | `sudo labkita-postinstall praktikan`, `su - praktikan`, `sudo -l` | Pembuatan akun praktikan, demonstrasi pembatasan permission `0700`, dan pembuktian penolakan hak akses sudo. |
-| **6. Analisis Kinerja Empiris & Penutup** | 03:50 – 04:30 (40s) | `free -m`, `systemd-analyze time`, Slide Anggota Tim | Menunjukkan penggunaan RAM riil (~1.41 GB, +76 MB karena tema visual WhiteSur), waktu boot startup (31.8 detik), kesimpulan, dan penutup. |
+| **4. Uji Offline Total & Eksekusi Program** | 02:15 – 03:00 (45s) | `nmcli networking off`, kompilasi C & Python | Mematikan adapter jaringan VM secara total, membuktikan kompilasi program C (`hello.c`) dan Python multiproses (`processes.py`) berjalan 100% luring, serta menjelaskan kendala nyata `labkita-guide` dengan Firefox Snap. |
+| **5. Keamanan & Akun Praktikan** | 03:00 – 03:50 (50s) | `sudo labkita-postinstall praktikan`, `id`, `stat`, `ls` | Pembuatan akun praktikan, pembuktian pembatasan izin `0700` dan non-sudo, serta pelaporan jujur error baris 45 pada skrip ISO 0.2. |
+| **6. Analisis Kinerja Empiris & Penutup** | 03:50 – 04:30 (40s) | `free -m`, `systemd-analyze time`, Slide Anggota Tim | Menunjukkan rata-rata RAM riil terinstal (1.060,0 MiB pada 0.2 vs 1.031,7 MiB pada 0.1), waktu boot rata-rata (11,454s pada 0.2 vs 9,893s pada 0.1), kesimpulan, dan penutup. |
 
 ---
 
@@ -61,20 +61,20 @@
   - Di terminal, matikan jaringan:
     ```bash
     nmcli networking off
-    nmcli networking connectivity check
+    nmcli networking
     ```
-    *(Output menampilkan: `none`)*
-  - Jalankan program contoh di folder latihan:
+    *(Output menampilkan: `disabled`)*
+  - Kompilasi dan jalankan contoh program di sistem terinstal:
     ```bash
-    cd ~/Praktikum
-    python3 hello.py
-    python3 processes.py
-    gcc -O2 hello.c -o hello && ./hello
+    gcc /usr/share/labkita/examples/hello.c -o /tmp/hello_test && /tmp/hello_test
+    python3 /usr/share/labkita/examples/hello.py
+    python3 /usr/share/labkita/examples/processes.py
     ```
-  - Buka materi panduan via peluncur: `labkita-guide`.
+  - Uji peluncur `labkita-guide` dan jelaskan secara terbuka kendala sandbox Firefox Snap pada dotfolder `~/.local/share/labkita/guide/`.
 - **Voiceover:**
   > *"Sekarang kita buktikan kapabilitas utama distro ini dalam kondisi jaringan terputus total.*  
-  > *Dengan jaringan dinonaktifkan, mahasiswa tetap dapat mengompilasi program C, menjalankan skrip Python multiproses untuk mempelajari fork dan konkurensi, serta membuka dokumentasi dan panduan praktikum lokal secara instan tanpa internet."*
+  > *Dengan jaringan dimatikan, mahasiswa tetap dapat mengompilasi program C dan menjalankan skrip Python multiproses untuk mempelajari fork dan konkurensi secara instan tanpa internet.*  
+  > *Secara transparan, kami juga mencatat bahwa utilitas `labkita-guide` di rilis 0.2 ini masih terblokir AppArmor Firefox Snap karena file disalin ke dotfolder `.local`, sehingga menjadi agenda perbaikan utama ke folder non-tersembunyi pada rilis 0.3."*
 
 ---
 
@@ -84,36 +84,32 @@
     ```bash
     sudo labkita-postinstall praktikan
     ```
-  - Tampilkan permission:
+  - Tampilkan permission dan isolasi akun:
     ```bash
-    stat /home/praktikan
+    stat -c '%a %U:%G %n' /home/praktikan
     id praktikan
+    ls /home/praktikan
+    grep -E '^(sudo|adm):' /etc/group
     ```
-  - Masuk sebagai user `praktikan` dan uji akses sudo:
-    ```bash
-    su - praktikan
-    sudo -l
-    ```
-    *(Tampilkan pesan penolakan sudo)*.
 - **Voiceover:**
-  > *"Untuk aspek tata kelola laboratorium, skrip `labkita-postinstall` secara otomatis menyiapkan akun mahasiswa tanpa izin sudo.*  
-  > *Folder kerja mahasiswa diproteksi dengan izin ketat 0700 sehingga tidak bisa dibaca oleh mahasiswa lain.*  
-  > *Ketika user praktikan mencoba perintah `sudo -l`, sistem secara tegas menolak akses, menjaga konfigurasi laboratorium tetap aman dari instalasi ilegal atau perusakan sistem."*
+  > *"Untuk aspek tata kelola laboratorium, skrip `labkita-postinstall` menyiapkan akun mahasiswa `praktikan` tanpa izin sudo.*  
+  > *Folder kerja `/home/praktikan` diproteksi izin ketat `0700` sehingga user lain langsung ditolak (`Ijin ditolak`), dan `praktikan` tidak masuk grup `sudo` maupun `adm`.*  
+  > *Catatan audit kami juga melaporkan bahwa pada ISO 0.2 baris 45 skrip ini memunculkan error `printf: - : pilihan tidak valid` meski akun sudah berhasil terbuat — dan perbaikan `printf --` sudah dimasukkan ke source repo."*
 
 ---
 
 ### Menit 03:50 – 04:30 | Segmen 6: Analisis Kinerja Empiris & Penutup
 - **Visual:**
-  - Jalankan perintah tolok ukur:
+  - Jalankan perintah tolok ukur pada sistem terinstal:
     ```bash
     free -m
-    systemd-analyze
+    systemd-analyze time
     ```
   - Tampilkan slide penutup yang berisi identitas anggota tim (Dafa Zahran, Rafly Fauzi Pratama, Muhammad Ilham Rizky, Vadien Athallah Lukman) dan tautan repositori GitHub (https://github.com/luvices/labkita).
 - **Voiceover:**
-  > *"Dari segi performa, penggunaan memori RAM LabKita 0.2 tercatat sebesar 1.41 GB. Kami laporkan secara transparan adanya sedikit penambahan memori sekitar 76 MB dibandingkan versi polos karena pemuatan tema visual WhiteSur yang lebih kaya.*  
-  > *Meski demikian, sisa RAM tersedia masih sangat besar, yaitu 2.49 GB, dan waktu booting sistem meningkat drastis menjadi hanya 31.8 detik.*  
-  > *Demikian demonstrasi LabKita Linux 0.2 dari kelompok kami. Terima kasih atas perhatiannya!"*
+  > *"Dari pengujian 3 kali reboot setelah instalasi pada VM 4 GB dengan kondisi identik, konsumsi RAM LabKita 0.2 rata-rata tercatat 1.060,0 MiB — naik wajar sekitar 28,3 MiB (+2,7%) dibanding versi 0.1 (1.031,7 MiB) akibat tema WhiteSur dan Dash-to-Dock.*  
+  > *Sementara rata-rata waktu boot 0.2 berada di 11,454 detik dibanding 9,893 detik pada 0.1, sehingga tidak kami klaim lebih cepat; sisa RAM ~2,85 GiB tetap sangat memadai untuk kebutuhan praktikum.*  
+  > *Demikian demonstrasi jujur LabKita Linux 0.2 dari kelompok kami. Terima kasih atas perhatiannya!"*
 
 ---
 
