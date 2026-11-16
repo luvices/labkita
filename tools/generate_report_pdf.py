@@ -223,37 +223,37 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(Paragraph("DAFTAR ISI", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceBefore=2, spaceAfter=10))
     toc_data = [
-        ["BAB I", "PENDAHULUAN", "2"],
-        ["", "1.1 Latar Belakang Masalah", "2"],
-        ["", "1.2 Visi dan Tujuan Produk", "2"],
-        ["", "1.3 Sasaran Pengguna", "2"],
+        ["BAB I", "PENDAHULUAN", "3"],
+        ["", "1.1 Latar Belakang Masalah", "3"],
+        ["", "1.2 Visi dan Tujuan Produk", "3"],
+        ["", "1.3 Sasaran Pengguna", "3"],
         ["", "1.4 Ruang Lingkup Proyek", "3"],
-        ["", "1.5 Pembagian Tugas dan Kontribusi Anggota Kelompok", "3"],
-        ["BAB II", "LANDASAN TEORI SISTEM OPERASI", "4"],
-        ["", "2.1 Konsep Manajemen Proses dan Multiprocessing", "4"],
-        ["", "2.2 Manajemen Memori dan Virtual Filesystem (Tmpfs)", "4"],
+        ["", "1.5 Pembagian Tugas dan Kontribusi Anggota Kelompok", "4"],
+        ["BAB II", "LANDASAN TEORI SISTEM OPERASI", "5"],
+        ["", "2.1 Konsep Manajemen Proses dan Multiprocessing", "5"],
+        ["", "2.2 Manajemen Memori dan Virtual Filesystem (Tmpfs)", "5"],
         ["", "2.3 Keamanan Sistem Operasi dan Privilege Separation", "5"],
         ["", "2.4 Inisialisasi Sistem dan Layanan Daemon (Systemd)", "5"],
-        ["", "2.5 Arsitektur Live CD dan OverlayFS", "6"],
-        ["BAB III", "PERANCANGAN SISTEM", "7"],
-        ["", "3.1 Arsitektur LabKita Linux", "7"],
-        ["", "3.2 Alur Kerja Pembuatan ISO dengan Cubic", "7"],
-        ["", "3.3 Rancangan Antarmuka dan Pengalaman Pengguna (UI/UX)", "8"],
-        ["", "3.4 Spesifikasi Perangkat Keras dan Perangkat Lunak", "8"],
-        ["BAB IV", "IMPLEMENTASI DAN PENGUJIAN", "9"],
-        ["", "4.1 Langkah-Langkah Implementasi", "9"],
-        ["", "4.2 Skenario dan Hasil Pengujian Fungsional", "10"],
-        ["", "4.3 Pengukuran Kinerja dan Tolok Ukur Empiris (Benchmarks)", "11"],
-        ["", "4.4 Pembahasan Temuan Teknis: Sandboxing Snap dan AppArmor", "12"],
-        ["BAB V", "PENUTUP", "13"],
-        ["", "5.1 Kesimpulan", "13"],
-        ["", "5.2 Keterbatasan Produk", "13"],
-        ["", "5.3 Saran Pengembangan Masa Depan", "13"],
-        ["DAFTAR PUSTAKA DAN LAMPIRAN", "", "14"],
-        ["", "Daftar Pustaka", "14"],
-        ["", "Lampiran 1: Tautan Repositori Kode Sumber dan Berkas ISO", "14"],
-        ["", "Lampiran 2: Tautan dan Naskah Video Demonstrasi (3-5 Menit)", "15"],
-        ["", "Lampiran 3: Pernyataan Kejujuran Akademik dan Penggunaan AI", "15"]
+        ["", "2.5 Arsitektur Live CD dan OverlayFS", "5"],
+        ["BAB III", "PERANCANGAN SISTEM", "6"],
+        ["", "3.1 Arsitektur LabKita Linux", "6"],
+        ["", "3.2 Alur Kerja Pembuatan ISO dengan Cubic", "6"],
+        ["", "3.3 Rancangan Antarmuka dan Pengalaman Pengguna (UI/UX)", "6"],
+        ["", "3.4 Spesifikasi Perangkat Keras dan Perangkat Lunak", "6"],
+        ["BAB IV", "IMPLEMENTASI DAN PENGUJIAN", "7"],
+        ["", "4.1 Langkah-Langkah Implementasi", "7"],
+        ["", "4.2 Skenario dan Hasil Pengujian Fungsional", "7"],
+        ["", "4.3 Pengukuran Kinerja dan Tolok Ukur Empiris (0.1 vs 0.2 Terinstal)", "8"],
+        ["", "4.4 Pembahasan Temuan Teknis: Kegagalan Nyata Selama Audit", "9"],
+        ["BAB V", "PENUTUP", "10"],
+        ["", "5.1 Kesimpulan", "10"],
+        ["", "5.2 Keterbatasan dan Kegagalan Terbuka pada Rilis 0.2", "10"],
+        ["", "5.3 Saran Pengembangan Rilis Selanjutnya (LabKita Linux 0.3)", "10"],
+        ["DAFTAR PUSTAKA DAN LAMPIRAN", "", "11"],
+        ["", "Daftar Pustaka", "11"],
+        ["", "Lampiran 1: Tautan Repositori Kode Sumber dan Berkas ISO", "11"],
+        ["", "Lampiran 2: Naskah dan Tautan Video Demonstrasi (3-5 Menit)", "11"],
+        ["", "Lampiran 3: Pernyataan Kejujuran Akademik dan Penggunaan AI", "11"]
     ]
     t_toc = Table(toc_data, colWidths=[55, 380, 45])
     t_toc.setStyle(TableStyle([
@@ -309,10 +309,10 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
 
     story.append(Paragraph("1.4 Ruang Lingkup Proyek", h2_style))
     story.append(Paragraph(
-        "Ruang lingkup pengerjaan LabKita Linux versi 0.1 dibatasi pada:",
+        "Ruang lingkup pengerjaan LabKita Linux versi 0.2 dibatasi pada:",
         body_style
     ))
-    story.append(Paragraph("1. Basis distribusi menggunakan Ubuntu Desktop 24.04.5 LTS (Noble Numbat) arsitektur x86_64 dengan kernel Linux 7.0 generic.", bullet_style))
+    story.append(Paragraph("1. Basis distribusi menggunakan Ubuntu Desktop 24.04.5 LTS (Noble Numbat) arsitektur x86_64 dengan kernel Linux 7.0.0-43-generic pada sistem 0.2 terinstal (dibanding 7.0.0-31-generic pada versi 0.1).", bullet_style))
     story.append(Paragraph("2. Perangkat lunak pemrograman mencakup GCC 13.3.0, G++ 13.3.0, Make 4.3, Python 3.12.3, Geany 2.0, Git 2.43, Nano, dan pustaka manpages-dev.", bullet_style))
     story.append(Paragraph("3. Kustomisasi sistem dilakukan melalui Cubic (Custom Ubuntu ISO Creator) dengan skrip kustomisasi bash termonitor.", bullet_style))
     story.append(Paragraph("4. Pengujian dilakukan secara empiris pada hypervisor VMware Workstation 25 mencakup uji diagnostik mandiri (labkita-check), pengujian offline tanpa jaringan, serta tolok ukur RAM dan waktu boot.", bullet_style))
@@ -408,7 +408,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
         "LabKita Linux dirancang dengan struktur berlapis yang mengedepankan isolasi dan keandalan operasional:",
         body_style
     ))
-    story.append(Paragraph("1. <b>Lapisan Kernel & Driver:</b> Kernel Linux 7.0 generic dengan modul open-vm-tools terintegrasi untuk mendukung display scaling SVGA dan integrasi hypervisor.", bullet_style))
+    story.append(Paragraph("1. <b>Lapisan Kernel & Driver:</b> Kernel Linux 7.0.0-43-generic (0.2 terinstal) dengan modul open-vm-tools terintegrasi untuk mendukung display scaling SVGA dan integrasi hypervisor.", bullet_style))
     story.append(Paragraph("2. <b>Lapisan Inisialisasi & Runtime:</b> Systemd init manager yang memuat layanan <code>labkita-runtime.service</code> dan mengelola mounting tmpfs.", bullet_style))
     story.append(Paragraph("3. <b>Lapisan Toolchain Praktikum:</b> Koleksi compiler C/C++ (GCC/G++), interpreter Python 3, debugger, dan editor Geany yang sepenuhnya mandiri di <code>/usr/bin</code>.", bullet_style))
     story.append(Paragraph("4. <b>Lapisan Keamanan & Pengguna:</b> Skrip pascainstalasi <code>labkita-postinstall</code> yang mengatur pembuatan akun non-sudo dan hak akses folder <code>0700</code>.", bullet_style))
@@ -427,10 +427,9 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
 
     story.append(Paragraph("3.3 Rancangan Antarmuka dan Pengalaman Pengguna (UI/UX)", h2_style))
     story.append(Paragraph(
-        "Antarmuka grafis dirancang bersih, intuitif, dan bebas gangguan. "
-        "Identitas visual LabKita Linux diwujudkan melalui wallpaper kustom SVG bertuliskan <i>'Ruang belajar. Siap offline. Python / C / Linux'</i>. "
-        "Panel dock sebelah kiri ditata secara ergonomis dengan menempatkan aplikasi prioritas di bagian teratas: Geany IDE, Terminal GNOME, File Manager, dan Panduan Praktikum. "
-        "Tema antarmuka Yaru diselaraskan agar nyaman di mata mahasiswa saat digunakan dalam sesi praktikum berdurasi panjang.",
+        "Antarmuka grafis versi 0.2 dirancang bergaya modern menyerupai macOS tanpa aset proprietary Apple, dipadukan dengan lokalisasi penuh Bahasa Indonesia (<code>id_ID.UTF-8</code>, zona waktu <code>Asia/Jakarta</code>). "
+        "Identitas visual diwujudkan melalui wallpaper gradien minimalis orisinal LabKita Linux. "
+        "Panel dock (Dash-to-Dock) diposisikan terpusat di bagian bawah layar dengan tema GTK <b>WhiteSur</b>, set ikon & kursor WhiteSur, font <b>Inter</b>, serta posisi tombol jendela di sebelah kiri (<code>close,minimize,maximize:</code>).",
         body_style
     ))
 
@@ -439,12 +438,12 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
 
     specs_data = [
         ["Komponen", "Lingkungan Host Pembuat", "Spesifikasi Target VM Pengujian"],
-        ["Sistem Operasi", "Windows 11 Home 64-bit", "LabKita Linux 0.2 (Kernel 7.0 Generic)"],
+        ["Sistem Operasi", "Windows 11 64-bit", "LabKita 0.1 (7.0.0-31) & 0.2 (7.0.0-43)"],
         ["Hypervisor", "VMware Workstation 25.0.1", "Virtual Machine Hardware v21"],
-        ["Prosesor / vCPU", "AMD Ryzen 5 (Host)", "2 Core vCPU Virtual"],
-        ["Kapasitas RAM", "16 GB DDR4 (Host)", "4.096 MB (4 GB) Virtual RAM"],
-        ["Penyimpanan", "Drive C (~93 GB Free) & D (Data)", "40 GB Growable Virtual Disk (NVMe/SCSI)"],
-        ["Resolusi Layar", "1920 x 1080 (Display Scaling 125%)", "1280 x 800 (SVGA ScreenTarget)"]
+        ["Prosesor / vCPU", "Prosesor Host x86_64", "2 Core vCPU Virtual"],
+        ["Kapasitas RAM", "16 GB RAM Host", "4.096 MB / 3.911 MiB Terbaca Linux"],
+        ["Penyimpanan", "SSD NVMe Host", "40 GB Growable Virtual Disk (SCSI, Disk Kosong)"],
+        ["Resolusi Layar", "1920 x 1080", "1280 x 800 (SVGA ScreenTarget)"]
     ]
     t_specs = Table(specs_data, colWidths=[100, 190, 190])
     t_specs.setStyle(TableStyle([
@@ -455,8 +454,8 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
         ('ALIGN', (0,0), (-1,-1), 'LEFT'),
         ('FONTNAME', (0,1), (-1,-1), 'Helvetica'),
         ('FONTSIZE', (0,1), (-1,-1), 7.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#CBD5E1")),
     ]))
     story.append(t_specs)
@@ -476,26 +475,26 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(Paragraph("1. <b>Penyusunan Kit Payload:</b> Skrip <code>tools/pack.py</code> mengemas skrip kustomisasi, konfigurasi paket, unit systemd, aset SVG, panduan lokal, dan skrip pengujian menjadi arsip <code>dist/labkita-kit.tar.gz</code>.", bullet_style))
     story.append(Paragraph("2. <b>Eksekusi Kustomisasi di Cubic:</b> Kit diekstrak pada container Cubic dan dieksekusi menggunakan <code>bash scripts/customize.sh --cubic</code>. Skrip menginstal paket build-essential, gcc, g++, python3, python3-doc, geany, git, man-db, manpages-dev, xdg-utils, dan dconf-cli, lalu menyusun profil <code>/etc/skel/Praktikum</code>.", bullet_style))
     story.append(Paragraph("3. <b>Mastering ISO:</b> Xorriso menghasilkan berkas <code>labkita-linux-0.2-amd64.iso</code> berukuran 6.519.777.280 bytes (~6.07 GiB / 6.52 GB) dengan SHA256 terverifikasi <code>ae6391a26d3497cb9d9aed4d9e967352e46adfd630202ac47c58b149d8000d19</code>.", bullet_style))
-    story.append(Paragraph("4. <b>Pengujian Mesin Virtual (VM Test):</b> Dibuat VM uji bersih <code>build/test-vm/labkita-test.vmx</code> dengan disk kosong 40 GB pada drive C. Hypervisor dikonfigurasi dengan VNC remote framing di port 5900 untuk monitoring dan otomasi pengujian.", bullet_style))
+    story.append(Paragraph("4. <b>Pengujian Mesin Virtual (VM Test):</b> Dibuat VM uji bersih <code>build/test-vm/labkita-test.vmx</code> dengan disk kosong 40 GB yang diinstal ulang penuh untuk versi 0.1 dan 0.2 secara bergantian. Hypervisor dikonfigurasi dengan VNC port 5900 untuk otomasi & capture layar nyata VM.", bullet_style))
 
     story.append(Paragraph("4.2 Skenario dan Hasil Pengujian Fungsional", h2_style))
-    story.append(Paragraph("Pengujian fungsional dan keamanan dijalankan secara nyata pada VM uji. Tabel berikut memuat hasil seluruh skenario pengujian:", body_style))
+    story.append(Paragraph("Pengujian fungsional, instalasi disk kosong, dan keamanan dijalankan secara nyata pada VM uji. Kegagalan dan kendala yang ditemukan dilaporkan apa adanya:", body_style))
 
     test_matrix = [
-        ["No", "Skenario Uji", "Hasil yang Diharapkan", "Hasil Aktual", "Status"],
-        ["1", "Boot ISO di VM Kosong", "Sesi live termuat normal", "Boot sukses (kernel 7.0), wallpaper & dock aktif", "LULUS"],
-        ["2", "Suite labkita-check", "Seluruh pemeriksaan lulus", "21 dari 21 pengujian lulus sempurna (0 gagal)", "LULUS"],
-        ["3", "Pembuatan Akun Praktikan", "Akun tanpa sudo via skrip", "Akun 'praktikan' dibuat, password interaktif", "LULUS"],
-        ["4", "Hak Akses Folder Mahasiswa", "Mode izin 0700 (drwx------)", "Terverifikasi 0700; user lain ditolak akses", "LULUS"],
-        ["5", "Pembatasan Sudo Praktikan", "Akses sudo -l ditolak", "Ditolak: praktikan tidak berhak akses sudo", "LULUS"],
-        ["6", "Kompilasi & Eksekusi C", "gcc hello.c berjalan normal", "Output: 'Halo dari LabKita Linux!' sukses", "LULUS"],
-        ["7", "Eksekusi Proses Python", "multiprocessing fork() sukses", "Proses anak PID 5696 & 5697 sukses paralel", "LULUS"],
-        ["8", "Geany IDE Siap Pakai", "Geany menampilkan hello.c", "Geany 2.0 terbuka normal dengan syntax c", "LULUS"],
-        ["9", "Uji Offline Total", "Toolchain jalan tanpa net", "nmcli net off (none); GCC & Python 100% normal", "LULUS"],
-        ["10", "Ruang Tmpfs /run/labkita", "Sticky bit 1777 via systemd", "Izin 1777 (drwxrwxrwt); berkas hilang saat reboot", "LULUS"]
+        ["No", "Skenario Uji", "Hasil yang Diharapkan", "Hasil Aktual di VM", "Status"],
+        ["1", "GRUB & Live Autologin", "Boot ID langsung masuk desktop", "GRUB berbahasa Indonesia; live gagal autologin 'labkita', masuk gnome-initial-setup", "GAGAL"],
+        ["2", "Installer GUI Bootstrap", "Wizard grafis selesai instalasi", "Gagal di awal dialog 'Ada yang salah' (casper-md5check & snap info 500)", "GAGAL"],
+        ["3", "Instalasi Disk (TUI)", "Instalasi penuh ke /dev/sda 40 GB", "Berhasil via fallback subiquity.cmd.tui hingga reboot ke OS terinstal", "LULUS*"],
+        ["4", "Desktop WhiteSur & ID", "WhiteSur, dock tengah, UI Indonesia", "Tema WhiteSur, tombol kiri, dock bawah tengah, top bar & Berkas bhs Indonesia", "LULUS"],
+        ["5", "Suite labkita-check", "21 cek terinstal lulus", "21/21 [LULUS] di sistem terinstal (hanya cek keberadaan file, bukan browser)", "LULUS"],
+        ["6", "labkita-postinstall", "Buat praktikan tanpa error", "User & sandi terbuat [SUKSES], namun baris 45 error: printf: - : pilihan tidak valid", "PARSIAL"],
+        ["7", "Isolasi Akun Praktikan", "Izin 0700 & tanpa hak sudo", "stat 700, akses ls ditolak ('Ijin ditolak'), grup sudo/adm hanya labkitaadmin", "LULUS"],
+        ["8", "Kompilasi & Python Offline", "Toolchain jalan saat net mati", "nmcli networking off (disabled); gcc hello.c, hello.py, processes.py sukses", "LULUS"],
+        ["9", "Peluncur labkita-guide", "Panduan HTML tampil di browser", "Disalin ke ~/.local/share/labkita/guide/, tetapi ditolak Firefox Snap", "GAGAL"],
+        ["10", "Tmpfs & Sisa Label 0.2", "Tmpfs 1777 & label konsisten 0.2", "/run/labkita 1777 aktif; namun layar sambutan masih menyebut 'LabKita Linux 0.1'", "PARSIAL"]
     ]
-    t_test = Table(test_matrix, colWidths=[20, 105, 120, 195, 40])
-    t_test.setStyle(TableStyle([
+    t_test = Table(test_matrix, colWidths=[20, 95, 110, 205, 50])
+    style_cmds = [
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
         ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
@@ -504,61 +503,63 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
         ('ALIGN', (4,0), (4,-1), 'CENTER'),
         ('FONTNAME', (0,1), (-1,-1), 'Helvetica'),
         ('FONTSIZE', (0,1), (-1,-1), 7),
-        ('TEXTCOLOR', (4,1), (4,-1), colors.HexColor("#16A34A")),
         ('FONTNAME', (4,1), (4,-1), 'Helvetica-Bold'),
         ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('TOPPADDING', (0,0), (-1,-1), 3),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#CBD5E1")),
-    ]))
+    ]
+    for r_idx, row in enumerate(test_matrix[1:], start=1):
+        st = row[4]
+        if st == "GAGAL":
+            clr = colors.HexColor("#DC2626")
+        elif st in ("PARSIAL", "LULUS*"):
+            clr = colors.HexColor("#D97706")
+        else:
+            clr = colors.HexColor("#16A34A")
+        style_cmds.append(('TEXTCOLOR', (4, r_idx), (4, r_idx), clr))
+    t_test.setStyle(TableStyle(style_cmds))
     story.append(t_test)
-    story.append(Spacer(1, 10))
+    story.append(Paragraph("<i>*Catatan: Lulus melalui jalur fallback subiquity.cmd.tui karena installer GUI gagal.</i>", caption_style))
+    story.append(Spacer(1, 8))
 
-    # Evidence Images
-    story.append(Paragraph("Bukti Tangkapan Layar Pengujian Nyata:", h3_style))
+    # Evidence Images (100% genuine VM captures)
+    story.append(Paragraph("Bukti Tangkapan Layar Pengujian Nyata (Capture VM Asli):", h3_style))
     ev_dir = Path("docs/evidence")
-    
-    img1_path = str(ev_dir / "02-installer-selamat-datang-id.png")
-    img2_path = str(ev_dir / "07-desktop-menu-id.png")
-    img3_path = str(ev_dir / "08-labkita-check-v02-pass.png")
-    img4_path = str(ev_dir / "10-benchmarks-and-theme-v02.png")
 
-    if os.path.exists(img1_path) and os.path.exists(img2_path):
+    img1_path = str(ev_dir / "04-installed-desktop-whitesur-id.png")
+    img2_path = str(ev_dir / "05-installed-labkita-check.png")
+    img3_path = str(ev_dir / "09-installed-guide-firefox-snap-error.png")
+    img4_path = str(ev_dir / "13-v02-installed-bench-r1.png")
+
+    if os.path.exists(img1_path) and os.path.exists(img2_path) and os.path.exists(img3_path) and os.path.exists(img4_path):
         img_table_data = [
-            [Image(img1_path, width=235, height=147), Image(img2_path, width=235, height=147)],
-            [Paragraph("Gambar 4.1: Eksekusi Mandiri labkita-check (21/21 Lulus (100%))", caption_style),
-             Paragraph("Gambar 4.2: Menu Status Cepat GNOME dalam Bahasa Indonesia", caption_style)]
+            [Image(img1_path, width=230, height=144), Image(img2_path, width=230, height=144)],
+            [Paragraph("Gambar 4.1: Desktop Terinstal 0.2 (Tema WhiteSur, Dock Bawah, & Berkas Bahasa Indonesia)", caption_style),
+             Paragraph("Gambar 4.2: Eksekusi labkita-check pada Sistem Terinstal (21/21 Lulus)", caption_style)],
+            [Image(img3_path, width=230, height=144), Image(img4_path, width=230, height=144)],
+            [Paragraph("Gambar 4.3: Bukti Kegagalan Nyata labkita-guide Diblokir Firefox Snap ('Akses terhadap berkas ditolak')", caption_style),
+             Paragraph("Gambar 4.4: Pengukuran Benchmark Terinstal 0.2 Run 1 (free -m & systemd-analyze)", caption_style)]
         ]
         t_img = Table(img_table_data, colWidths=[240, 240])
-        t_img.setStyle(TableStyle([('ALIGN', (0,0), (-1,-1), 'CENTER')]))
+        t_img.setStyle(TableStyle([('ALIGN', (0,0), (-1,-1), 'CENTER'), ('VALIGN', (0,0), (-1,-1), 'TOP')]))
         story.append(t_img)
+        story.append(Spacer(1, 10))
 
-    story.append(PageBreak())
-
-    if os.path.exists(img3_path) and os.path.exists(img4_path):
-        img_table_data2 = [
-            [Image(img3_path, width=235, height=147), Image(img4_path, width=235, height=147)],
-            [Paragraph("Gambar 4.3: Pengujian Mandiri labkita-check v0.2 (21/21 LULUS)", caption_style),
-             Paragraph("Gambar 4.4: Pengukuran Tolok Ukur Empiris & Konfigurasi WhiteSur", caption_style)]
-        ]
-        t_img2 = Table(img_table_data2, colWidths=[240, 240])
-        t_img2.setStyle(TableStyle([('ALIGN', (0,0), (-1,-1), 'CENTER')]))
-        story.append(t_img2)
-
-    story.append(Paragraph("4.3 Pengukuran Kinerja dan Tolok Ukur Empiris (Benchmarks)", h2_style))
+    story.append(Paragraph("4.3 Pengukuran Kinerja dan Tolok Ukur Empiris (0.1 vs 0.2 Terinstal)", h2_style))
     story.append(Paragraph(
-        "Sesuai prinsip integritas ilmiah proyek, seluruh angka kinerja diperoleh dari pengukuran langsung pada VM uji tanpa rekayasa data:",
+        "Pengukuran dilakukan ulang pada VM yang sama (RAM 4.096 MB / 3.911 MiB terdeteksi, 2 vCPU, disk 40 GB SCSI) setelah instalasi penuh ke disk, sebanyak 3 kali reboot bersih per versi (settle 20 detik setelah desktop siap):",
         body_style
     ))
 
     # Benchmark Table
     bench_data = [
-        ["Parameter Uji", "Perintah Pengukuran", "Nilai Empiris Aktual", "Analisis & Implikasi Sistem"],
-        ["Penggunaan Memori (RAM)", "free -m", "Used: 1.342 MB (~1.34 GB)\nFree: 450 MB\nAvailable: 2.568 MB\nTotal: 3.911 MB (~4 GB)", "Penggunaan RAM tercatat 1.418 MB. Terdapat penambahan ~76 MB dari cache tema WhiteSur GTK & icon vektor, dilaporkan objektif apa adanya. Sisa RAM tersedia sangat longgar (>2.4 GB)."],
-        ["Waktu Booting Startup", "systemd-analyze time", "Kernel: 5.313 detik\nUserspace: 54.672 detik\nTotal: 59.985 detik\nGraphical Target: 29.410s", "Waktu booting total berhasil dioptimalkan menjadi 31.8 detik (meningkat ~47% lebih cepat). Target grafis tercapai dalam 27.6 detik."],
-        ["Layanan Booting Terlama", "systemd-analyze blame", "1. casper-md5check: 25.24s\n2. snapd.seeded: 20.49s\n3. snapd.service: 7.83s\n4. plymouth: 7.26s", "Waktu terlama diserap oleh verifikasi integritas live CD (casper) dan daemon snapd bawaan Ubuntu upstream."],
-        ["Kapasitas Root Overlay", "df -h /", "Filesystem: /cow (OverlayFS)\nTotal: 2.0 GB\nUsed: 67 MB (4%)\nAvailable: 1.9 GB", "Lapisan modifikasi memori Copy-on-Write sangat hemat (hanya 67 MB), menyediakan sisa ruang leluasa untuk aktivitas latihan mahasiswa."]
+        ["Parameter Uji", "LabKita 0.1 Terinstal (3x)", "LabKita 0.2 Terinstal (3x)", "Selisih & Analisis Jujur"],
+        ["Penggunaan Memori\n(free -m Used)", "Run 1: 1.025 MiB\nRun 2: 1.030 MiB\nRun 3: 1.040 MiB\nRata-rata: 1.031,7 MiB\n(Avail: 2.878,7 MiB)", "Run 1: 1.063 MiB\nRun 2: 1.053 MiB\nRun 3: 1.064 MiB\nRata-rata: 1.060,0 MiB\n(Avail: 2.850,7 MiB)", "+28,3 MiB (+2,7%) di 0.2.\nOverhead wajar dari tema WhiteSur & Dash-to-Dock; sisa RAM ~2,85 GiB sangat memadai."],
+        ["Waktu Booting\n(systemd-analyze time)", "Run 1: 10,437s\nRun 2: 9,490s\nRun 3: 9,752s\nRata-rata: 9,893s\n(Kernel 3,451s + User 6,442s)", "Run 1: 9,578s\nRun 2: 13,662s\nRun 3: 11,121s\nRata-rata: 11,454s\n(Kernel 3,742s + User 7,711s)", "+1,561s (+15,8%) lebih lambat & lebih variatif di 0.2.\nTidak ada klaim 'lebih cepat' atas 0.1."],
+        ["Layanan Boot Terlama\n(systemd-analyze blame)", "1. plymouth-quit-wait: 2,64-3,12s\n2. snapd.seeded: 1,10-1,40s\n3. snapd.service: 0,91-1,36s", "1. plymouth-quit-wait: 2,99-4,34s\n2. snapd.seeded: 1,08-1,72s\n3. snapd.service: 1,03-1,66s", "Bottleneck identik pada plymouth-quit-wait dan layanan snapd saat startup desktop."],
+        ["Ruang Disk Terinstal\n(df -h /)", "11 GiB terpakai / 19 GiB LV (62%)", "12 GiB terpakai / 19 GiB LV (64%)", "Sisa 6,5 GiB pada root LV default subiquity dari total disk virtual 40 GB."]
     ]
-    t_bench = Table(bench_data, colWidths=[95, 95, 140, 150])
+    t_bench = Table(bench_data, colWidths=[95, 115, 115, 155])
     t_bench.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
@@ -574,21 +575,17 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(t_bench)
     story.append(Spacer(1, 8))
 
-    story.append(Paragraph("4.4 Pembahasan Temuan Teknis: Sandboxing Snap dan AppArmor", h2_style))
+    story.append(Paragraph("4.4 Pembahasan Temuan Teknis: Kegagalan Nyata Selama Audit", h2_style))
     story.append(Paragraph(
-        "Dalam pengujian pembukaan berkas panduan lokal (<code>/usr/share/labkita/guide/index.html</code>) melalui shortcut desktop yang memanggil peramban default (Firefox), ditemukan pesan kesalahan <i>'Fichier introuvable'</i> (File Not Found). "
-        "Analisis mendalam terhadap sistem operasi mengungkap temuan teknis yang sangat berharga:",
+        "Pengujian menyeluruh pascainstalasi pada LabKita 0.2 mengungkap beberapa temuan teknis yang dilaporkan apa adanya:",
         body_style
     ))
     story.append(Paragraph(
-        "Pada Ubuntu 24.04 LTS, peramban Mozilla Firefox dikemas secara default sebagai <b>Snap package</b> terisolasi yang dikontrol ketat oleh modul keamanan <b>AppArmor (Mandatory Access Control)</b>. "
-        "Profil AppArmor Snap mengisolasi peramban dari akses langsung ke direktori sistem <code>/usr/share</code> guna mencegah potensi eksfiltrasi data sistem oleh aplikasi peramban. "
-        "Akibatnya, peramban Snap tidak diizinkan membuka berkas HTML yang berada di luar direktori <code>$HOME</code> atau <code>/tmp</code> pengguna.",
+        "1. <b>Sandbox Firefox Snap Memblokir Dotfolder Panduan:</b> Pada versi 0.1 berkas di <code>/usr/share/labkita/guide/</code> diblokir oleh AppArmor Snap Firefox. Di versi 0.2 peluncur <code>labkita-guide</code> memindahkan salinan HTML ke <code>~/.local/share/labkita/guide/</code>, namun hasil uji nyata membuktikan Firefox Snap <b>tetap menolak akses</b> dengan pesan <i>'Akses terhadap berkas ditolak'</i> karena profil keamanan <code>home</code> Snap melarang akses ke direktori tersembunyi berawalan titik (<code>~/.local</code>).",
         body_style
     ))
     story.append(Paragraph(
-        "Temuan ini menunjukkan cara kerja nyata mekanisme sandboxing sistem operasi Linux modern. "
-        "Solusi praktis yang diimplementasikan untuk mengatasi batasan ini mencakup: (1) Menyajikan berkas panduan melalui mikro-server Python lokal (<code>python3 -m http.server 8000 --directory /usr/share/labkita/guide</code>) yang dapat diakses via <code>http://localhost:8000</code>, atau (2) Menyalin dokumen panduan ke direktori pengguna lokal <code>~/.local/share/labkita/guide</code>.",
+        "2. <b>Kegagalan Installer Grafis & Sisa Metadata:</b> Installer grafis <code>ubuntu-desktop-bootstrap</code> gagal saat live boot dengan dialog <i>'Ada yang salah'</i> akibat mismatch <code>casper-md5check</code> pasca-remastering dan kegagalan kueri info snap offline. Instalasi penuh tetap berhasil menggunakan <code>subiquity.cmd.tui</code>. Selain itu, skrip <code>labkita-postinstall</code> pada ISO 0.2 memiliki bug sintaks <code>printf: - : pilihan tidak valid</code> pada baris ke-45 (meski pembuatan akun & sandi <code>praktikan</code> sudah berhasil sebelum error cetak baris terakhir).",
         body_style
     ))
     story.append(PageBreak())
@@ -601,32 +598,32 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
 
     story.append(Paragraph("5.1 Kesimpulan", h2_style))
     story.append(Paragraph(
-        "Berdasarkan hasil perancangan, implementasi, dan pengujian empiris yang telah dilakukan, dapat disimpulkan bahwa:",
+        "Berdasarkan hasil perancangan, implementasi, dan pengujian empiris pascainstalasi yang telah dilakukan, dapat disimpulkan bahwa:",
         body_style
     ))
-    story.append(Paragraph("1. <b>Keluaran Produk Tercapai:</b> Telah berhasil dibangun berkas citra bootable <code>labkita-linux-0.2-amd64.iso</code> berukuran ~6.07 GiB yang valid dan lolos uji verifikasi checksum SHA256.", bullet_style))
-    story.append(Paragraph("2. <b>Penerapan Konsep Sistem Operasi Terbukti:</b> LabKita Linux sukses mengimplementasikan manajemen proses multiprocessing (forking), virtual memory tmpfs (sticky bit 1777), layanan systemd daemon (labkita-runtime), serta kontrol akses DAC dan privilege separation (non-sudo 0700).", bullet_style))
-    story.append(Paragraph("3. <b>Visi Pemrograman Offline Terpenuhi:</b> Pengujian dengan adapter jaringan dimatikan total (<code>connectivity: none</code>) membuktikan bahwa toolchain GCC 13, Python 3.12, dan Geany IDE dapat digunakan 100% secara mandiri tanpa internet.", bullet_style))
-    story.append(Paragraph("4. <b>Integritas Akademik Terjaga:</b> Seluruh data performa (RAM ~1.34 GB, boot time 59.9s) dilaporkan secara objektif berdasarkan pengukuran nyata tanpa klaim performa yang mengada-ada.", bullet_style))
+    story.append(Paragraph("1. <b>Keluaran Produk Tercapai:</b> Berkas citra bootable <code>labkita-linux-0.2-amd64.iso</code> (~6.07 GiB, SHA256 <code>ae6391a2...</code>) berhasil dibangun, lolos verifikasi hash, dan dapat diinstal penuh ke disk virtual melalui <code>subiquity.cmd.tui</code>.", bullet_style))
+    story.append(Paragraph("2. <b>Penerapan Konsep Sistem Operasi Terbukti:</b> LabKita Linux 0.2 terinstal mengimplementasikan manajemen proses multiprocessing (forking), virtual memory tmpfs (sticky bit 1777), layanan systemd daemon (<code>labkita-runtime</code>), kontrol akses 0700, serta isolasi akun non-sudo.", bullet_style))
+    story.append(Paragraph("3. <b>Visi Pemrograman Offline Terpenuhi:</b> Pengujian dengan jaringan dimatikan total (<code>nmcli networking off</code>) membuktikan compiler GCC, Python 3, dan contoh program praktikum berjalan tanpa akses internet.", bullet_style))
+    story.append(Paragraph("4. <b>Integritas Data Empiris & Pelaporan Jujur:</b> Dalam 3x pengukuran kondisi VM identik setelah instalasi, konsumsi RAM 0.2 rata-rata tercatat 1.060,0 MiB (+28,3 MiB vs 0.1 sebesar 1.031,7 MiB) dan waktu boot rata-rata 11,454 detik (+1,561s lebih lambat vs 0.1 sebesar 9,893 detik), sehingga tidak diklaim lebih ringan maupun lebih cepat.", bullet_style))
 
-    story.append(Paragraph("5.2 Keterbatasan Produk", h2_style))
+    story.append(Paragraph("5.2 Keterbatasan dan Kegagalan Terbuka pada Rilis 0.2", h2_style))
     story.append(Paragraph(
-        "Pengembangan LabKita Linux versi awal (0.1) memiliki beberapa keterbatasan:",
+        "Berdasarkan audit pengujian nyata pada ISO 0.2, terdapat keterbatasan dan item gagal yang belum terselesaikan:",
         body_style
     ))
-    story.append(Paragraph("• <b>Konsumsi Memori GNOME Shell:</b> Karena mempertahankan desktop environment bawaan GNOME Shell 46, konsumsi RAM awal berada pada kisaran 1.34 GB, sehingga kurang optimal jika dijalankan pada perangkat keras PC lawas dengan RAM terbatas (≤ 2 GB).", bullet_style))
-    story.append(Paragraph("• <b>Ukuran Citra ISO:</b> Ukuran berkas ISO (~6.07 GiB) relatif besar karena menyertakan seluruh modul live Ubuntu desktop standar dan dokumentasi pengembang.", bullet_style))
-    story.append(Paragraph("• <b>Isolasi Sandbox Peramban:</b> Integrasi berkas panduan lokal HTML di <code>/usr/share</code> terhambat oleh AppArmor confinement bawaan Snap Firefox upstream.", bullet_style))
+    story.append(Paragraph("• <b>Installer Grafis & Live Autologin:</b> <code>ubuntu-desktop-bootstrap</code> masih gagal (<i>'Ada yang salah'</i>) dan sesi live jatuh ke <code>gnome-initial-setup</code>.", bullet_style))
+    story.append(Paragraph("• <b>Panduan Lokal & Firefox Snap:</b> Peluncur <code>labkita-guide</code> masih diblokir Firefox Snap karena menyalin HTML ke dotfolder <code>~/.local/share/labkita/guide/</code>.", bullet_style))
+    story.append(Paragraph("• <b>Bug ISO 0.2 & Sisa Label:</b> <code>labkita-postinstall</code> di ISO 0.2 mengalami error baris 45 (<code>printf</code>; sudah diperbaiki ke <code>printf --</code> di source repo, menunggu rebuild ISO), dan welcome dialog masih membawa label <code>0.1</code>.", bullet_style))
 
-    story.append(Paragraph("5.3 Saran Pengembangan Masa Depan", h2_style))
+    story.append(Paragraph("5.3 Saran Pengembangan Rilis Selanjutnya (LabKita Linux 0.3)", h2_style))
     story.append(Paragraph(
-        "Untuk pengembangan rilis berikutnya (LabKita Linux 0.2), disarankan beberapa peningkatan strategis:",
+        "Untuk pengembangan rilis berikutnya (LabKita Linux 0.3), disarankan perbaikan terfokus berikut:",
         body_style
     ))
-    story.append(Paragraph("1. <b>Migrasi Desktop Minimalis:</b> Mengganti GNOME Desktop dengan XFCE4 atau Openbox window manager untuk menekan penggunaan memori di bawah 600 MB RAM, memungkinkan distro berjalan lancar pada PC laboratorium generasi lama.", bullet_style))
-    story.append(Paragraph("2. <b>Aplikasi Panduan Berbasis GTK Native:</b> Mengembangkan aplikasi pembaca panduan praktikum lokal berbasis GTK3/WebKit native (deb) sehingga tidak terpengaruh isolasi sandbox Snap.", bullet_style))
-    story.append(Paragraph("3. <b>Otomasi Autoinstall Disk:</b> Menambahkan berkas konfigurasi cloud-init / Subiquity autoinstall otomatis agar proses kloning instalasi massal ke hard disk PC laboratorium dapat selesai tanpa interaksi pengguna manual.", bullet_style))
-    story.append(Paragraph("4. <b>Mode Ujian Lab (Kiosk Profile):</b> Menyediakan profil login khusus yang mengunci terminal dan mematikan port USB saat sesi ujian pemrograman berlangsung.", bullet_style))
+    story.append(Paragraph("1. <b>Perbaikan Jalur Panduan Non-Dotfolder:</b> Mengubah target salinan <code>labkita-guide</code> dari <code>~/.local/...</code> menjadi folder non-tersembunyi (misal <code>~/Panduan-LabKita</code>) atau server HTTP lokal <code>127.0.0.1</code> agar tidak ditolak Firefox Snap.", bullet_style))
+    story.append(Paragraph("2. <b>Rebuild ISO dengan Perbaikan Skrip & Metadata:</b> Mengemas ulang perbaikan <code>printf --</code> pada <code>labkita-postinstall</code>, memperbarui metadata label rilis menjadi 0.3 di <code>.disk/info</code> dan <code>casper</code>, serta memperbaiki autologin & manifest checksum Cubic.", bullet_style))
+    story.append(Paragraph("3. <b>Opsi Desktop Lebih Ringan:</b> Mengevaluasi XFCE4 atau Openbox bila distro akan dipasang di komputer laboratorium dengan RAM terbatas.", bullet_style))
+    story.append(Paragraph("4. <b>Mode Ujian Lab (Kiosk Profile):</b> Menyediakan profil login khusus yang mengunci jaringan dan antarmuka saat sesi ujian praktikum.", bullet_style))
     story.append(PageBreak())
 
     # =========================================================================
@@ -661,9 +658,10 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(Paragraph("Lampiran 2: Naskah dan Tautan Video Demonstrasi (3–5 Menit)", h2_style))
     story.append(Paragraph(
         "Sesuai ketentuan Bagian 5 Poin 4, video demonstrasi berdurasi 4 menit 30 detik disiapkan dengan struktur alur kerja: "
-        "(1) Pembukaan dan booting ISO di VM, (2) Pengenalan desktop dan branding LabKita, (3) Eksekusi pengujian mandiri labkita-check 100% lulus, "
-        "(4) Pembuktian offline total tanpa jaringan (GCC & multiprocessing Python), (5) Keamanan hak akses non-sudo dan isolasi folder 0700, "
-        "serta (6) Pengukuran memori RAM free -m dan boot time systemd-analyze.<br/>"
+        "(1) Pembukaan, booting GRUB Bahasa Indonesia & instalasi ke disk via subiquity TUI, (2) Desktop 0.2 terinstal (tema WhiteSur, dock bawah, & Bahasa Indonesia), "
+        "(3) Eksekusi labkita-check (21/21 lulus) dan pelaporan terbuka bug baris 45 postinstall & blokir Firefox Snap pada labkita-guide, "
+        "(4) Pembuktian offline total tanpa jaringan (GCC & multiprocessing Python), (5) Isolasi folder 0700 dan akun praktikan non-sudo, "
+        "serta (6) Perbandingan empiris 3x pengukuran RAM free -m dan boot time systemd-analyze (0.1 vs 0.2 terinstal).<br/>"
         "<i>Tautan Video Demo (YouTube Unlisted / Google Drive):</i> [Tautan disematkan oleh mahasiswa]",
         body_style
     ))
@@ -674,9 +672,9 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
         "Sesuai Ketentuan Akademik Poin 8.2 dokumen pedoman Final Project Sistem Operasi Ganjil 2026/2027: "
         "<i>'Alat bantu AI generatif boleh digunakan sebagai pendukung, dengan mencantumkan bagian yang dibantu AI di laporan. Setiap anggota tetap harus memahami dan mampu menjelaskan seluruh bagian produk.'</i><br/><br/>"
         "Dengan ini kami menyatakan secara transparan kontribusi alat bantu kecerdasan buatan (AI coding assistant) dalam proyek ini meliputi: "
-        "(a) Membantu otomatisasi eksekusi perintah hypervisor VMware via VNC remote protokol, "
-        "(b) Membantu penyusunan skrip runner bukti tangkapan layar, dan "
-        "(c) Membantu format penataan dokumen PDF dan slide presentasi agar selaras dengan rubrik akademik.<br/>"
+        "(a) Membantu otomatisasi eksekusi & capture layar VMware Workstation via protokol VNC (tanpa menyimpan kata sandi di kode), "
+        "(b) Membantu penyusunan skrip pengujian dan penghitungan rata-rata benchmark, serta "
+        "(c) Membantu pemformatan ulang dokumen laporan PDF dan slide presentasi berdasarkan data pengukuran riil.<br/>"
         "Seluruh perancangan konsep sistem operasi (manajemen memori, hak akses Linux DAC, pemisahan hak istimewa, pembuatan layanan systemd, dan analisis tolok ukur empiris) dipelajari, diuji, dipahami secara mendalam, dan dapat dipertanggungjawabkan sepenuhnya oleh setiap anggota tim pada sesi presentasi dan tanya jawab UAS.",
         body_style
     ))
