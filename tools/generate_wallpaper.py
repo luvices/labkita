@@ -1,4 +1,4 @@
-"""Generator wallpaper minimalis gradien orisinal untuk LabKita Linux 0.2."""
+"""Generator wallpaper minimalis gradien orisinal untuk LabKita Linux 0.3."""
 import math
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -91,7 +91,7 @@ svg_content = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160"
 
   <!-- Bottom subtle build badge -->
   <g transform="translate(1920, 2080)" text-anchor="middle">
-    <text font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-size="16" fill="#64748b" letter-spacing="2" opacity="0.65">LABKITA LINUX 0.2 &bull; NOBLE NUMBAT BASED &bull; OFFLINE EDITION</text>
+    <text font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-size="16" fill="#64748b" letter-spacing="2" opacity="0.65">LABKITA LINUX 0.3 &bull; NOBLE NUMBAT BASED &bull; OFFLINE EDITION</text>
   </g>
 </svg>
 """
@@ -193,7 +193,7 @@ except Exception:
 
 draw.text((cx, cy + 45), "LabKita Linux", fill=(255, 255, 255, 240), font=font_large, anchor="mm")
 draw.text((cx, cy + 90), "SISTEM OPERASI PRAKTIKUM MANDIRI", fill=(148, 163, 184, 220), font=font_sub, anchor="mm")
-draw.text((cx, height - 70), "LABKITA LINUX 0.2 • NOBLE NUMBAT BASED • OFFLINE EDITION", fill=(100, 116, 139, 160), font=font_bot, anchor="mm")
+draw.text((cx, height - 70), "LABKITA LINUX 0.3 • NOBLE NUMBAT BASED • OFFLINE EDITION", fill=(100, 116, 139, 160), font=font_bot, anchor="mm")
 
 png_path = bg_dir / "labkita-gradient.png"
 img.save(png_path, "PNG", optimize=True)

@@ -78,18 +78,25 @@ fi
 
 cat > /etc/labkita-release <<'EOF'
 NAME="LabKita Linux"
-VERSION="0.2"
+VERSION="0.3"
 BASE="Ubuntu 24.04 LTS"
 PURPOSE="Praktikum pemrograman dasar offline"
 EOF
 cat > /etc/motd <<'EOF'
-LabKita Linux 0.2 | Praktikum pemrograman offline (Bahasa Indonesia)
+LabKita Linux 0.3 | Praktikum pemrograman offline (Bahasa Indonesia)
 Panduan: Jalankan 'labkita-guide' atau buka menu 'Panduan LabKita'
 Uji kesiapan: labkita-check
 Ruang sementara: /run/labkita (RAM disk sementara)
 EOF
 
-# Pertahankan /etc/os-release Ubuntu agar installer dan deteksi paket konsisten.
+# Perbarui identitas tampil di os-release & lsb-release tanpa mengubah ID=ubuntu / VERSION_ID=24.04
+if [[ -f /usr/lib/os-release ]]; then
+    sed -i 's/^PRETTY_NAME=.*/PRETTY_NAME="LabKita Linux 0.3 (Noble Numbat)"/' /usr/lib/os-release
+fi
+if [[ -f /etc/lsb-release ]]; then
+    sed -i 's/^DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION="LabKita Linux 0.3"/' /etc/lsb-release
+fi
+
 install -d -m 0755 /etc/dconf/profile
 if [[ ! -f /etc/dconf/profile/user ]]; then
     printf 'user-db:user\nsystem-db:local\n' > /etc/dconf/profile/user
@@ -99,11 +106,12 @@ fi
 dconf update
 getent group labkita >/dev/null || groupadd --system labkita
 
-# Siapkan skel untuk user baru (termasuk praktikan)
+# Siapkan skel untuk user baru (termasuk praktikan; bersihkan dotfolder panduan 0.2 lama)
+rm -rf /etc/skel/.local/share/labkita
 install -d -m 0755 /etc/skel/Praktikum
 cp -a /usr/share/labkita/examples/. /etc/skel/Praktikum/
-install -d -m 0755 /etc/skel/.local/share/labkita/guide
-cp -a /usr/share/labkita/guide/. /etc/skel/.local/share/labkita/guide/
+install -d -m 0755 /etc/skel/Dokumen/Panduan-LabKita
+cp -a /usr/share/labkita/guide/. /etc/skel/Dokumen/Panduan-LabKita/
 
 # Enable tanpa start: systemd tidak berjalan dalam chroot Cubic.
 install -d -m 0755 /etc/systemd/system/multi-user.target.wants
