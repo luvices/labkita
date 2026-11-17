@@ -1,16 +1,31 @@
 #!/usr/bin/env bash
-# Utilitas peluncur panduan LabKita Linux (kompatibel penuh dengan Firefox Snap dan sandbox)
+# Utilitas peluncur panduan LabKita Linux 0.3 (lokasi non-dotfolder kompatibel Firefox Snap)
 set -euo pipefail
 
-DEST_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/labkita/guide"
-mkdir -p "$DEST_DIR"
-
-# Salin materi panduan ke ruang home pengguna agar peramban Snap (Firefox) dapat membacanya tanpa terhalang sandbox AppArmor
-if [[ -d /usr/share/labkita/guide ]]; then
-    cp -ru /usr/share/labkita/guide/* "$DEST_DIR/" 2>/dev/null || cp -r /usr/share/labkita/guide/* "$DEST_DIR/"
+DOCS_ROOT="${HOME}/Dokumen"
+if command -v xdg-user-dir >/dev/null 2>&1; then
+    xdg_docs=$(xdg-user-dir DOCUMENTS 2>/dev/null || true)
+    if [[ -n "$xdg_docs" && "$xdg_docs" != "$HOME" ]]; then
+        DOCS_ROOT="$xdg_docs"
+    fi
 fi
 
-# Luncurkan peramban default pengguna
+DEST_DIR="${DOCS_ROOT}/Panduan-LabKita"
+mkdir -p "$DEST_DIR"
+chmod 0755 "$DOCS_ROOT" "$DEST_DIR" 2>/dev/null || true
+
+# Salin materi panduan ke direktori non-tersembunyi pengguna agar Firefox Snap (AppArmor) dapat membacanya
+if [[ -d /usr/share/labkita/guide ]]; then
+    cp -ru /usr/share/labkita/guide/* "$DEST_DIR/" 2>/dev/null || cp -r /usr/share/labkita/guide/* "$DEST_DIR/"
+    chmod 0644 "$DEST_DIR"/* 2>/dev/null || true
+fi
+
+if [[ "${1:-}" == "--prepare" ]]; then
+    printf '%s\n' "$DEST_DIR/index.html"
+    exit 0
+fi
+
+# Luncurkan peramban / HTML viewer default pengguna
 if command -v xdg-open >/dev/null 2>&1; then
     exec xdg-open "$DEST_DIR/index.html"
 elif command -v firefox >/dev/null 2>&1; then

@@ -28,12 +28,13 @@ getent group labkita >/dev/null || groupadd --system labkita
 useradd --create-home --user-group --shell /bin/bash --groups labkita "$account"
 chmod 0700 "/home/$account"
 
-# Salin materi panduan dan contoh kode ke ruang kerja pengguna
-mkdir -p "/home/$account/.local/share/labkita/guide"
-cp -r /usr/share/labkita/guide/* "/home/$account/.local/share/labkita/guide/" 2>/dev/null || true
+# Salin materi panduan (lokasi non-dotfolder lolos sandbox Snap) dan contoh kode ke ruang kerja pengguna
+mkdir -p "/home/$account/Dokumen/Panduan-LabKita"
+cp -r /usr/share/labkita/guide/* "/home/$account/Dokumen/Panduan-LabKita/" 2>/dev/null || true
 mkdir -p "/home/$account/Praktikum"
 cp -r /usr/share/labkita/examples/* "/home/$account/Praktikum/" 2>/dev/null || true
-chown -R "$account:$account" "/home/$account/.local" "/home/$account/Praktikum"
+chown -R "$account:$account" "/home/$account/Dokumen" "/home/$account/Praktikum"
+chmod 0755 "/home/$account/Dokumen" "/home/$account/Dokumen/Panduan-LabKita"
 
 printf '\nSilakan tetapkan password untuk akun praktikum "%s":\n' "$account"
 if ! passwd "$account"; then
