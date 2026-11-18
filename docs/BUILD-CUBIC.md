@@ -78,7 +78,7 @@ gagal, hentikan dan periksa lingkungan; jangan menonaktifkan pemeriksaannya.
 5. Regenerasi `md5sum.txt` di `custom-disk/` **setelah seluruh berkas final** (`squashfs`, `grub.cfg`, `initrd.gz`, `vmlinuz`, metadata disk) selesai dibuat agar `casper-md5check` lolos:
    ```bash
    cd custom-disk
-   find . -type f ! -name md5sum.txt ! -name boot.catalog ! -path './casper/install-sources.yaml.original' -print0 \
+   find . -type f ! -name md5sum.txt ! -name boot.catalog ! -path './boot/grub/i386-pc/eltorito.img' ! -path './casper/install-sources.yaml.original' -print0 \
      | sort -z | xargs -0 md5sum > md5sum.txt
    ```
 6. Selesaikan generate ISO lalu verifikasi integritas di dalam ISO terpasang sebelum diuji di VM:
