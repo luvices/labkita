@@ -67,3 +67,25 @@ Ringkasan (detail & bukti di [`CONTROL-EXPERIMENT.md`](CONTROL-EXPERIMENT.md)):
 - Kernel 0.2 `-31` (19 Nov) vs `-43` (16 Nov): ISO selalu berisi `-31`; `-43` kemungkinan berasal dari langkah update online installer yang berjalan pada 16 Nov tetapi tidak tampak pada 19 Nov (alasannya tidak terbukti).
 - Spot-check 9 screenshot benchmark: tidak ada selisih angka terhadap tabel.
 - Kesimpulan benchmark: **tidak ada perbedaan yang dapat dibuktikan** antara 0.3 dan 0.1/0.2.
+
+## 5. Investigasi Tampilan Ikon Terminal & Berkas di Dock (Hipotesis Teknis)
+
+Pada rilis LabKita Linux 0.3, tercatat catatan minor bahwa slot ikon **Terminal** (`org.gnome.Terminal.desktop`) dan **Berkas / File Manager** (`org.gnome.Nautilus.desktop`) tampak kosong atau redup di dock (Dash-to-Dock) saat aplikasi dalam kondisi tidak aktif (belum dijalankan).
+
+### Hasil Pemeriksaan Berkas Konfigurasi & Aset Tema:
+1. **Konfigurasi Dock (`payload/etc/dconf/db/local.d/20-labkita`):**
+   - Daftar aplikasi favorit menyertakan:  
+     `favorite-apps=['labkita-guide.desktop', 'geany.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop']`
+   - Tema ikon sistem disetel ke `icon-theme='WhiteSur'`.
+2. **Pemeriksaan Berkas Ikon WhiteSur (`payload/usr/share/icons/WhiteSur/apps/scalable/`):**
+   - Berkas `org.gnome.Terminal.svg` hanya berukuran 12 byte dan berisi teks ASCII string `"terminal.svg"`.
+   - Berkas `org.gnome.Nautilus.svg` hanya berukuran 16 byte dan berisi teks ASCII string `"file-manager.svg"`.
+   - Berkas ini terdeteksi sebagai pointer *symbolic link* Git yang saat dipaketkan oleh `tools/pack.py` (atau saat git checkout di lingkungan non-symlink) tersimpan sebagai berkas teks biasa (*regular file*), bukan symlink Linux asli ataupun berkas SVG vektor yang valid.
+
+### HIPOTESIS TEKNIS:
+- Saat aplikasi tidak aktif, GNOME Shell dan ekstensi Dash-to-Dock mencari representasi grafis ikon aplikasi berdasarkan ID desktop file (`org.gnome.Terminal` dan `org.gnome.Nautilus`). Karena parser grafis (librsvg / GdkPixbuf) membaca berkas teks 12/16 byte yang bukan format XML/SVG valid, pemuatan grafis ikon gagal sehingga ikon tampak kosong/redup.
+- Saat aplikasi sedang berjalan (aktif), GNOME Shell dapat memperoleh representasi ikon dari properti jendela aplikasi yang aktif (`window-tracker` / WM_CLASS / client-provided window icon), sehingga indikator jendela aktif tetap berfungsi.
+
+> **Pernyataan Integritas Uji:**  
+> Temuan di atas berstatus **HIPOTESIS** dan **BELUM DIBUKTIKAN** melalui build ulang ISO dan pengujian di VM LabKita. Konfigurasi sistem dan berkas tema di `payload/` sengaja tidak diubah sampai pengujian empiris di VM dapat dilakukan secara langsung.
+
