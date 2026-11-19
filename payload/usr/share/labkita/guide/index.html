@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
@@ -125,12 +125,12 @@
 <header>
   <span class="badge">LabKita Linux 0.3</span>
   <h1>Praktikum Pemrograman Mandiri.<br>Tanpa Ketergantungan Internet.</h1>
-  <p>Seluruh compiler, pustaka, dan dokumentasi di panduan ini sudah tersimpan secara lokal di sistem.</p>
+  <p>Seluruh kompiler, pustaka, dan dokumentasi di panduan ini sudah tersimpan secara lokal di sistem.</p>
   <nav aria-label="Daftar Isi">
     <a href="#mulai">1. Folder Kerja</a>
     <a href="#python">2. Pemrograman Python</a>
     <a href="#c">3. Pemrograman C</a>
-    <a href="#proses">4. Multiprocessing</a>
+    <a href="#proses">4. Proses &amp; Thread</a>
     <a href="#tmpfs">5. Ruang Sementara</a>
     <a href="#bantuan">6. Bantuan Offline</a>
   </nav>
@@ -143,18 +143,19 @@
     <pre>mkdir -p "$HOME/Praktikum"
 cp -n /usr/share/labkita/examples/* "$HOME/Praktikum/"
 cd "$HOME/Praktikum"
-geany hello.py &</pre>
+ls -la</pre>
     <div class="tip">
-      <strong>Catatan:</strong> <code>Geany</code> adalah editor teks pemrograman yang ringan dan sudah siap pakai. Simpan berkas sebelum menjalankan kode di terminal.
+      <strong>Catatan:</strong> Buka editor <code>Geany</code> dari dock atau menu aplikasi untuk menulis kode program. Simpan berkas sebelum menjalankan kode di terminal.
     </div>
   </section>
 
   <section id="python">
     <h2>2. Menjalankan Kode Python</h2>
-    <p>Eksekusi kode Python 3 secara langsung melalui terminal tanpa perlu mengunduh package manager online:</p>
+    <p>Eksekusi kode Python 3 secara langsung melalui terminal tanpa perlu mengunduh paket daring:</p>
     <pre>cd "$HOME/Praktikum"
-python3 hello.py</pre>
-    <p>Keluaran standar: <code>Halo dari LabKita Linux!</code>. Silakan modifikasi isi pesan di Geany, simpan, dan jalankan kembali.</p>
+python3 hello.py
+python3 thread_demo.py</pre>
+    <p>Berkas <code>hello.py</code> menampilkan pesan sambutan dasar, sedangkan <code>thread_demo.py</code> mendemonstrasikan eksekusi multithreading di mana beberapa thread pekerja berjalan secara konkuren dalam satu proses sistem operasi.</p>
   </section>
 
   <section id="c">
@@ -162,26 +163,30 @@ python3 hello.py</pre>
     <p>Gunakan GNU C Compiler (GCC) untuk mengompilasi berkas kode sumber C ke dalam binary executable:</p>
     <pre>cd "$HOME/Praktikum"
 gcc -Wall -Wextra hello.c -o hello
-./hello</pre>
-    <p>Perintah <code>-Wall -Wextra</code> menyalakan seluruh peringatan standar kompiler untuk membantu mendeteksi kesalahan penulisan kode sejak awal.</p>
+./hello
+
+gcc -Wall -Wextra memory_demo.c -o memory_demo
+./memory_demo</pre>
+    <p>Argumen <code>-Wall -Wextra</code> menyalakan seluruh peringatan standar kompiler untuk membantu mendeteksi kesalahan penulisan kode sedini mungkin. Berkas <code>memory_demo.c</code> mencontohkan alokasi memori dinamis pada segmen Heap menggunakan <code>malloc()</code> dan pembebasannya dengan <code>free()</code>.</p>
   </section>
 
   <section id="proses">
-    <h2>4. Mengamati Konsep Proses Sistem Operasi</h2>
-    <p>Berkas <code>processes.py</code> mendemonstrasikan pembuatan proses anak secara paralel (forking/multiprocessing):</p>
+    <h2>4. Mengamati Konsep Proses dan Thread</h2>
+    <p>Sistem operasi mengelola konkurensi melalui proses dan thread. Pelajari perbedaannya melalui contoh kode yang disediakan:</p>
     <pre>python3 "$HOME/Praktikum/processes.py"
 ps -u "$USER" -o pid,ppid,comm,state</pre>
-    <p>Amati nomor Process ID (PID) dan Parent Process ID (PPID) pada terminal untuk memahami hierarki proses pada sistem operasi Linux.</p>
+    <p>Pada <code>processes.py</code>, proses anak dibuat menggunakan mekanisme <code>fork</code> dengan PID independen dan PPID yang merujuk ke proses induk. Bandingkan dengan <code>thread_demo.py</code> di mana seluruh thread berbagi PID dan ruang alamat memori yang sama.</p>
   </section>
 
   <section id="tmpfs">
     <h2>5. Memanfaatkan Ruang Kerja Sementara (/run/labkita)</h2>
-    <p>Sistem menyediakan direktori RAM Disk berkecepatan tinggi di <code>/run/labkita</code> dengan izin <code>1777</code> (sticky bit):</p>
+    <p>Sistem menyediakan direktori RAM Disk berbasis memori (<em>tmpfs</em>) di <code>/run/labkita</code> dengan hak akses <code>1777</code> (sticky bit):</p>
     <pre>ls -ld /run/labkita
-cp hello "$HOME/Praktikum/"
+echo "Catatan praktikum sementara" > /run/labkita/scratch.txt
+cat /run/labkita/scratch.txt
 systemctl status labkita-runtime.service --no-pager</pre>
     <div class="tip">
-      <strong>Penting:</strong> Seluruh berkas yang disimpan di dalam <code>/run/labkita</code> akan terhapus otomatis saat sistem direstart atau dimatikan. Simpan tugas penting Anda di <code>~/Praktikum</code>.
+      <strong>Penting:</strong> Partisi <code>/run</code> dipasang dengan opsi <code>noexec</code> oleh sistem keamanan Linux, sehingga berkas biner executable harus tetap dijalankan dari folder <code>~/Praktikum</code>. Gunakan <code>/run/labkita</code> untuk berkas scratch atau data temporer. Seluruh isi <code>/run/labkita</code> akan terhapus otomatis saat komputer dimatikan atau direstart.
     </div>
   </section>
 
@@ -190,7 +195,8 @@ systemctl status labkita-runtime.service --no-pager</pre>
     <p>Ketika tidak ada sambungan internet, gunakan manual bawaan Linux dan utilitas pemeriksaan sistem:</p>
     <pre>labkita-check      # Memverifikasi seluruh kesiapan sistem praktikum
 man gcc            # Manual resmi kompiler GCC
-man 3 printf       # Manual standar library bahasa C
+man 3 printf       # Manual pustaka fungsi printf C
+man 3 malloc       # Manual alokasi memori dinamis C
 python3 -m pydoc   # Dokumentasi interaktif fungsi Python</pre>
     <p>Tekan tombol <code>q</code> pada keyboard untuk keluar dari tampilan manual.</p>
   </section>
