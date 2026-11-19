@@ -61,7 +61,7 @@ def create_deck():
     p.font.color.rgb = c_accent
 
     p = tf1.add_paragraph()
-    p.text = "LabKita Linux 0.2"
+    p.text = "LabKita Linux 0.3"
     p.font.size = Pt(44)
     p.font.bold = True
     p.font.color.rgb = c_white
@@ -192,8 +192,8 @@ def create_deck():
         ("Step 1: Sumber Resmi", "Ubuntu 24.04.5 LTS Desktop amd64 ISO resmi diverifikasi integritas SHA256."),
         ("Step 2: Ekstraksi Cubic", "Cubic mengekstrak filesystem SquashFS asli ke chroot/systemd-nspawn container."),
         ("Step 3: Injeksi Payload", "Pemasangan paket (GCC, Python, Geany), wallpapers, service systemd, dan panduan."),
-        ("Step 4: Regenerasi ISO", "Xorriso mengemas kembali live filesystem menjadi ISO bootable mandiri (~6.07 GiB)."),
-        ("Step 5: Verifikasi VM", "Instalasi ke disk kosong di VMware, uji fitur pascainstalasi, dan 3x benchmark 0.1 vs 0.2.")
+        ("Step 4: Regenerasi ISO", "Regenerasi md5sum.txt (957/957 OK) & xorriso hasilkan ISO (~6,07 GiB)."),
+        ("Step 5: Verifikasi VM", "Uji GUI vs TUI di disk kosong, uji baca Firefox Snap, & 5x benchmark 0.1/0.2/0.3.")
     ]
 
     for idx, (st, desc) in enumerate(steps):
@@ -267,10 +267,10 @@ def create_deck():
     p.space_after = Pt(10)
     items2 = [
         "Tema WhiteSur & Dock: Tema GTK/Ikon/Kursor WhiteSur, tombol kiri, dock tengah bawah.",
-        "Wallpaper & Bahasa: Gradien minimalis LabKita + lokalisasi penuh Bahasa Indonesia (id_ID).",
-        "Layanan Systemd: labkita-runtime.service menginisialisasi /run/labkita (tmpfs 1777).",
-        "Manajemen Akun: Skrip labkita-postinstall membuat akun praktikan tanpa hak sudo.",
-        "Suite Diagnostik: Skrip labkita-check memverifikasi 21 item kesiapan sistem."
+        "Wallpaper & Bahasa: Gradien minimalis LabKita + Bahasa Indonesia + label konsisten 0.3.",
+        "Panduan Lolos Snap: Disalin ke ~/Dokumen/Panduan-LabKita agar terbaca Firefox Snap.",
+        "Manajemen Akun: labkita-postinstall (fix printf --) buat akun praktikan 0700 non-sudo.",
+        "Suite Diagnostik: labkita-check + uji baca nyata sandbox Firefox Snap (AppArmor OK)."
     ]
     for it in items2:
         p = tf2.add_paragraph()
@@ -355,20 +355,20 @@ def create_deck():
     p.font.color.rgb = RGBColor(21, 128, 61)
     p.space_after = Pt(8)
     passed_items = [
-        "GRUB Boot Menu: Tampil dalam Bahasa Indonesia.",
-        "Instalasi Disk Kosong 40 GB: Sukses via fallback subiquity.cmd.tui hingga OS terinstal booting normal.",
-        "Desktop 0.2 Terinstal: Tema WhiteSur, tombol kiri, dock tengah, wallpaper LabKita, & Berkas Bahasa Indonesia.",
-        "labkita-check: 21/21 item [LULUS] pada sistem terinstal.",
-        "Isolasi Praktikan: Izin 0700 ('Ijin ditolak'), non-sudo/adm.",
-        "Offline Total (nmcli off): GCC hello.c, Python, processes.py sukses.",
-        "Tmpfs /run/labkita: Sticky bit 1777 aktif via systemd."
+        "Integritas ISO & Casper: md5sum 957/957 OK; casper-md5check 'pass' di VM live.",
+        "Instalasi TUI & Branding 0.3: GRUB ID 0.3, subiquity.cmd.tui sukses, os-release/Tentang tampil 0.3.",
+        "Desktop WhiteSur & ID: Tema WhiteSur, tombol kiri, dock tengah, wallpaper, & Berkas ID.",
+        "Panduan di Firefox Snap: ~/Dokumen/Panduan-LabKita terbuka & terender normal.",
+        "labkita-check: Seluruh cek [LULUS] termasuk uji baca snap run --shell firefox (AppArmor OK).",
+        "labkita-postinstall (Fix printf --): Akun praktikan [SUKSES] 0 error, isolasi 0700 & non-sudo.",
+        "Offline Total (nmcli off) & Tmpfs: GCC (~/Praktikum), Python, processes.py sukses; /run/labkita 1777."
     ]
     for c in passed_items:
         p = tf.add_paragraph()
         p.text = "✔  " + c
-        p.font.size = Pt(10.5)
+        p.font.size = Pt(10)
         p.font.color.rgb = c_text_dark
-        p.space_after = Pt(5)
+        p.space_after = Pt(4)
 
     c7b = s7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.9), Inches(1.8), Inches(5.6), Inches(4.8))
     c7b.fill.solid()
@@ -377,36 +377,35 @@ def create_deck():
     tf2 = c7b.text_frame
     tf2.word_wrap = True
     p = tf2.paragraphs[0]
-    p.text = "Kegagalan & Catatan Audit Nyata (Apa Adanya)"
+    p.text = "Kegagalan & Catatan Nyata 0.3 (Apa Adanya)"
     p.font.size = Pt(15)
     p.font.bold = True
     p.font.color.rgb = RGBColor(185, 28, 28)
     p.space_after = Pt(8)
     failed_items = [
-        "GAGAL — Installer GUI (ubuntu-desktop-bootstrap): Berhenti di dialog 'Ada yang salah' (casper-md5check & snap info 500).",
-        "GAGAL — Autologin Live Session: Sesi live jatuh ke wizard gnome-initial-setup (konflik casper.conf).",
-        "GAGAL — Peluncur labkita-guide: Masih ditolak Firefox Snap ('Akses terhadap berkas ditolak') di dotfolder ~/.local.",
-        "GAGAL PARSIAL — labkita-postinstall (ISO 0.2): Akun & sandi terbuat, namun baris 45 error 'printf: - : pilihan tidak valid' (sudah diperbaiki di source repo).",
-        "CATATAN — Sisa Metadata: Layar sambutan & sumber masih tertulis 'LabKita Linux 0.1'."
+        "GAGAL — Installer GUI (ubuntu-desktop-bootstrap): Masih berhenti di dialog 'Ada yang salah' meski casper-md5check sudah pass & server WAITING.",
+        "GAGAL — Autologin Live Session: Sesi live masih masuk wizard gnome-initial-setup & membuat user live tanpa NOPASSWD sudo.",
+        "CATATAN TEKNIS — Flag noexec /run: Partisi /run bersifat noexec, sehingga binary C dikompilasi di ~/Praktikum dan /run/labkita untuk scratch data.",
+        "CATATAN VISUAL — Ikon Dock 0.3: Slot ikon Terminal & Berkas di dock tampak redup saat tidak aktif."
     ]
     for f_it in failed_items:
         p = tf2.add_paragraph()
         p.text = "✖  " + f_it
-        p.font.size = Pt(10.5)
+        p.font.size = Pt(10)
         p.font.color.rgb = c_text_dark
         p.space_after = Pt(5)
 
     # -------------------------------------------------------------
-    # SLIDE 8: TOLOK UKUR KINERJA & BENCHMARK (0.1 vs 0.2 TERINSTAL)
+    # SLIDE 8: TOLOK UKUR KINERJA & BENCHMARK (0.1 vs 0.2 vs 0.3 - 5x Ukur)
     # -------------------------------------------------------------
     s8 = prs.slides.add_slide(blank_layout)
-    add_header(s8, "Tolok Ukur Empiris 0.1 vs 0.2 Setelah Instalasi (3x Ukur)")
+    add_header(s8, "Tolok Ukur Empiris 0.1 vs 0.2 vs 0.3 (5x per Versi, VM Identik)")
 
     benchmarks = [
-        ("Konsumsi RAM Rata-rata", "free -m (VM 4 GB / 3.911 MiB)", "0.1 Terinstal: 1.031,7 MiB (1025 / 1030 / 1040)\n0.2 Terinstal: 1.060,0 MiB (1063 / 1053 / 1064)\nSelisih: +28,3 MiB (+2,7%) di 0.2 (WhiteSur + Dock)\nSisa RAM tersedia: ~2.850,7 MiB (~2,78 GiB)"),
-        ("Waktu Booting Rata-rata", "systemd-analyze time (3x Reboot)", "0.1 Terinstal: 9,893 detik (10,44s / 9,49s / 9,75s)\n0.2 Terinstal: 11,454 detik (9,58s / 13,66s / 11,12s)\nSelisih: +1,561 detik (+15,8%) lebih lambat\nCatatan: Tidak ada klaim lebih ringan/lebih cepat."),
-        ("Layanan Boot Terlama", "systemd-analyze blame", "plymouth-quit-wait: 2,64-3,12s (0.1) | 2,99-4,34s (0.2)\nsnapd.seeded: 1,10-1,40s (0.1) | 1,08-1,72s (0.2)\nsnapd.service: 0,91-1,36s (0.1) | 1,03-1,66s (0.2)\nNetworkManager & gpu-manager: ~0,8-1,3s"),
-        ("Kapasitas Disk Terinstal", "df -h / (Disk Virtual 40 GB SCSI)", "Kernel: 7.0.0-31-generic (0.1) -> 7.0.0-43-generic (0.2)\nPartisi Root LV (ext4): 19 GiB total (subiquity LVM)\nTerpakai: 11 GiB / 62% (0.1) -> 12 GiB / 64% (0.2)\nSisa Ruang: ~6,5 GiB pada root LV default")
+        ("Konsumsi RAM Rata-rata & Rentang", "free -m (VM 4 GB / 3.911 MiB)", "0.1 [7.0.0-31]: 1.038,2 MiB avg (1.016–1.056)\n0.2 [7.0.0-31]: 1.068,2 MiB avg (1.058–1.080)\n0.3 [7.0.0-43]: 1.058,2 MiB avg (1.046–1.067)\nSisa RAM 0.3 avg: 2.852,0 MiB (~2,79 GiB)"),
+        ("Waktu Booting Rata-rata & Rentang", "systemd-analyze time (5x Reboot)", "0.1 [7.0.0-31]: 8,460s avg (8,359–8,676s)\n0.2 [7.0.0-31]: 9,317s avg (9,072–9,458s)\n0.3 [7.0.0-43]: 8,808s avg (8,460–9,014s)\nCatatan: Tidak diklaim lebih cepat/ringan (rentang overlap & beda kernel)."),
+        ("Variabel Kernel & Layanan Boot", "uname -r & systemd-analyze blame", "Kernel 0.1 & 0.2: 7.0.0-31-generic | 0.3: 7.0.0-43-generic\nplymouth-quit-wait: 2,18–2,85s di seluruh versi\nsnapd.seeded (~0,98–1,22s) & snapd.service (~0,82–1,08s)\ngraphical.target avg: 5,180s (0.1) | 5,918s (0.2) | 5,532s (0.3)"),
+        ("Identitas & Kapasitas Media ISO 0.3", "Cubic 2026.09.110 & SHA256", "Berkas: labkita-linux-0.3-amd64.iso\nUkuran: 6.520.272.896 bytes (~6,07 GiB / 6,52 GB)\nSHA256: 21f38dc158a010e6f80920274dd7b8cd...f045387\nmd5sum.txt: 957/957 OK (loop ISO) & casper-md5check pass")
     ]
 
     for idx, (head, cmd, stats) in enumerate(benchmarks):
@@ -444,20 +443,20 @@ def create_deck():
     tf = c1.text_frame
     tf.word_wrap = True
     p = tf.paragraphs[0]
-    p.text = "Akar Masalah yang Terverifikasi di VM"
+    p.text = "Perbaikan yang Tuntas di Rilis 0.3"
     p.font.size = Pt(16)
     p.font.bold = True
     p.font.color.rgb = c_primary
     p.space_after = Pt(10)
     b_pts = [
-        "Firefox Snap Dotfolder Block: Di 0.2, labkita-guide menyalin HTML ke ~/.local/share/labkita/guide/, namun Firefox Snap TETAP memblokir ('Akses terhadap berkas ditolak') karena interface home Snap melarang folder berawalan titik.",
-        "GUI Bootstrap Error: casper-md5check mismatch pasca-remastering Cubic + gagal fetch info snap membuat installer GUI macet di 'Ada yang salah'.",
-        "Bug ISO 0.2 postinstall: Baris 45 printf '- ...' tanpa pemisah opsi '--' memicu error bash di akhir skrip ISO 0.2."
+        "Lolos Sandbox Firefox Snap: Panduan dipindah ke non-dotfolder ~/Dokumen/Panduan-LabKita; labkita-guide terbuka normal dan labkita-check menguji pembacaan langsung lewat snap run --shell firefox.",
+        "Fix printf -- & Metadata 0.3: Bug baris 45 postinstall tuntas (0 error), os-release, sambutan, & Pengaturan Tentang konsisten 0.3.",
+        "Regenerasi md5sum.txt: 957/957 berkas loop ISO OK & casper-md5check 'pass' di VM live."
     ]
     for b in b_pts:
         p = tf.add_paragraph()
         p.text = "• " + b
-        p.font.size = Pt(11)
+        p.font.size = Pt(10.5)
         p.font.color.rgb = c_text_dark
         p.space_after = Pt(6)
 
@@ -468,20 +467,20 @@ def create_deck():
     tf2 = c2.text_frame
     tf2.word_wrap = True
     p = tf2.paragraphs[0]
-    p.text = "Perbaikan & Solusi Terukur (Menuju 0.3)"
+    p.text = "Diagnosis Kegagalan GUI Installer 0.3"
     p.font.size = Pt(16)
     p.font.bold = True
     p.font.color.rgb = c_accent
     p.space_after = Pt(10)
     sol_pts = [
-        "Jalur Non-Dotfolder / HTTP Lokal: Pindahkan target salinan labkita-guide ke folder non-tersembunyi (misal ~/Panduan-LabKita) atau sajikan lewat python3 -m http.server di 127.0.0.1.",
-        "Perbaikan labkita-postinstall: Opsi 'printf --' sudah diterapkan di source repo untuk rebuild ISO berikutnya.",
-        "Perbaikan Metadata & Checksum ISO: Perbarui .disk/info & md5sum.txt Cubic agar GUI bootstrap berjalan normal tanpa fallback TUI."
+        "Meski casper-md5check 'pass' & subiquity-server mencapai state WAITING (error: null), GUI Flutter ubuntu-desktop-bootstrap tetap menampilkan 'Ada yang salah'.",
+        "Log ubuntu_bootstrap.log terhenti setelah 'Inhibiting Gnome session'; journalctl/stderr mencatat error GTK/Flutter (DRI3, im-ibus.so undefined symbol, fl_view_set_textures).",
+        "Fallback subiquity.cmd.tui tetap menuntaskan partisi LVM dan instalasi 0.3 ke disk 40 GB dengan mulus."
     ]
     for s in sol_pts:
         p = tf2.add_paragraph()
         p.text = "➜ " + s
-        p.font.size = Pt(11)
+        p.font.size = Pt(10.5)
         p.font.color.rgb = c_text_dark
         p.space_after = Pt(6)
 
@@ -489,14 +488,14 @@ def create_deck():
     # SLIDE 10: BUKTI TANGKAPAN LAYAR NYATA VM TERINSTAL
     # -------------------------------------------------------------
     s_ev = prs.slides.add_slide(blank_layout)
-    add_header(s_ev, "Bukti Tangkapan Layar Asli di VM Terinstal (docs/evidence/)")
+    add_header(s_ev, "Bukti Tangkapan Layar Asli VM 0.3 (docs/evidence/)")
 
     ev_dir = Path("docs/evidence")
     ev_shots = [
-        ("Desktop WhiteSur, Dock & Berkas ID", ev_dir / "04-installed-desktop-whitesur-id.png"),
-        ("labkita-check Terinstal (21/21 Lulus)", ev_dir / "05-installed-labkita-check.png"),
-        ("Bug Firefox Snap (Akses Berkas Ditolak)", ev_dir / "09-installed-guide-firefox-snap-error.png"),
-        ("Benchmark Terinstal 0.2 Run 1 (free/analyze)", ev_dir / "13-v02-installed-bench-r1.png"),
+        ("Desktop 0.3 WhiteSur, Dock & Berkas ID", ev_dir / "07-v03-installed-desktop-whitesur-id.png"),
+        ("labkita-check 0.3 + Uji Baca Firefox Snap", ev_dir / "09-v03-installed-labkita-check.png"),
+        ("Firefox Snap Membuka ~/Dokumen/Panduan-LabKita", ev_dir / "10-v03-installed-guide-firefox-snap.png"),
+        ("Benchmark 0.3 Run 1 (7.0.0-43, free/analyze)", ev_dir / "benchmarks" / "v03-r1.png"),
     ]
     for idx, (cap, img_p) in enumerate(ev_shots):
         col = idx % 2
@@ -519,7 +518,7 @@ def create_deck():
     add_header(s10, "Struktur Tim & Pembagian Peran Kelompok")
 
     team = [
-        ("Dafa Zahran — 257006111188", "Ketua Kelompok, Manajer Proyek & Integrasi (Build)", "Mengoordinasikan seluruh tahapan proyek, pipeline build Cubic, mastering berkas ISO (labkita-linux-0.2-amd64.iso), repositori GitHub (github.com/luvices/labkita), dan kepatuhan silabus tugas."),
+        ("Dafa Zahran — 257006111188", "Ketua Kelompok, Manajer Proyek & Integrasi (Build)", "Mengoordinasikan seluruh tahapan proyek, pipeline build Cubic, regenerasi md5sum & mastering ISO (labkita-linux-0.3-amd64.iso), repositori GitHub (github.com/luvices/labkita), dan kepatuhan silabus tugas."),
         ("Rafly Fauzi Pratama — 257006111152", "Pengembang Inti (Core Developer) & Toolchain", "Mengembangkan skrip kustomisasi Cubic (scripts/customize.sh), instalasi & konfigurasi compiler (GCC, G++, Python 3, Geany IDE), serta perancangan skrip pengujian labkita-check."),
         ("Muhammad Ilham Rizky — 257006111154", "Sistem, Keamanan & Penguji Kualitas (Sys, Sec & QA)", "Merancang layanan systemd labkita-runtime.service (tmpfs sticky bit 1777), skrip akun praktikan non-sudo (labkita-postinstall), isolasi izin 0700, serta tolok ukur benchmark RAM dan boot time."),
         ("Vadien Athallah Lukman — 257006111160", "Antarmuka, Dokumentasi & Media (UI/UX & Docs)", "Mendesain identitas visual distro (wallpaper SVG LabKita, konfigurasi dconf), modul materi panduan praktikum dan contoh kode (C/Python), penyusunan Laporan PDF Bab I-V, slide PPTX, dan naskah demo video.")
@@ -572,15 +571,15 @@ def create_deck():
     p.font.color.rgb = c_primary
     p.space_after = Pt(10)
     concls = [
-        "Produk Terwujud: ISO bootable labkita-linux-0.2-amd64.iso (~6.07 GiB, SHA256 terverifikasi) berhasil dibangun dan diinstal ke disk virtual via subiquity TUI.",
-        "Visi Offline Tercapai: Compiler GCC/C++, Python 3, Geany, dan proses paralel bekerja penuh saat jaringan dimatikan (nmcli networking off).",
-        "Konsep SO & Evaluasi Kinerja Jujur: Isolasi 0700 & non-sudo terbukti; pada 3x uji identik terinstal, 0.2 memakai 1.060,0 MiB RAM (+28,3 MiB) & boot 11,454s (+1,561s vs 0.1).",
-        "Transparansi Audit: Seluruh kendala nyata (GUI bootstrap gagal, bug baris 45 postinstall di ISO, dotfolder Snap Firefox) dicatat terbuka sebagai bahan perbaikan 0.3."
+        "Produk Terwujud: ISO labkita-linux-0.3-amd64.iso (~6,07 GiB, SHA256 21f38dc1...) terverifikasi md5sum 957/957 OK & terinstal via subiquity TUI.",
+        "Perbaikan 0.3 Terbukti: ~/Dokumen/Panduan-LabKita terbaca langsung di Firefox Snap, labkita-check uji baca Snap OK, printf -- postinstall & label 0.3 tuntas.",
+        "Benchmark 5x & Variabel Kernel: RAM avg 1.058,2 MiB (0.3) vs 1.038,2 (0.1) & 1.068,2 (0.2); boot avg 8,808s (7.0.0-43) vs 8,460s (0.1) & 9,317s (0.2, 7.0.0-31).",
+        "Transparansi Jujur: Kegagalan GUI installer ('Ada yang salah') & live autologin tetap dicatat apa adanya tanpa klaim lebih cepat/ringan."
     ]
     for c in concls:
         p = tf.add_paragraph()
         p.text = "✔ " + c
-        p.font.size = Pt(11)
+        p.font.size = Pt(10.5)
         p.font.color.rgb = c_text_dark
         p.space_after = Pt(6)
 
@@ -591,21 +590,21 @@ def create_deck():
     tf2 = c2.text_frame
     tf2.word_wrap = True
     p = tf2.paragraphs[0]
-    p.text = "Rencana Perbaikan Rilis 0.3"
+    p.text = "Rencana Pengembangan Rilis 0.4"
     p.font.size = Pt(16)
     p.font.bold = True
     p.font.color.rgb = c_accent
     p.space_after = Pt(10)
     future = [
-        "Fix Panduan Offline: Pindahkan salinan labkita-guide ke folder non-tersembunyi (~/Panduan) atau server HTTP lokal agar lolos AppArmor Firefox Snap.",
-        "Rebuild ISO 0.3: Kemas perbaikan printf -- pada labkita-postinstall, perbaiki autologin live casper, manifest md5, & metadata label 0.3.",
+        "Autologin Live & GUI Bootstrap: Pulihkan autologin live casper standar Ubuntu 24.04 & perbaiki kompatibilitas GL/DRI3 installer grafis.",
+        "Perbaiki Ikon Dock WhiteSur: Sinkronkan favorit firefox_firefox.desktop & cache ikon WhiteSur agar ikon Terminal/Berkas tampil tajam.",
         "Evaluasi Desktop Ringan: Menguji varian XFCE4/Openbox bila ditargetkan untuk PC laboratorium ber-RAM kecil.",
         "Kiosk Mode Ujian: Profil penguncian jaringan dan terminal untuk sesi evaluasi/ujian pemrograman."
     ]
     for f in future:
         p = tf2.add_paragraph()
         p.text = "➜ " + f
-        p.font.size = Pt(11.5)
+        p.font.size = Pt(10.5)
         p.font.color.rgb = c_text_dark
         p.space_after = Pt(6)
 
@@ -630,7 +629,7 @@ def create_deck():
     p.space_after = Pt(10)
 
     p = tf12.add_paragraph()
-    p.text = "LabKita Linux 0.2 — Ruang Belajar, Siap Offline."
+    p.text = "LabKita Linux 0.3 — Ruang Belajar, Siap Offline."
     p.font.size = Pt(22)
     p.font.color.rgb = c_accent
     p.space_after = Pt(20)

@@ -45,7 +45,7 @@ Folder `payload/` adalah isi yang akan ditempatkan di filesystem distro.
 
 1. Buka Cubic dan pilih folder proyek Linux yang baru.
 2. Pilih ISO Ubuntu Desktop 24.04 yang sudah ada.
-3. Beri nama hasil `LabKita Linux 0.1`, misalnya `labkita-linux-0.1-amd64.iso`.
+3. Beri nama hasil `LabKita Linux 0.3`, misalnya `labkita-linux-0.3-amd64.iso`.
 4. Tunggu ekstraksi, lalu masuk ke **terminal virtual Cubic**.
 5. Ketik `cd /tmp`. Drag arsip `labkita-kit.tar.gz` ke terminal Cubic dan
    konfirmasi penyalinan berkas.
@@ -64,16 +64,30 @@ gagal, hentikan dan periksa lingkungan; jangan menonaktifkan pemeriksaannya.
 
 ## 5. Konfigurasi Boot & Generate ISO
 
-1. Pada halaman Boot di wizard Cubic (atau pengeditan `boot/grub/grub.cfg` pada custom-disk), tambahkan parameter locale Bahasa Indonesia pada baris kernel:
+1. Pada halaman Boot di wizard Cubic (atau pengeditan `boot/grub/grub.cfg` pada `custom-disk`), tambahkan parameter locale Bahasa Indonesia pada baris kernel:
    ```grub
-   menuentry "Coba atau Pasang LabKita Linux (Bahasa Indonesia)" {
+   menuentry "Coba atau Pasang LabKita Linux 0.3 (Bahasa Indonesia)" {
        set gfxpayload=keep
        linux /casper/vmlinuz locale=id_ID.UTF-8 keyboard-configuration/layoutcode=us console-setup/layoutcode=us --- quiet splash
        initrd /casper/initrd.gz
    }
    ```
 2. Pastikan paket lokalisasi (`language-pack-id`, `language-pack-gnome-id`, `hunspell-id`, `firefox-locale-id`) tidak ditandai untuk dihapus pada halaman Packages.
-3. Selesaikan wizard generate ISO dan catat checksum SHA256 serta versi Cubic.
+3. Sinkronkan `dconf`, locale, dan wallpaper ke layer live (`custom-live`) serta kompres ulang `minimal.squashfs` dan `minimal.standard.live.squashfs`.
+4. Perbarui label rilis di `.disk/info`, `README.diskdefines`, `casper/install-sources.yaml`, dan `cubic.conf`.
+5. Regenerasi `md5sum.txt` di `custom-disk/` **setelah seluruh berkas final** (`squashfs`, `grub.cfg`, `initrd.gz`, `vmlinuz`, metadata disk) selesai dibuat agar `casper-md5check` lolos:
+   ```bash
+   cd custom-disk
+   find . -type f ! -name md5sum.txt ! -name boot.catalog ! -path './boot/grub/i386-pc/eltorito.img' ! -path './casper/install-sources.yaml.original' -print0 \
+     | sort -z | xargs -0 md5sum > md5sum.txt
+   ```
+6. Selesaikan generate ISO lalu verifikasi integritas di dalam ISO terpasang sebelum diuji di VM:
+   ```bash
+   sudo mount -o loop,ro labkita-linux-0.3-amd64.iso /mnt
+   (cd /mnt && md5sum -c md5sum.txt)
+   sudo umount /mnt
+   ```
+   Catat versi Cubic, ukuran berkas, dan checksum SHA256.
 
 Dokumentasi Cubic mencatat bahwa overlay installer Ubuntu baru dapat menutupi
 sebagian kustomisasi pada sesi live. Karena itu cek **sesi live dan sistem

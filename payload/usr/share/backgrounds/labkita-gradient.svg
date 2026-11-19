@@ -80,6 +80,6 @@
 
   <!-- Bottom subtle build badge -->
   <g transform="translate(1920, 2080)" text-anchor="middle">
-    <text font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-size="16" fill="#64748b" letter-spacing="2" opacity="0.65">LABKITA LINUX 0.2 &bull; NOBLE NUMBAT BASED &bull; OFFLINE EDITION</text>
+    <text font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-size="16" fill="#64748b" letter-spacing="2" opacity="0.65">LABKITA LINUX 0.3 &bull; NOBLE NUMBAT BASED &bull; OFFLINE EDITION</text>
   </g>
 </svg>

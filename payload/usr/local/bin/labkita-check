@@ -9,6 +9,84 @@ import sys
 import tempfile
 
 
+def verify_guide_open(report, base):
+    """Siapkan panduan via labkita-guide --prepare dan verifikasi keterbacaan dalam sandbox browser."""
+    guide_src = base / "guide/index.html"
+    report("Berkas panduan lokal", guide_src.is_file() and guide_src.stat().st_size > 0)
+    launcher = Path("/usr/local/bin/labkita-guide")
+    report("Skrip peluncur panduan", launcher.is_file() and os.access(launcher, os.X_OK))
+
+    run_prefix = []
+    run_env = dict(os.environ)
+    sudo_user = os.environ.get("SUDO_USER")
+    if os.geteuid() == 0 and sudo_user and sudo_user != "root":
+        home_dir = Path("/home") / sudo_user
+        if home_dir.is_dir():
+            run_prefix = ["runuser", "-u", sudo_user, "--"]
+            run_env["HOME"] = str(home_dir)
+
+    target_path = None
+    try:
+        prep = subprocess.run(
+            run_prefix + [str(launcher), "--prepare"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            env=run_env,
+        )
+        candidate = prep.stdout.strip().splitlines()[-1] if prep.stdout.strip() else ""
+        if prep.returncode == 0 and candidate:
+            target_path = Path(candidate)
+        no_dot = target_path is not None and not any(part.startswith(".") for part in target_path.parts)
+        readable_html = (
+            no_dot
+            and target_path.is_file()
+            and "Praktikum Pemrograman Mandiri" in target_path.read_text(encoding="utf-8", errors="ignore")
+        )
+        report("Lokasi panduan non-dotfolder (~/Dokumen)", readable_html, str(target_path or prep.stderr.strip()))
+    except (OSError, subprocess.SubprocessError) as error:
+        report("Lokasi panduan non-dotfolder (~/Dokumen)", False, str(error))
+
+    html_handler = ""
+    if shutil.which("xdg-mime"):
+        try:
+            html_handler = subprocess.check_output(
+                run_prefix + ["xdg-mime", "query", "default", "text/html"],
+                text=True,
+                stderr=subprocess.DEVNULL,
+                env=run_env,
+                timeout=10,
+            ).strip()
+        except (OSError, subprocess.SubprocessError):
+            html_handler = ""
+    report("Asosiasi penampil HTML (xdg-mime)", bool(html_handler), html_handler or "tidak ada handler")
+
+    if target_path and target_path.is_file() and shutil.which("snap"):
+        snap_ff = subprocess.run(["snap", "list", "firefox"], capture_output=True, text=True, timeout=10)
+        if snap_ff.returncode == 0:
+            if os.geteuid() == 0 and not run_prefix:
+                report("Pembacaan panduan oleh sandbox Firefox Snap", False, "Jalankan sebagai user non-root")
+                return
+            try:
+                sandbox = subprocess.run(
+                    run_prefix + ["snap", "run", "--shell", "firefox", "-c", 'cat "$1"', "_", str(target_path)],
+                    capture_output=True,
+                    text=True,
+                    timeout=15,
+                    env=run_env,
+                )
+                ok = sandbox.returncode == 0 and "Praktikum Pemrograman Mandiri" in sandbox.stdout
+                report("Pembacaan panduan oleh sandbox Firefox Snap", ok, sandbox.stderr.strip() if not ok else "AppArmor OK")
+                return
+            except (OSError, subprocess.SubprocessError) as error:
+                report("Pembacaan panduan oleh sandbox Firefox Snap", False, str(error))
+                return
+
+    browser_bin = shutil.which("firefox") or shutil.which("chromium") or shutil.which("xdg-open")
+    ok_fallback = bool(browser_bin and target_path and target_path.is_file() and os.access(target_path, os.R_OK))
+    report("Keterbacaan panduan oleh penampil sistem", ok_fallback, browser_bin or "tidak ditemukan")
+
+
 def main():
     failures = []
 
@@ -21,16 +99,15 @@ def main():
         if not ok:
             failures.append(label)
 
-    print("=== Pemeriksaan Kesiapan LabKita Linux 0.2 ===")
+    print("=== Pemeriksaan Kesiapan LabKita Linux 0.3 ===")
 
     # 1. Pemeriksaan Toolchain & Aplikasi Dasar
     for command in ("python3", "gcc", "g++", "make", "geany", "git", "man"):
         report(f"Program {command}", shutil.which(command) is not None)
 
-    # 2. Materi Panduan & Dokumentasi Offline
+    # 2. Materi Panduan & Dokumentasi Offline (termasuk uji baca dalam sandbox)
     base = Path("/usr/share/labkita")
-    report("Berkas panduan lokal", (base / "guide/index.html").is_file())
-    report("Skrip peluncur panduan", Path("/usr/local/bin/labkita-guide").is_file())
+    verify_guide_open(report, base)
     report("Dokumentasi Python offline", Path("/usr/share/doc/python3/html/index.html").is_file())
 
     # 3. Konfigurasi Bahasa dan Zona Waktu
