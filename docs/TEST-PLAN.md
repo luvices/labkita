@@ -47,7 +47,7 @@ Bukti seluruh 15 screenshot pengukuran (`5x` per versi) tersedia di [`docs/evide
 ## 3. Analisis Jujur: Hasil Kinerja & Akar Kegagalan Installer GUI di 0.3
 
 1. **Tidak Ada Klaim "Lebih Ringan" atau "Lebih Cepat" secara Umum:**
-   - **Memori RAM:** Konsumsi RAM rata-rata `0.3` (`1.058,2 MiB`, rentang `1.046–1.067 MiB`) maupun `0.2` (`1.068,2 MiB`, rentang `1.058–1.080 MiB`) lebih tinggi dibanding `0.1` (`1.038,2 MiB`, rentang `1.016–1.056 MiB`) karena overhead tema WhiteSur/Dash-to-Dock/ekstensi serta rentang `0.3` dan `0.1` saling bertumpang tindih (`1046–1056 MiB`). Rentang `0.3` dan `0.2` juga saling bertumpang tindih (`1058–1067 MiB`).
+   - **Memori RAM:** Konsumsi RAM rata-rata `0.3` (`1.058,2 MiB`, rentang `1.046–1.067 MiB`) maupun `0.2` (`1.068,2 MiB`, rentang `1.058–1.080 MiB`) berbeda dari `0.1` (`1.038,2 MiB`, rentang `1.016–1.056 MiB`) tanpa penyebab yang terbukti; rentang `0.3` dan `0.1` saling bertumpang tindih (`1046–1056 MiB`). Rentang `0.3` dan `0.2` juga saling bertumpang tindih (`1058–1067 MiB`).
    - **Waktu Boot:** Rentang `0.3` (`8,460s–9,014s`, rata-rata `8,808s`) masih bertumpang tindih dengan `0.1` (`8,359s–8,676s`, rata-rata `8,460s`). Meskipun seluruh 5 run `0.3` (`maks 9,014s`) tercatat di bawah seluruh 5 run `0.2` (`min 9,072s`, selisih rata-rata `-0,509s`), **keduanya menggunakan versi kernel berbeda (`7.0.0-43-generic` di 0.3 vs `7.0.0-31-generic` di 0.2)** sehingga selisih tersebut tidak diklaim sebagai hasil optimasi skrip LabKita.
    - **Komponen terlama (`systemd-analyze blame`):** Layanan terlama pada ketiga versi berasal dari `plymouth-quit-wait.service` (`~2,18s–2,85s`), `snapd.seeded.service` (`~0,98s–1,22s`), `snapd.service` (`~0,82s–1,08s`), `NetworkManager.service`, dan `gpu-manager.service`.
 2. **Mengapa Installer GUI Normal (`ubuntu-desktop-bootstrap`) Masih Gagal di 0.3?**
@@ -58,3 +58,12 @@ Bukti seluruh 15 screenshot pengukuran (`5x` per versi) tersedia di [`docs/evide
      - `journalctl -b` dan stderr mencatat: `im-ibus.so: undefined symbol: ibus_input_context_set_post_process_key_event`, `libEGL warning: DRI3 error: Could not get DRI3 device` (tanpa akselerasi GL DRI3 di SVGA virtual), `atk-bridge: get_device_events_reply: unknown signature`, serta saat penutupan `CRITICAL **: void fl_view_set_textures(FlView *, GdkGLContext *, GPtrArray *): assertion 'FL_IS_VIEW(self)' failed`.
      - Pada saat yang sama, kegagalan autologin live session membuat `gnome-initial-setup` membuat user live tanpa `NOPASSWD:ALL` (`sudo: terminal diperlukan untuk membaca kata sandi` saat bootstrap keluar), dan 3 entri opsional `nextcloud`, `rocketchat-server`, `mosquitto` sempat mengembalikan `HTTP 500` saat kueri snapd (namun `SnapList/loader` tetap berstatus `SUCCESS`).
      - Akibatnya, instalasi ke disk tetap mengandalkan `subiquity.cmd.tui` sebagai fallback yang sukses penuh.
+
+## 4. Eksperimen Kontrol Installer GUI, Kernel, dan Spot-check
+
+Ringkasan (detail & bukti di [`CONTROL-EXPERIMENT.md`](CONTROL-EXPERIMENT.md)):
+
+- **Ubuntu 24.04.5.1 asli di VMX yang sama: installer GUI selesai.** LabKita 0.3: **gagal** pada 3D acceleration mati **dan** hidup. 3D bukan penyebab. **Penyebab belum ditemukan.**
+- Kernel 0.2 `-31` (19 Nov) vs `-43` (16 Nov): ISO selalu berisi `-31`; `-43` kemungkinan berasal dari langkah update online installer yang berjalan pada 16 Nov tetapi tidak tampak pada 19 Nov (alasannya tidak terbukti).
+- Spot-check 9 screenshot benchmark: tidak ada selisih angka terhadap tabel.
+- Kesimpulan benchmark: **tidak ada perbedaan yang dapat dibuktikan** antara 0.3 dan 0.1/0.2.

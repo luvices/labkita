@@ -574,7 +574,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(t_bench)
     story.append(Spacer(1, 6))
     story.append(Paragraph(
-        "<b>Kesimpulan Empiris Benchmark (Tanpa Klaim Lebih Ringan/Cepat):</b> Rentang konsumsi RAM 0.3 (1.046–1.067 MiB) bertumpang tindih dengan 0.1 (1.016–1.056 MiB) dan 0.2 (1.058–1.080 MiB), serta rata-rata 0.1 (1.038,2 MiB) lebih rendah ~20 MiB dibanding 0.3 karena absennya ekstensi WhiteSur/Dock. Pada waktu boot, rentang 0.3 (8,460–9,014s; rata-rata 8,808s) bertumpang tindih dengan 0.1 (8,359–8,676s; rata-rata 8,460s); meski seluruh 5 run 0.3 lebih singkat dari seluruh 5 run 0.2 (9,072–9,458s), adanya perbedaan kernel (<code>7.0.0-43-generic</code> vs <code>7.0.0-31-generic</code>) mencegah klaim optimasi murni.",
+        "<b>Kesimpulan Empiris Benchmark (Tanpa Klaim Lebih Ringan/Cepat):</b> Rentang konsumsi RAM 0.3 (1.046–1.067 MiB) bertumpang tindih dengan 0.1 (1.016–1.056 MiB) dan 0.2 (1.058–1.080 MiB), sehingga tidak ada perbedaan yang dapat dibuktikan. Pada waktu boot, rentang 0.3 (8,460–9,014s; rata-rata 8,808s) bertumpang tindih dengan 0.1 (8,359–8,676s; rata-rata 8,460s); meski seluruh 5 run 0.3 lebih singkat dari seluruh 5 run 0.2 (9,072–9,458s), adanya perbedaan kernel (<code>7.0.0-43-generic</code> vs <code>7.0.0-31-generic</code>) membuat selisih tidak dapat dikaitkan dengan LabKita (kesimpulan: tidak ada perbedaan yang dapat dibuktikan).",
         body_style
     ))
     story.append(Spacer(1, 6))
@@ -592,6 +592,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
         "2. <b>Kegagalan GUI Installer (<code>ubuntu-desktop-bootstrap</code>) & Live Autologin yang Masih Bertahan:</b> Meskipun <code>casper-md5check</code> sudah lulus dan backend <code>subiquity-server</code> mencapai status <code>ApplicationState.WAITING</code> dengan daftar sumber <code>LabKita Linux 0.3</code> termuat benar, antarmuka grafis Flutter <code>ubuntu-desktop-bootstrap</code> tetap berhenti di dialog <i>'Ada yang salah'</i>. Log <code>ubuntu_bootstrap.log</code> berhenti setelah <code>Inhibiting Gnome session</code>, sementara <code>journalctl -b</code> dan stderr langsung mencatat error library GTK/Flutter (<code>im-ibus.so: undefined symbol</code>, <code>libEGL warning: DRI3 error</code> pada SVGA virtual, dan assertion <code>fl_view_set_textures</code> saat penutupan), ditambah ketiadaan user autologin <code>NOPASSWD:ALL</code> akibat jatuhnya sesi live ke <code>gnome-initial-setup</code>. Fallback <code>subiquity.cmd.tui</code> tetap sukses menuntaskan instalasi.",
         body_style
     ))
+    story.append(Paragraph("3. <b>Eksperimen Kontrol:</b> Pada VMX yang sama, ISO Ubuntu 24.04.5.1 asli menyelesaikan instalasi GUI, sedangkan LabKita 0.3 tetap gagal baik dengan 3D acceleration mati maupun hidup, sehingga 3D bukan penyebab. Penyebab kegagalan belum ditemukan. Kernel 0.2 kini <code>7.0.0-31</code> (audit lama <code>7.0.0-43</code>): ISO selalu berisi -31; -43 kemungkinan dari langkah update online installer pada 16 Nov yang tidak tampak pada 19 Nov (alasan tidak terbukti). Spot-check 9 screenshot benchmark tidak menemukan selisih angka. Detail: docs/CONTROL-EXPERIMENT.md.", body_style))
     story.append(PageBreak())
 
     # =========================================================================
