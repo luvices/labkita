@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 thread_demo.py - Contoh Pemrograman Sistem Operasi: Konsep Threading (Multithreading)
 Distro: LabKita Linux 0.3

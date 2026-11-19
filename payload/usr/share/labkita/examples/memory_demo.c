@@ -1,4 +1,4 @@
-﻿/*
+/*
  * memory_demo.c - Contoh Pemrograman Sistem Operasi: Alokasi Memori Dinamis (Heap)
  * Distro: LabKita Linux 0.3
  *
