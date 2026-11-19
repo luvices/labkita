@@ -9,6 +9,7 @@
       color-scheme: light;
       --ink: #18334d;
       --blue: #0071e3;
+      --green: #16a34a;
       --paper: #f5f8fc;
       --line: #d2dbe6;
       --card-bg: #ffffff;
@@ -21,10 +22,10 @@
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "DejaVu Sans", sans-serif;
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.65;
     }
     header, main, footer {
-      max-width: 900px;
+      max-width: 860px;
       margin: auto;
       padding: 24px 32px;
     }
@@ -34,29 +35,30 @@
     }
     .badge {
       display: inline-block;
-      padding: 4px 10px;
+      padding: 4px 12px;
       background: #e1edfe;
       color: var(--blue);
-      border-radius: 12px;
+      border-radius: 20px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 12px;
+      letter-spacing: 0.3px;
     }
     h1 {
-      font-size: clamp(32px, 5vw, 48px);
-      line-height: 1.15;
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1.2;
       letter-spacing: -0.5px;
-      margin: 10px 0;
+      margin: 10px 0 8px;
       color: #0b1f33;
     }
-    header p {
-      margin: 8px 0 20px;
+    .subtitle {
+      margin: 0 0 20px;
       color: #435b75;
-      font-size: 18px;
+      font-size: 17px;
     }
     nav {
       display: flex;
-      gap: 12px 24px;
+      gap: 8px 20px;
       flex-wrap: wrap;
       margin-top: 16px;
     }
@@ -64,59 +66,110 @@
       color: var(--blue);
       text-decoration: none;
       font-weight: 600;
-      font-size: 15px;
+      font-size: 14px;
+      padding: 4px 0;
     }
-    nav a:hover {
-      text-decoration: underline;
-    }
+    nav a:hover { text-decoration: underline; }
     section {
-      padding: 28px 0;
+      padding: 32px 0;
       border-bottom: 1px solid var(--line);
     }
     h2 {
-      font-size: 22px;
-      margin-top: 0;
+      font-size: 21px;
+      margin: 0 0 10px;
       color: #0b1f33;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    p {
-      max-width: 72ch;
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    p, li {
+      max-width: 70ch;
       color: #2c4159;
+      margin-top: 8px;
+    }
+    ul { padding-left: 20px; }
+    .cmd-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--blue);
+      margin: 16px 0 4px;
     }
     pre {
-      padding: 16px 20px;
+      padding: 14px 18px;
       background: var(--code-bg);
       border-left: 4px solid var(--blue);
       border-radius: 6px;
       overflow-x: auto;
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
       color: #1a202c;
+      margin: 0;
     }
     code {
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       background: #e8eef5;
       padding: 2px 6px;
       border-radius: 4px;
-      font-size: 0.9em;
+      font-size: 0.88em;
     }
-    pre code {
-      background: transparent;
-      padding: 0;
-    }
+    pre code { background: transparent; padding: 0; }
     .tip {
       background: #eef7ff;
-      border: 1px solid #c8e1fb;
+      border: 1px solid #bcd8f8;
       padding: 12px 16px;
       border-radius: 8px;
       font-size: 14px;
+      margin-top: 14px;
+      color: #1e3a5f;
+    }
+    .warn {
+      background: #fff8ed;
+      border: 1px solid #fad08a;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-top: 14px;
+      color: #7a4a00;
+    }
+    .tip strong, .warn strong { display: block; margin-bottom: 4px; }
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
       margin-top: 12px;
     }
+    .compare-box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .compare-box h4 { margin: 0 0 6px; font-size: 14px; color: #0b1f33; }
     footer {
-      font-size: 14px;
+      font-size: 13px;
       color: #6a7f96;
       text-align: center;
       padding: 32px 0 48px;
+    }
+    @media (max-width: 600px) {
+      header, main, footer { padding: 16px 18px; }
+      .compare { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -124,86 +177,180 @@
 
 <header>
   <span class="badge">LabKita Linux 0.3</span>
-  <h1>Praktikum Pemrograman Mandiri.<br>Tanpa Ketergantungan Internet.</h1>
-  <p>Seluruh kompiler, pustaka, dan dokumentasi di panduan ini sudah tersimpan secara lokal di sistem.</p>
+  <h1>Praktikum Pemrograman,<br>Tanpa Perlu Internet.</h1>
+  <p class="subtitle">
+    Semua yang kamu butuhkan — compiler, editor, contoh kode, dan panduan —
+    sudah ada di dalam sistem ini. Tidak perlu <em>download</em> apa-apa.
+  </p>
   <nav aria-label="Daftar Isi">
-    <a href="#mulai">1. Folder Kerja</a>
-    <a href="#python">2. Pemrograman Python</a>
-    <a href="#c">3. Pemrograman C</a>
+    <a href="#mulai">1. Siapkan Folder</a>
+    <a href="#python">2. Jalankan Python</a>
+    <a href="#c">3. Kompilasi C</a>
     <a href="#proses">4. Proses &amp; Thread</a>
     <a href="#tmpfs">5. Ruang Sementara</a>
-    <a href="#bantuan">6. Bantuan Offline</a>
+    <a href="#bantuan">6. Butuh Bantuan?</a>
   </nav>
 </header>
 
 <main>
+
+  <!-- BAGIAN 1 -->
   <section id="mulai">
-    <h2>1. Menyiapkan Folder Latihan</h2>
-    <p>Buka aplikasi <strong>Terminal</strong> (pintasan <code>Ctrl + Alt + T</code>), lalu siapkan folder praktikum pribadi di direktori home Anda:</p>
+    <h2><span class="step-num">1</span> Siapkan Folder Latihan</h2>
+    <p>
+      Pertama, buka <strong>Terminal</strong> — tekan <code>Ctrl + Alt + T</code> atau klik ikonnya di dock bawah.
+      Lalu jalankan perintah ini untuk membuat folder kerja dan menyalin semua contoh kode ke dalamnya:
+    </p>
+    <div class="cmd-label">Ketik di Terminal:</div>
     <pre>mkdir -p "$HOME/Praktikum"
 cp -n /usr/share/labkita/examples/* "$HOME/Praktikum/"
 cd "$HOME/Praktikum"
-ls -la</pre>
+ls</pre>
     <div class="tip">
-      <strong>Catatan:</strong> Buka editor <code>Geany</code> dari dock atau menu aplikasi untuk menulis kode program. Simpan berkas sebelum menjalankan kode di terminal.
+      <strong>💡 Tips</strong>
+      Kalau mau nulis kode, buka <strong>Geany</strong> — editor ringan yang sudah siap untuk C dan Python.
+      Caranya: klik ikon Geany di dock, atau cari di menu aplikasi. Jangan lupa simpan file (<code>Ctrl + S</code>) sebelum dijalankan.
     </div>
   </section>
 
+  <!-- BAGIAN 2 -->
   <section id="python">
-    <h2>2. Menjalankan Kode Python</h2>
-    <p>Eksekusi kode Python 3 secara langsung melalui terminal tanpa perlu mengunduh paket daring:</p>
+    <h2><span class="step-num">2</span> Jalankan Program Python</h2>
+    <p>
+      Python 3 sudah terpasang dan langsung bisa dipakai — tidak perlu <em>install</em> apa-apa.
+      Coba jalankan contoh yang sudah ada:
+    </p>
+    <div class="cmd-label">Program sederhana:</div>
     <pre>cd "$HOME/Praktikum"
-python3 hello.py
-python3 thread_demo.py</pre>
-    <p>Berkas <code>hello.py</code> menampilkan pesan sambutan dasar, sedangkan <code>thread_demo.py</code> mendemonstrasikan eksekusi multithreading di mana beberapa thread pekerja berjalan secara konkuren dalam satu proses sistem operasi.</p>
+python3 hello.py</pre>
+    <p>Output yang kamu lihat: <code>Halo dari LabKita Linux!</code></p>
+
+    <div class="cmd-label">Contoh multithreading:</div>
+    <pre>python3 thread_demo.py</pre>
+    <p>
+      Di program <code>thread_demo.py</code>, kamu akan melihat dua <em>thread</em> berjalan bersamaan
+      dalam satu proses yang sama (PID-nya identik). Ini yang membedakan <em>thread</em> dari <em>proses</em> biasa.
+    </p>
+    <div class="tip">
+      <strong>📌 Catatan</strong>
+      Mau eksplorasi lebih lanjut? Buka file <code>thread_demo.py</code> di Geany, baca komentar di dalam kode,
+      coba ubah jumlah iterasi atau tambahkan <em>thread</em> baru, lalu jalankan lagi!
+    </div>
   </section>
 
+  <!-- BAGIAN 3 -->
   <section id="c">
-    <h2>3. Mengompilasi dan Menjalankan Bahasa C</h2>
-    <p>Gunakan GNU C Compiler (GCC) untuk mengompilasi berkas kode sumber C ke dalam binary executable:</p>
+    <h2><span class="step-num">3</span> Kompilasi dan Jalankan Program C</h2>
+    <p>
+      GCC (GNU C Compiler) sudah tersedia. Proses kerjanya: tulis kode → kompilasi → jalankan hasil kompilasi.
+    </p>
+    <div class="cmd-label">Program hello world C:</div>
     <pre>cd "$HOME/Praktikum"
 gcc -Wall -Wextra hello.c -o hello
-./hello
+./hello</pre>
 
-gcc -Wall -Wextra memory_demo.c -o memory_demo
+    <div class="cmd-label">Contoh alokasi memori dinamis:</div>
+    <pre>gcc -Wall -Wextra memory_demo.c -o memory_demo
 ./memory_demo</pre>
-    <p>Argumen <code>-Wall -Wextra</code> menyalakan seluruh peringatan standar kompiler untuk membantu mendeteksi kesalahan penulisan kode sedini mungkin. Berkas <code>memory_demo.c</code> mencontohkan alokasi memori dinamis pada segmen Heap menggunakan <code>malloc()</code> dan pembebasannya dengan <code>free()</code>.</p>
-  </section>
-
-  <section id="proses">
-    <h2>4. Mengamati Konsep Proses dan Thread</h2>
-    <p>Sistem operasi mengelola konkurensi melalui proses dan thread. Pelajari perbedaannya melalui contoh kode yang disediakan:</p>
-    <pre>python3 "$HOME/Praktikum/processes.py"
-ps -u "$USER" -o pid,ppid,comm,state</pre>
-    <p>Pada <code>processes.py</code>, proses anak dibuat menggunakan mekanisme <code>fork</code> dengan PID independen dan PPID yang merujuk ke proses induk. Bandingkan dengan <code>thread_demo.py</code> di mana seluruh thread berbagi PID dan ruang alamat memori yang sama.</p>
-  </section>
-
-  <section id="tmpfs">
-    <h2>5. Memanfaatkan Ruang Kerja Sementara (/run/labkita)</h2>
-    <p>Sistem menyediakan direktori RAM Disk berbasis memori (<em>tmpfs</em>) di <code>/run/labkita</code> dengan hak akses <code>1777</code> (sticky bit):</p>
-    <pre>ls -ld /run/labkita
-echo "Catatan praktikum sementara" > /run/labkita/scratch.txt
-cat /run/labkita/scratch.txt
-systemctl status labkita-runtime.service --no-pager</pre>
+    <p>
+      Program <code>memory_demo.c</code> menunjukkan cara <em>memesan</em> ruang di memori Heap pakai <code>malloc()</code>,
+      membaca dan mengisi datanya, lalu <em>mengembalikan</em> memori itu ke sistem pakai <code>free()</code>.
+      Ini penting supaya programmu tidak bocor memori (<em>memory leak</em>).
+    </p>
     <div class="tip">
-      <strong>Penting:</strong> Partisi <code>/run</code> dipasang dengan opsi <code>noexec</code> oleh sistem keamanan Linux, sehingga berkas biner executable harus tetap dijalankan dari folder <code>~/Praktikum</code>. Gunakan <code>/run/labkita</code> untuk berkas scratch atau data temporer. Seluruh isi <code>/run/labkita</code> akan terhapus otomatis saat komputer dimatikan atau direstart.
+      <strong>❓ Apa itu <code>-Wall -Wextra</code>?</strong>
+      Dua flag itu memerintahkan GCC supaya kasih tahu kalau ada bagian kode yang mencurigakan atau rawan bug,
+      meski kode masih bisa dikompilasi. Biasakan pakai keduanya dari awal!
     </div>
   </section>
 
-  <section id="bantuan">
-    <h2>6. Akses Manual dan Diagnostik Offline</h2>
-    <p>Ketika tidak ada sambungan internet, gunakan manual bawaan Linux dan utilitas pemeriksaan sistem:</p>
-    <pre>labkita-check      # Memverifikasi seluruh kesiapan sistem praktikum
-man gcc            # Manual resmi kompiler GCC
-man 3 printf       # Manual pustaka fungsi printf C
-man 3 malloc       # Manual alokasi memori dinamis C
-python3 -m pydoc   # Dokumentasi interaktif fungsi Python</pre>
-    <p>Tekan tombol <code>q</code> pada keyboard untuk keluar dari tampilan manual.</p>
+  <!-- BAGIAN 4 -->
+  <section id="proses">
+    <h2><span class="step-num">4</span> Pelajari Konsep Proses &amp; Thread</h2>
+    <p>
+      Dua contoh di bawah ini menunjukkan dua cara berbeda menjalankan tugas secara bersamaan
+      di sistem operasi Linux.
+    </p>
+
+    <div class="cmd-label">Contoh proses (fork / multiprocessing):</div>
+    <pre>python3 "$HOME/Praktikum/processes.py"
+ps -u "$USER" -o pid,ppid,comm,state</pre>
+
+    <div class="compare">
+      <div class="compare-box">
+        <h4>🔀 Proses (<code>processes.py</code>)</h4>
+        <ul>
+          <li>Setiap proses anak punya PID sendiri</li>
+          <li>PPID-nya menunjuk ke proses induk</li>
+          <li>Memori <strong>terpisah</strong> (tidak berbagi)</li>
+          <li>Lebih aman, lebih terisolasi</li>
+        </ul>
+      </div>
+      <div class="compare-box">
+        <h4>🧵 Thread (<code>thread_demo.py</code>)</h4>
+        <ul>
+          <li>Semua thread berbagi PID yang sama</li>
+          <li>Berjalan dalam satu proses induk</li>
+          <li>Memori <strong>dibagi bersama</strong></li>
+          <li>Lebih ringan, cocok untuk tugas kecil</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tip">
+      <strong>💡 Cara ceknya</strong>
+      Jalankan <code>processes.py</code>, lalu lihat output <code>ps</code>.
+      Perhatikan kolom PID dan PPID — kamu akan lihat proses anak punya nomor berbeda dari induknya.
+      Bandingkan hasilnya dengan <code>thread_demo.py</code> yang PID-nya sama semua.
+    </div>
   </section>
+
+  <!-- BAGIAN 5 -->
+  <section id="tmpfs">
+    <h2><span class="step-num">5</span> Pakai Ruang Kerja Sementara</h2>
+    <p>
+      LabKita menyediakan folder <code>/run/labkita</code> yang berbasis RAM — tulis-bacanya sangat cepat,
+      cocok untuk menyimpan file sementara saat praktikum.
+    </p>
+    <div class="cmd-label">Coba sendiri:</div>
+    <pre>ls -ld /run/labkita
+echo "Ini catatan sementara saya" > /run/labkita/coba.txt
+cat /run/labkita/coba.txt
+systemctl status labkita-runtime.service --no-pager</pre>
+
+    <div class="warn">
+      <strong>⚠️ Penting — jangan simpan tugas di sini!</strong>
+      Semua isi <code>/run/labkita</code> akan <strong>hilang otomatis</strong> begitu komputer dimatikan atau di-restart.
+      Simpan file penting seperti kode program kamu di <code>~/Praktikum</code>.
+      <br><br>
+      Satu lagi: program hasil kompilasi (file biner seperti <code>./hello</code>) harus dijalankan dari <code>~/Praktikum</code>,
+      bukan dari <code>/run/labkita</code>, karena folder <code>/run</code> dikunci sistem agar tidak bisa menjalankan program
+      (istilahnya <em>noexec</em>).
+    </div>
+  </section>
+
+  <!-- BAGIAN 6 -->
+  <section id="bantuan">
+    <h2><span class="step-num">6</span> Butuh Bantuan?</h2>
+    <p>
+      Semua referensi dan dokumentasi tersedia offline — tidak perlu internet sama sekali:
+    </p>
+    <div class="cmd-label">Perintah berguna:</div>
+    <pre>labkita-check         # Cek apakah semua komponen sistem sudah siap
+man gcc               # Panduan lengkap perintah GCC
+man 3 printf          # Cara pakai fungsi printf di bahasa C
+man 3 malloc          # Cara pakai malloc dan free di bahasa C
+python3 -m pydoc os   # Dokumentasi modul Python (ganti "os" sesuai kebutuhan)</pre>
+    <div class="tip">
+      <strong>📖 Cara pakai manual (man page)</strong>
+      Gunakan tombol <code>panah atas/bawah</code> untuk scroll, atau tekan <code>/</code> lalu ketik kata kunci untuk mencari.
+      Tekan <code>q</code> untuk keluar.
+    </div>
+  </section>
+
 </main>
 
 <footer>
-  LabKita Linux 0.3 &bull; Distribusi Mandiri Praktikum Pemrograman Dasar &amp; Sistem Operasi.
+  LabKita Linux 0.3 &bull; Proyek Final Mata Kuliah Sistem Operasi &bull; Universitas Siliwangi 2026/2027
 </footer>
 
 </body>
