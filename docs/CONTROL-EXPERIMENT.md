@@ -24,11 +24,11 @@ Pada kedua kombinasi: `casper-md5check` `pass`, `install-sources.yaml` memuat 1 
 
 **Kesimpulan:** 3D acceleration **bukan** penyebab (hasil gagal identik dengan 3D mati dan hidup; Ubuntu asli sukses dengan 3D mati). Warning `DRI3` dan `im-ibus` juga muncul di Ubuntu asli yang sukses, jadi bukan penyebab.
 
-**Perbedaan yang teramati antara Ubuntu asli dan LabKita (korelasi, belum terbukti sebagai penyebab):**
-1. Ubuntu asli: autologin `ubuntu` (uid 1000). LabKita: sesi live jatuh ke `gnome-initial-setup`, user dibuat manual (uid 1001), tanpa `NOPASSWD:ALL`.
+**Perbedaan awal yang teramati antara Ubuntu asli dan LabKita 0.3 sebelum uji bisect:**
+1. Ubuntu asli: autologin `ubuntu` (uid 1000). LabKita 0.3: sesi live jatuh ke `gnome-initial-setup`, user dibuat manual (uid 1001), tanpa `NOPASSWD:ALL`.
 2. `install-sources.yaml`: 2 sumber (Ubuntu) vs 1 sumber ditulis ulang (LabKita).
 
-**Penyebab sebenarnya belum ditemukan.** Kami tidak menguji (dan tidak mengklaim) perbaikan untuk dua perbedaan di atas.
+Kandidat #1 kemudian diuji langsung melalui Bisect #4 (Bagian 7) dan perbaikan di LabKita 0.4 (Bagian 8).
 
 ## 3. Kenapa kernel 0.2 terinstal sekarang `7.0.0-31`, bukan `7.0.0-43`?
 
@@ -81,18 +81,36 @@ Dilakukan diff isi ISO dan squashfs antara Ubuntu `24.04.5.1` asli dan `labkita-
 | `minimal.manifest` | `1490` vs `1768` paket (`+280` gabungan `minimal.standard` + `config/packages.txt`, 4 pembaruan minor `glib2.0`) | **Kandidat perubahan paket** |
 | `boot/grub/grub.cfg` & lapisan live | Tambahan cmdline `locale=id_ID.UTF-8 keyboard-configuration/layoutcode=us console-setup/layoutcode=us`; lapisan live 0.3 juga memuat `etc/dconf/*`, `etc/default/keyboard`, symlink `etc/default/locale -> ../locale.conf`, serta `var/lib/snapd/state.json` berbeda (`369747` vs `235001` B) | **Kandidat perubahan boot, locale, & dconf** |
 
-## 7. Eksperimen Bisect Bertahap (Maksimal 3 Build)
+## 7. Eksperimen Bisect Bertahap (Bisect #1–#4, Dibangun Manual di WSL)
 
-Seluruh build uji dijalankan pada VMX identik (`labkita-test.vmx`: `mks.enable3d = "FALSE"`, disk kosong 40 GB) di atas dasar Ubuntu 24.04.5.1. ISO final `labkita-linux-0.3-amd64.iso` **tidak diubah**.
+Seluruh build bisect dibangun **secara manual di WSL** (unsquashfs/chroot/mksquashfs/xorriso langsung dari ISO Ubuntu 24.04.5.1, **bukan** lewat lingkungan Cubic `custom-live`/`custom-root`), lalu diuji pada VMX identik (`labkita-test.vmx`: `mks.enable3d = "FALSE"`, disk kosong 40 GB). Perbedaan proses build Cubic belum dapat dikesampingkan hanya dari bisect WSL. ISO `labkita-linux-0.3-amd64.iso` tidak diubah.
 
 | Build | Lapisan Kustomisasi yang Diuji | Hasil Live Boot & Installer GUI | Bukti |
 | :-- | :-- | :-- | :-- |
-| **Bisect #1** | Repack `minimal.standard.live.squashfs` tanpa `customize.sh` + regenerasi `md5sum.txt` + `xorriso` | **LULUS** — autologin `ubuntu`, installer GUI mencapai *Choose your language:* tanpa error | `10-bisect1-repack-nocustomize.png` |
-| **Bisect #2** | Bisect #1 + 19 paket `config/packages.txt` + locale `id_ID.UTF-8` (`/etc/default/locale`, `Asia/Jakarta`, `grub.cfg` `locale=id_ID.UTF-8`) + 1-entri `install-sources.yaml` (`locale_support: none`) + symlink `minimal.standard.squashfs -> minimal.squashfs` (tanpa `.disk/info` LabKita / `groupadd labkita` / tema) | **LULUS** — autologin `ubuntu`, installer GUI mencapai *Pilih bahasa Anda: Bahasa Indonesia* | `11-bisect2-pkgs-locale-yaml.png` |
-| **Bisect #3** | Bisect #2 + seluruh `payload/` (tema/ikon/kursor `WhiteSur`, wallpaper LabKita, `etc/dconf/db/local.d/20-labkita`, `dconf update`, `labkita-runtime.service`, `/etc/labkita-release`, `/etc/os-release` `PRETTY_NAME`, `/etc/lsb-release`, `/etc/skel/*`), tetap tanpa `.disk/info` `"LabKita..."` dan tanpa `groupadd --system labkita` | **LULUS** — autologin `ubuntu` dengan wallpaper & tema LabKita aktif, installer GUI mencapai *Pilih bahasa Anda: Bahasa Indonesia* tanpa error | `12-bisect3-theme-dconf-systemd-pass.png` |
+| **Bisect #1** | Repack `minimal.standard.live.squashfs` tanpa `customize.sh` + `md5sum.txt` + `xorriso` | **LULUS** — autologin `ubuntu`, installer GUI mencapai *Choose your language:* | `10-bisect1-repack-nocustomize.png` |
+| **Bisect #2** | Bisect #1 + 19 paket `config/packages.txt` + locale `id_ID.UTF-8` (`/etc/default/locale`, `Asia/Jakarta`, `grub.cfg` `locale=id_ID.UTF-8`) + 1-entri `install-sources.yaml` (`locale_support: none`) + symlink `minimal.standard.squashfs -> minimal.squashfs` | **LULUS** — autologin `ubuntu`, installer GUI mencapai *Pilih bahasa Anda: Bahasa Indonesia* | `11-bisect2-pkgs-locale-yaml.png` |
+| **Bisect #3** | Bisect #2 + seluruh `payload/` (tema/ikon/kursor `WhiteSur`, wallpaper LabKita, `etc/dconf/db/local.d/20-labkita`, `dconf update`, `labkita-runtime.service`, `/etc/os-release` `PRETTY_NAME`, `/etc/lsb-release`, `/etc/skel/*`), sengaja tanpa `.disk/info` `"LabKita..."` dan tanpa `groupadd --system labkita` | **LULUS** — autologin `ubuntu` dengan wallpaper & tema LabKita aktif, installer GUI mencapai *Pilih bahasa Anda: Bahasa Indonesia* tanpa error | `12-bisect3-theme-dconf-systemd-pass.png` |
+| **Bisect #4** | Persis Bisect #3 + **hanya** dua tambahan: `.disk/info` = `"LabKita Linux 0.3 (20261117)"` dan `groupadd --system labkita` (`customize.sh:107`) | **GAGAL (Bug Tereproduksi)** — sesi live gagal autologin dan jatuh ke `gnome-initial-setup`; setelah selesai wizard, `ubuntu-desktop-bootstrap` berhenti di `Inhibiting Gnome session` (`state: null => WAITING`) dan menampilkan dialog *"Ada yang salah"* | `13-bisect4-gis-autologin-failed.png`, `14-bisect4-gui-error-reproduced.png` |
 
-### Kesimpulan Bisect & Keterbatasan Terbuka
+### Log Bukti Reproduksi Bisect #4 (`casper.log` & `journalctl`)
 
-- **Terbukti tidak menyebabkan crash GUI installer (saat autologin `casper` utuh):** mekanisme repack `squashfs`/`xorriso`, pemasangan paket `config/packages.txt`, konfigurasi locale `id_ID.UTF-8` + `grub.cfg`, `install-sources.yaml` 1-entri (`locale_support: none`), tema/ikon `WhiteSur` + `dconf`, serta layanan `labkita-runtime.service`.
-- **Keterbatasan terbuka (batas maksimal 3 build tercapai):** Error `"Ada yang salah"` pada `ubuntu-desktop-bootstrap` **belum terpicu ulang** dalam 3 build bisect di atas. Delta yang belum diisolasi dengan build ke-4 antara `Bisect #3` dan `labkita-linux-0.3-amd64.iso` adalah: (1) tabrakan `.disk/info` (`"LabKita Linux 0.3"`) + `groupadd --system labkita` yang sudah terbukti di source `casper` menggagalkan autologin UID `1000` sehingga sesi jatuh ke `gnome-initial-setup`, serta (2) delta spesifik hasil repack Cubic pada `minimal.standard.live.squashfs` (`etc/default/locale -> ../locale.conf`, `etc/dconf/profile/ibus`, `var/lib/snapd/state.json`).
-- **Prosedur instalasi resmi LabKita Linux 0.3:** Karena ISO 0.3 tetap tidak diubah, instalasi resmi ke disk dilakukan melalui jalur teks **`subiquity.cmd.tui`** (`sudo /snap/ubuntu-desktop-bootstrap/current/bin/subiquity/subiquity/cmd/tui.py` atau `sudo subiquity.cmd.tui`).
+Baris relevan dari `casper.log` dan `journalctl -b` VM Bisect #4 (tanpa kata sandi):
+- `casper.log`:
+  - `fatal: The group 'labkita' already exists.`
+  - `usermod: user 'labkita' does not exist`, `passwd: user 'labkita' does not exist`, `install: invalid user 'labkita'`, `sudo: unknown user labkita`
+  - `chown: invalid user: 'labkita.labkita'`
+- `casper_diag.txt`: `labkita:x:986:`, `/cdrom/.disk/info` = `LabKita Linux 0.3 (20261117)`, `/etc/casper.conf` `export USERNAME="labkita"` (`# export FLAVOUR="Ubuntu"`), `/home` hanya memiliki `installer`, `labkita` (milik `root`), dan `labkitavm` (dibuat manual via `gnome-initial-setup`).
+- `journalctl -b`: `gdm3: accountsservice: ActUserManager: user (null) has no username (uid: -1)` → `session opened for user gnome-initial-setup(uid=119)`.
+- `ubuntu_bootstrap.log.4777`: berhenti tepat setelah `DEBUG desktop: Inhibiting Gnome session` dan `INFO subiquity_client: state: null => WAITING`.
+
+## 8. Verifikasi Fix di ISO 0.4 Hasil Build Cubic & Keterbatasan Terbuka
+
+Berdasarkan hasil Bisect #4, nama grup sistem pada `scripts/customize.sh` dan `payload/usr/local/sbin/labkita-postinstall` diganti dari `labkita` menjadi **`labkita-praktikum`**, grup `labkita` lama pada `custom-root` dihapus (`groupdel labkita`), dan ISO **`labkita-linux-0.4-amd64.iso`** dibangun melalui lingkungan Cubic `2026.09.110-release~202609120048~ubuntu24.04.1` (`6.520.395.776 bytes`, SHA256 `7ae9e815a02e58ca5f700344541aadba3db47a6b5a15c942c9b0e4587f64b9d4`, MD5 `00ea1d333ab0e52b953d7fe3806044ed`, verifikasi loop `957/957 OK`).
+
+**Hasil pengujian ISO 0.4 pada VM uji yang sama (`labkita-test.vmx`, 3D off, disk kosong 40 GB):**
+1. **Autologin Live Session (`labkita`):** **BERHASIL (LULUS)** — `casper.log` tidak lagi memunculkan error `"The group 'labkita' already exists."`; `casper` membuat user `labkita` (`uid=1000`, grup `labkita-praktikum:x:986`) dan desktop langsung masuk autologin LabKita 0.4 tanpa `gnome-initial-setup` (`docs/evidence/0.4-01-live-autologin-desktop.png`).
+2. **Installer GUI Normal (`ubuntu-desktop-bootstrap`):** **MASIH GAGAL** — meskipun autologin `labkita` sudah berjalan, `casper-md5check` lulus, `install-sources.yaml` memuat `LabKita Linux 0.4`, dan `subiquity-server` berstatus `WAITING`, antarmuka grafis tetap memunculkan dialog *"Ada yang salah"* (`ubuntu_bootstrap.log.3211` berhenti setelah `DEBUG desktop: Inhibiting Gnome session`, `docs/evidence/0.4-02-gui-installer-error.png`).
+3. **Kesimpulan Jujur & Keterbatasan Terbuka:**
+   - Bentrok `.disk/info` + `groupadd --system labkita` **terbukti** menggagalkan pembuatan user autologin `casper` (`gnome-initial-setup`) dan memicu kegagalan installer GUI pada Bisect #4 (WSL), serta perbaikannya (`labkita-praktikum`) **terbukti memulihkan autologin live** di ISO 0.4 Cubic.
+   - Namun pada ISO 0.4 hasil build Cubic (`custom-live`, `casper` menurunkan `USERNAME=labkita` vs `ubuntu` di Bisect #3 WSL), dialog *"Ada yang salah"* masih muncul sehingga **fix belum menyembuhkan installer GUI pada ISO build Cubic**. Penyebab tersisa antara ISO 0.4 (Cubic) dan Bisect #3 (WSL) belum terisolasi lebih lanjut.
+   - **Prosedur instalasi resmi LabKita Linux 0.4:** Tetap jalur teks **`subiquity.cmd.tui`** (lulus menuntaskan partisi LVM dan instalasi penuh 0.4 ke disk, bukti `docs/evidence/0.4-03` s.d. `0.4-05`).
