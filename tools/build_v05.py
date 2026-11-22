@@ -249,8 +249,14 @@ def main():
         std_link.unlink()
     os.symlink("minimal.squashfs", std_link)
 
-    # First word MUST be 'Ubuntu' so casper sets USERNAME=ubuntu instead of colliding.
-    (disk_dir / ".disk/info").write_text(f"Ubuntu 24.04 LabKita 0.5 ({args.date})\n", encoding="utf-8")
+    # First word MUST be 'Ubuntu' (casper USERNAME=ubuntu) and MUST contain a
+    # double-quoted codename segment because ubuntu-desktop-bootstrap's
+    # ProductService._extractIsoInfo calls isoName.substring(0, isoName.indexOf('"') - 1),
+    # which throws an uncaught RangeError when '"' is absent.
+    (disk_dir / ".disk/info").write_text(
+        f'Ubuntu 24.04 LabKita 0.5 "Noble Numbat" - Release amd64 ({args.date})\n',
+        encoding="utf-8",
+    )
 
     (disk_dir / "casper/install-sources.yaml").write_text(
         f"""-   default: true
