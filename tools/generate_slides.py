@@ -383,9 +383,9 @@ def create_deck():
     p.font.color.rgb = RGBColor(185, 28, 28)
     p.space_after = Pt(8)
     failed_items = [
-        "GAGAL — Installer GUI ISO 0.4 (Build Cubic): Masih berhenti di dialog 'Ada yang salah' setelah 'DEBUG desktop: Inhibiting Gnome session' meski autologin labkita sudah pulih.",
-        "KETERBATASAN BISECT: Bisect #1–#4 (yang membuktikan bentrok .disk/info + groupadd labkita) dibangun manual di WSL, bukan lewat Cubic — perbedaan lingkungan Cubic masih terbuka.",
-        "PROSEDUR RESMI: Instalasi ke disk tetap dijalankan via subiquity.cmd.tui.",
+        "GAGAL — Installer GUI ISO 0.4: Tidak dipulihkan oleh fix grup ('Ada yang salah' setelah Inhibiting Gnome session); penyebab installer GUI belum teridentifikasi.",
+        "KANDIDAT TERSISA (BELUM DIUJI): .disk/info diawali 'LabKita' membuat casper menurunkan USERNAME=labkita (bukan 'ubuntu' spt Bisect #3 WSL), plus faktor Cubic vs WSL.",
+        "PROSEDUR RESMI: Instalasi ke disk wajib via jalur TUI subiquity.cmd.tui.",
         "CATATAN TEKNIS — Flag noexec /run: Partisi /run bersifat noexec, sehingga biner C dikompilasi di ~/Praktikum."
     ]
     for f_it in failed_items:
@@ -404,7 +404,7 @@ def create_deck():
     benchmarks = [
         ("Konsumsi RAM Rata-rata & Rentang", "free -m (VM 4 GB / 3.911 MiB)", "0.1 [7.0.0-31]: 1.038,2 MiB (1.016–1.056) | 0.2: 1.068,2 MiB (1.058–1.080)\n0.3 [7.0.0-43]: 1.058,2 MiB (1.046–1.067)\n0.4 [7.0.0-43]: 1.062,6 MiB avg (1.043–1.075 MiB)\nSisa RAM 0.4 avg: 2.847,8 MiB (~2,78 GiB)"),
         ("Waktu Booting Rata-rata & Rentang", "systemd-analyze time (5x Reboot)", "0.1: 8,460s (8,359–8,676s) | 0.2: 9,317s (9,072–9,458s)\n0.3: 8,808s (8,460–9,014s) | 0.4: 9,185s avg (8,520–10,713s)\nKesimpulan: tidak ada perbedaan yang dapat dibuktikan (rentang saling tumpang tindih & beda kernel)."),
-        ("Variabel Kernel & Layanan Boot", "uname -r & systemd-analyze blame", "Kernel 0.1/0.2: 7.0.0-31-generic | 0.3/0.4: 7.0.0-43-generic\nplymouth-quit-wait: 2,18–3,04s | snapd.seeded: ~1,02–1,16s\ngraphical.target avg: 5,180s (0.1) | 5,918s (0.2) | 5,532s (0.3) | 5,779s (0.4)"),
+        ("Variabel Kernel & Layanan Boot", "uname -r & systemd-analyze blame", "Kernel 0.1/0.2: 7.0.0-31-generic | 0.3/0.4: 7.0.0-43-generic (dari security updates TUI)\nplymouth-quit-wait: 2,18–3,04s | snapd.seeded: ~1,02–1,16s\ngraphical.target avg: 5,180s (0.1) | 5,918s (0.2) | 5,532s (0.3) | 5,779s (0.4)"),
         ("Identitas & Kapasitas Media ISO 0.4", "Cubic 2026.09.110 & SHA256", "Berkas: labkita-linux-0.4-amd64.iso\nUkuran: 6.520.395.776 bytes (~6,07 GiB / 6,52 GB)\nSHA256: 7ae9e815a02e58ca5f700344541aadba...87f64b9d4\nMD5: 00ea1d333ab0e52b953d7fe3806044ed | Unduh: [LINK-DRIVE-ISO]")
     ]
 
@@ -473,9 +473,9 @@ def create_deck():
     p.font.color.rgb = c_accent
     p.space_after = Pt(10)
     sol_pts = [
-        "Bisect #1–#4 (build manual WSL): #1–#3 (tanpa grup 'labkita') lulus GUI installer, sedangkan #4 (+ .disk/info 'LabKita' + groupadd labkita) gagal: 'casper.log: fatal: The group labkita already exists'.",
-        "Uji ISO 0.4 (build Cubic): Autologin 'labkita' pulih, tetapi GUI installer ubuntu-desktop-bootstrap masih gagal ('Ada yang salah' setelah Inhibiting Gnome session) — perbedaan lingkungan Cubic masih terbuka.",
-        "Jalur TUI subiquity.cmd.tui menuntaskan partisi LVM & instalasi 0.4 ke disk 40 GB dengan mulus sebagai prosedur resmi."
+        "Penyebab Autologin Terbukti & Pulih di 0.4: Bisect #4 buktikan bentrok .disk/info + groupadd labkita ('The group labkita already exists'); fix grup labkita-praktikum memulihkan autologin live labkita.",
+        "Installer GUI Belum Pulih: Fix grup TIDAK memulihkan ubuntu-desktop-bootstrap pada ISO 0.4 ('Ada yang salah'); penyebab installer GUI belum teridentifikasi.",
+        "Kandidat Tersisa (Belum Diuji) & Prosedur Resmi: .disk/info diawali 'LabKita' menurunkan USERNAME=labkita (vs 'ubuntu' di Bisect #3 WSL) belum diuji. Prosedur resmi = TUI subiquity.cmd.tui."
     ]
     for s in sol_pts:
         p = tf2.add_paragraph()
@@ -572,9 +572,9 @@ def create_deck():
     p.space_after = Pt(10)
     concls = [
         "Produk Terwujud: ISO labkita-linux-0.4-amd64.iso (~6,07 GiB, SHA256 7ae9e815...87f64b9d4) terverifikasi md5sum 957/957 OK, autologin live pulih, & terinstal via subiquity TUI.",
-        "Perbaikan 0.4 & Fitur Praktikum: Grup sistem labkita-praktikum hilangkan bentrok live user; labkita-check 23/23 LULUS, Firefox Snap OK, postinstall 0 error.",
-        "Benchmark 5x & Variabel Kernel: RAM avg 1.062,6 MiB (0.4) vs 1.038,2 / 1.068,2 / 1.058,2 MiB; boot avg 9,185s vs 8,460s / 9,317s / 8,808s — tidak ada perbedaan yang dapat dibuktikan.",
-        "Transparansi Jujur: Bisect #4 (WSL) buktikan bentrok grup 'labkita'; namun ISO 0.4 (Cubic) masih gagal di GUI installer -> TUI subiquity.cmd.tui tetap resmi."
+        "Perbaikan 0.4 & Fitur Praktikum: Grup labkita-praktikum pulihkan autologin live; labkita-check 23/23 LULUS, Firefox Snap OK, postinstall 0 error.",
+        "Benchmark 5x & Variabel Kernel: RAM avg 1.062,6 MiB (0.4) vs 1.038,2 / 1.068,2 / 1.058,2 MiB; boot avg 9,185s (7.0.0-43 dari security updates TUI) vs 8,460s / 9,317s (7.0.0-31) — tidak ada perbedaan yang dapat dibuktikan.",
+        "Transparansi Jujur: Bentrok grup 'labkita' terbukti menyebabkan gagal autologin (pulih di 0.4); installer GUI tidak ikut pulih & penyebabnya belum teridentifikasi (.disk/info 'LabKita' -> USERNAME=labkita belum diuji). Prosedur resmi = TUI."
     ]
     for c in concls:
         p = tf.add_paragraph()
