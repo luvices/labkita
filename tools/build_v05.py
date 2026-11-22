@@ -118,6 +118,14 @@ def setup_payload_and_branding(min_dir: Path, repo_root: Path):
     chroot_step2 = """#!/usr/bin/env bash
 set -Eeuo pipefail
 
+rm -rf /usr/local/bin/__pycache__ /usr/local/sbin/__pycache__
+for f in /usr/local/bin/labkita-check /usr/local/bin/labkita-guide /usr/local/sbin/labkita-postinstall \
+         /etc/systemd/system/labkita-runtime.service /etc/dconf/db/local.d/20-labkita \
+         /etc/dconf/profile/user /usr/share/applications/labkita-guide.desktop; do
+    [[ -f "$f" ]] && sed -i 's/\\r$//' "$f"
+done
+find /usr/share/labkita -type f \\( -name '*.py' -o -name '*.c' -o -name '*.sh' -o -name '*.html' -o -name '*.css' -o -name '*.txt' \\) -exec sed -i 's/\\r$//' {} +
+
 chmod 0755 /usr/local/bin/labkita-check /usr/local/bin/labkita-guide /usr/local/sbin/labkita-postinstall
 find /usr/share/labkita -type d -exec chmod 0755 {} +
 find /usr/share/labkita -type f -exec chmod 0644 {} +
