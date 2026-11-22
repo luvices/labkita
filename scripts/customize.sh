@@ -78,12 +78,12 @@ fi
 
 cat > /etc/labkita-release <<'EOF'
 NAME="LabKita Linux"
-VERSION="0.3"
+VERSION="0.4"
 BASE="Ubuntu 24.04 LTS"
 PURPOSE="Praktikum pemrograman dasar offline"
 EOF
 cat > /etc/motd <<'EOF'
-LabKita Linux 0.3 | Praktikum pemrograman offline (Bahasa Indonesia)
+LabKita Linux 0.4 | Praktikum pemrograman offline (Bahasa Indonesia)
 Panduan: Jalankan 'labkita-guide' atau buka menu 'Panduan LabKita'
 Uji kesiapan: labkita-check
 Ruang sementara: /run/labkita (RAM disk sementara)
@@ -91,10 +91,10 @@ EOF
 
 # Perbarui identitas tampil di os-release & lsb-release tanpa mengubah ID=ubuntu / VERSION_ID=24.04
 if [[ -f /usr/lib/os-release ]]; then
-    sed -i 's/^PRETTY_NAME=.*/PRETTY_NAME="LabKita Linux 0.3 (Noble Numbat)"/' /usr/lib/os-release
+    sed -i 's/^PRETTY_NAME=.*/PRETTY_NAME="LabKita Linux 0.4 (Noble Numbat)"/' /usr/lib/os-release
 fi
 if [[ -f /etc/lsb-release ]]; then
-    sed -i 's/^DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION="LabKita Linux 0.3"/' /etc/lsb-release
+    sed -i 's/^DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION="LabKita Linux 0.4"/' /etc/lsb-release
 fi
 
 install -d -m 0755 /etc/dconf/profile
@@ -104,7 +104,7 @@ elif ! grep -qxF 'system-db:local' /etc/dconf/profile/user; then
     printf '\nsystem-db:local\n' >> /etc/dconf/profile/user
 fi
 dconf update
-getent group labkita >/dev/null || groupadd --system labkita
+getent group labkita-praktikum >/dev/null || groupadd --system labkita-praktikum
 
 # Siapkan skel untuk user baru (termasuk praktikan; bersihkan dotfolder panduan 0.2 lama)
 rm -rf /etc/skel/.local/share/labkita

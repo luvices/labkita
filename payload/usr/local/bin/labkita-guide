@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Utilitas peluncur panduan LabKita Linux 0.3 (lokasi non-dotfolder kompatibel Firefox Snap)
+# Utilitas peluncur panduan LabKita Linux 0.4 (lokasi non-dotfolder kompatibel Firefox Snap)
 set -euo pipefail
 
 DOCS_ROOT="${HOME}/Dokumen"
