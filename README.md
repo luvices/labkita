@@ -48,8 +48,8 @@ Laboratorium komputer kampus sering menghadapi masalah koneksi internet yang lam
 
 ### Fitur & Perbaikan pada Versi 0.4:
 1. **Perbaikan Bentrok Grup Autologin (`labkita-praktikum`) & Konsistensi Branding 0.4:**
-   - Investigasi bisect #1–#4 (manual di WSL) membuktikan bahwa grup sistem `labkita` (`customize.sh:107`) bertabrakan dengan penurunan `USERNAME=labkita` oleh `casper` dari `.disk/info` (`casper.log: fatal: The group 'labkita' already exists.`), sehingga sesi live jatuh ke `gnome-initial-setup` dan memicu dialog `"Ada yang salah"` pada Bisect #4.
-   - Pada rilis 0.4, grup sistem diubah menjadi **`labkita-praktikum`** (`scripts/customize.sh` dan `payload/usr/local/sbin/labkita-postinstall`) dan grup `labkita` lama dibersihkan saat mastering Cubic. Hasil nyata di VM: **autologin sesi live `labkita` berhasil** tanpa `gnome-initial-setup`.
+   - Investigasi bisect #1–#4 (manual di WSL) membuktikan bahwa grup sistem `labkita` (`customize.sh:107`) bertabrakan dengan penurunan `USERNAME=labkita` oleh `casper` dari `.disk/info` (`casper.log: fatal: The group 'labkita' already exists.`), sehingga **autologin sesi live gagal** dan jatuh ke `gnome-initial-setup`.
+   - Pada rilis 0.4, grup sistem diubah menjadi **`labkita-praktikum`** (`scripts/customize.sh` dan `payload/usr/local/sbin/labkita-postinstall`) dan grup `labkita` lama dibersihkan saat mastering Cubic. Hasil nyata di VM: **autologin sesi live `labkita` berhasil pulih** tanpa `gnome-initial-setup`. Namun **kegagalan installer GUI tidak ikut pulih oleh fix grup ini**, sehingga penyebab kegagalan installer GUI **belum teridentifikasi** (kandidat tersisa: `.disk/info` diawali `"LabKita"` yang membuat `casper` menurunkan `USERNAME=labkita` belum diuji; prosedur resmi tetap TUI).
    - Integrasi paket bahasa lengkap (`language-pack-id`, `language-pack-gnome-id`, `hunspell-id`, `firefox-locale-id`), locale `id_ID.UTF-8`, zona waktu `Asia/Jakarta` (WIB), dan label rilis `0.4` konsisten di GRUB, `/usr/lib/os-release`, `/etc/lsb-release`, `/etc/labkita-release`, layar sambutan, `casper/install-sources.yaml`, `labkita-check`, serta `labkita-guide`.
 
 2. **Antarmuka Modern Bergaya macOS (100% Bebas Aset Proprietary Apple):**
@@ -80,7 +80,7 @@ Laboratorium komputer kampus sering menghadapi masalah koneksi internet yang lam
 ## 3. Hasil Pengujian & Tolok Ukur Empiris (0.1 vs 0.2 vs 0.3 vs 0.4)
 
 Pengujian empiris dilakukan ulang **setelah instalasi penuh ke disk kosong** pada VMware Workstation dalam **kondisi identik** (VM `labkita-test.vmx`: 2 vCPU, RAM 4096 MB / `3911 MiB` usable, Disk 40 GB SCSI, **5 kali reboot bersih per versi**, pengukuran 20 detik setelah desktop siap).  
-*Catatan variabel:* `0.1` dan `0.2` berjalan pada kernel **`7.0.0-31-generic`**, sedangkan `0.3` dan `0.4` berjalan pada kernel **`7.0.0-43-generic`**.
+*Catatan variabel:* `0.1` dan `0.2` berjalan pada kernel **`7.0.0-31-generic`**, sedangkan `0.3` dan `0.4` berjalan pada kernel **`7.0.0-43-generic`** (berasal dari langkah *downloading and installing security updates* saat instalasi TUI; ISO `0.1`–`0.4` tetap membawa `7.0.0-31-generic`).
 
 | Pengujian | Perintah / Tolok Ukur | LabKita 0.1 | LabKita 0.2 | LabKita 0.3 | LabKita 0.4 (Terinstal) | Status 0.4 |
 | --- | --- | :---: | :---: | :---: | :---: | :---: |
@@ -104,9 +104,10 @@ Pengujian empiris dilakukan ulang **setelah instalasi penuh ke disk kosong** pad
 > Pada 5 kali pengujian identik setelah instalasi per versi, **tidak ada perbedaan yang dapat dibuktikan antarversi (`0.1`, `0.2`, `0.3`, `0.4`), dan tidak ada klaim lebih ringan/lebih cepat untuk versi mana pun**: konsumsi RAM rata-rata `0.4` tercatat **`1.062,6 MiB`** (rentang `1.043–1.075 MiB`; tersedia rata-rata **`2.847,8 MiB`**), saling tumpang tindih dengan `0.3` **`1.058,2 MiB`** (`1.046–1.067`), `0.2` **`1.068,2 MiB`** (`1.058–1.080`), maupun `0.1` **`1.038,2 MiB`** (`1.016–1.056`). Untuk waktu boot, rata-rata `0.4` adalah **`9,185 detik`** (rentang **`8,520–10,713s`**), juga tumpang tindih dengan rentang `0.1` (`8,359–8,676s`), `0.2` (`9,072–9,458s`), dan `0.3` (`8,460–9,014s`), serta terdapat variabel pembeda kernel (`7.0.0-43-generic` pada `0.3`/`0.4` vs `7.0.0-31-generic` pada `0.1`/`0.2`).
 
 > **Temuan Bisect Terkontrol & Keterbatasan ISO 0.4:**  
-> Melalui bisect terkontrol (build manual di WSL), penyebab rusaknya autologin live session dan kegagalan installer GUI pada skenario WSL **terbukti**: bisect #3 lulus penuh, sedangkan bisect #4 (identik dengan #3 + `.disk/info` `"LabKita Linux 0.3 (...)"` + `groupadd --system labkita`) langsung gagal dengan log `casper.log: fatal: The group 'labkita' already exists.`, menjatuhkan sesi live ke `gnome-initial-setup` dan memicu *"Ada yang salah"* di GUI installer. Setelah grup sistem diganti menjadi `labkita-praktikum` dan ISO `0.4` dibangun lewat Cubic:
-> - **Autologin live session `labkita` (`UID 1000`) kini PULIH / LULUS** tanpa `gnome-initial-setup`.
-> - Namun, **installer GUI `ubuntu-desktop-bootstrap` pada ISO `0.4` hasil build Cubic masih gagal** (*"Ada yang salah"* setelah `DEBUG desktop: Inhibiting Gnome session`). Karena bisect #1–#4 dibangun manual di WSL (bukan lewat Cubic), perbedaan lingkungan build Cubic masih menjadi faktor terbuka; oleh karena itu fix GUI hanya diklaim sebatas pemulihan autologin, dan **`subiquity.cmd.tui` tetap ditetapkan sebagai prosedur instalasi resmi**.
+> - **Kegagalan autologin live terbukti disebabkan bentrok grup `'labkita'` dan sudah dipulihkan di 0.4:** melalui bisect terkontrol di WSL, Bisect #3 lulus penuh sedangkan Bisect #4 (= #3 + `.disk/info` `"LabKita Linux 0.3 (...)"` + `groupadd --system labkita`) gagal dengan log `casper.log: fatal: The group 'labkita' already exists.` dan jatuh ke `gnome-initial-setup`. Penggantian grup menjadi `labkita-praktikum` pada ISO `0.4` memulihkan autologin live `labkita` (`UID 1000`).
+> - **Kegagalan installer GUI (`ubuntu-desktop-bootstrap`) TIDAK dipulihkan oleh fix grup & penyebabnya belum teridentifikasi:** pada ISO `0.4` hasil Cubic dengan autologin `labkita` sudah pulih, dialog *"Ada yang salah"* tetap muncul (`DEBUG desktop: Inhibiting Gnome session`).
+> - **Kandidat tersisa (belum diuji):** `.disk/info` yang diawali `"LabKita"` menyebabkan `casper` menurunkan `USERNAME=labkita` (berbeda dari `USERNAME=ubuntu` pada Bisect #3 WSL), serta perbedaan lingkungan build Cubic vs WSL (`custom-live`).
+> - **Prosedur instalasi resmi:** Jalur TUI **`subiquity.cmd.tui`**. (Catatan kernel: `0.1`/`0.2` memakai `7.0.0-31-generic`, sedangkan `0.3`/`0.4` memakai `7.0.0-43-generic` yang diunduh oleh langkah *security updates* saat instalasi TUI.)
 
 *Detail lengkap eksperimen kontrol, bisect #1–#4, dan verifikasi 0.4 tersedia di [`docs/CONTROL-EXPERIMENT.md`](docs/CONTROL-EXPERIMENT.md), bukti VM di [`docs/evidence/`](docs/evidence/), serta matriks uji di [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md).*
 
@@ -132,7 +133,7 @@ Pengujian empiris dilakukan ulang **setelah instalasi penuh ke disk kosong** pad
 5. Buka editor Geany dari dock untuk mulai mengerjakan program C atau Python.
 
 ### C. Prosedur Instalasi Resmi (`subiquity.cmd.tui`) & Akun Praktikan
-Karena installer GUI normal (`ubuntu-desktop-bootstrap`) pada ISO 0.4 build Cubic masih terhenti di dialog *"Ada yang salah"* setelah `Inhibiting Gnome session` (keterbatasan terbuka; jalur TUI tetap prosedur resmi), instalasi ke disk dilakukan melalui terminal live:
+Karena installer GUI normal (`ubuntu-desktop-bootstrap`) pada ISO 0.4 **tidak pulih** oleh fix grup (`labkita-praktikum`) dan **penyebabnya belum teridentifikasi** (kandidat tersisa: `.disk/info` diawali `"LabKita"` yang menurunkan `USERNAME=labkita` belum diuji), **prosedur instalasi resmi adalah jalur TUI** melalui terminal live:
 ```bash
 sudo snap run --shell ubuntu-desktop-bootstrap.subiquity-server -c "subiquity.cmd.tui"
 ```
