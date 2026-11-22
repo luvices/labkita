@@ -656,7 +656,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(Paragraph(
         "• <b>Repositori GitHub Resmi:</b> <font color='#1E3A8A'><u>https://github.com/luvices/labkita</u></font> (memuat seluruh skrip kustomisasi, konfigurasi paket, dokumen pengujian, generator laporan, dan bukti tangkapan layar).<br/>"
         "• <b>Berkas Citra ISO Resmi:</b> <code>labkita-linux-0.4-amd64.iso</code> (Ukuran: 6.520.395.776 bytes / ~6,07 GiB).<br/>"
-        "• <b>Tautan Unduhan ISO:</b> <code>[LINK-DRIVE-ISO]</code> (diisi setelah unggah Google Drive).<br/>"
+        "• <b>Tautan Unduhan ISO:</b> <code>https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing</code><br/>"
         "• <b>Verifikasi SHA256:</b> <code>7ae9e815a02e58ca5f700344541aadba3db47a6b5a15c942c9b0e4587f64b9d4</code><br/>"
         "• <b>Verifikasi MD5:</b> <code>00ea1d333ab0e52b953d7fe3806044ed</code><br/>"
         "• <b>Versi Cubic:</b> <code>2026.09.110-release~202609120048~ubuntu24.04.1</code>",

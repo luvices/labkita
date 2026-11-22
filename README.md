@@ -16,7 +16,7 @@ Proyek ini dikembangkan sebagai luaran **Final Project Mata Kuliah Sistem Operas
 | **Basis Sistem** | Ubuntu 24.04.5 LTS Desktop (amd64) |
 | **Arsitektur** | x86_64 / amd64 |
 | **Nama Berkas ISO** | `labkita-linux-0.4-amd64.iso` |
-| **Tautan Unduhan ISO** | [LINK-DRIVE-ISO] *(diisi manual setelah unggah ke Google Drive)* |
+| **Tautan Unduhan ISO** | https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing |
 | **Ukuran Berkas** | 6.520.395.776 bytes (~6,07 GiB / 6,52 GB) |
 | **SHA256 Checksum** | `7ae9e815a02e58ca5f700344541aadba3db47a6b5a15c942c9b0e4587f64b9d4` |
 | **MD5 Checksum** | `00ea1d333ab0e52b953d7fe3806044ed` |
@@ -24,7 +24,7 @@ Proyek ini dikembangkan sebagai luaran **Final Project Mata Kuliah Sistem Operas
 | **Status Verifikasi** | Teruji di VM (`md5sum` loop ISO `957/957 OK`, `Get-FileHash` Windows identik, autologin live `labkita` **berhasil** tanpa `gnome-initial-setup`, `labkita-check` `23/23` + uji baca sandbox Firefox Snap lulus, `labkita-postinstall praktikum` dengan grup `labkita-praktikum` lulus; **installer GUI normal `ubuntu-desktop-bootstrap` masih gagal dialog *"Ada yang salah"* di ISO build Cubic** sehingga prosedur instalasi resmi memakai jalur TUI `subiquity.cmd.tui` — lihat [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md) & [`docs/CONTROL-EXPERIMENT.md`](docs/CONTROL-EXPERIMENT.md)) |
 
 ### Produk / Unduhan & Verifikasi Integritas Berkas
-- **Unduhan ISO 0.4:** `[LINK-DRIVE-ISO]` (`labkita-linux-0.4-amd64.iso`, ukuran `6.520.395.776 bytes`)
+- **Unduhan ISO 0.4:** `https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing` (`labkita-linux-0.4-amd64.iso`, ukuran `6.520.395.776 bytes`)
 - **Prosedur Instalasi Resmi:** Karena installer GUI (`ubuntu-desktop-bootstrap`) masih gagal pada ISO hasil Cubic (*keterbatasan terbuka*), pemasangan permanen ke disk dijalankan lewat jalur TUI resmi **`subiquity.cmd.tui`** (lihat Bagian 4.C).
 - Sebelum mengimpor atau membakar ISO ke media instalasi, lakukan verifikasi integritas berkas:
 
