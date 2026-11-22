@@ -99,7 +99,7 @@ def main():
         if not ok:
             failures.append(label)
 
-    print("=== Pemeriksaan Kesiapan LabKita Linux 0.4 ===")
+    print("=== Pemeriksaan Kesiapan LabKita Linux 0.5 ===")
 
     # 1. Pemeriksaan Toolchain & Aplikasi Dasar
     for command in ("python3", "gcc", "g++", "make", "geany", "git", "man"):

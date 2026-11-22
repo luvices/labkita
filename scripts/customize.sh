@@ -78,12 +78,12 @@ fi
 
 cat > /etc/labkita-release <<'EOF'
 NAME="LabKita Linux"
-VERSION="0.4"
+VERSION="0.5"
 BASE="Ubuntu 24.04 LTS"
 PURPOSE="Praktikum pemrograman dasar offline"
 EOF
 cat > /etc/motd <<'EOF'
-LabKita Linux 0.4 | Praktikum pemrograman offline (Bahasa Indonesia)
+LabKita Linux 0.5 | Praktikum pemrograman offline (Bahasa Indonesia)
 Panduan: Jalankan 'labkita-guide' atau buka menu 'Panduan LabKita'
 Uji kesiapan: labkita-check
 Ruang sementara: /run/labkita (RAM disk sementara)
@@ -91,10 +91,10 @@ EOF
 
 # Perbarui identitas tampil di os-release & lsb-release tanpa mengubah ID=ubuntu / VERSION_ID=24.04
 if [[ -f /usr/lib/os-release ]]; then
-    sed -i 's/^PRETTY_NAME=.*/PRETTY_NAME="LabKita Linux 0.4 (Noble Numbat)"/' /usr/lib/os-release
+    sed -i 's/^PRETTY_NAME=.*/PRETTY_NAME="LabKita Linux 0.5 (Noble Numbat)"/' /usr/lib/os-release
 fi
 if [[ -f /etc/lsb-release ]]; then
-    sed -i 's/^DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION="LabKita Linux 0.4"/' /etc/lsb-release
+    sed -i 's/^DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION="LabKita Linux 0.5"/' /etc/lsb-release
 fi
 
 install -d -m 0755 /etc/dconf/profile
