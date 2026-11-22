@@ -55,15 +55,21 @@ Bukti seluruh 15 screenshot pengukuran (`5x` per versi) tersedia di [`docs/evide
    - `subiquity-server` berhasil memindai disk `/dev/sda`, memuat `/cdrom/casper/install-sources.yaml`, dan masuk ke status `ApplicationState.WAITING` (`error: null`).
    - Namun frontend GTK/Flutter `ubuntu-desktop-bootstrap` (`rev 680`, versi `24.04.5.1`) tetap menampilkan dialog *"Ada yang salah"* (`Tampilkan log` hanya memperlihatkan `subiquity_event` sampai `subiquity/Late/apply_autoinstall_config`). Dari `ubuntu_bootstrap.log`, `journalctl -b`, dan stderr langsung di VM tercatat:
      - `ubuntu_bootstrap.log` berhenti setelah `state: null => WAITING` dan `DEBUG desktop: Inhibiting Gnome session`.
-     - `journalctl -b` dan stderr mencatat: `im-ibus.so: undefined symbol: ibus_input_context_set_post_process_key_event`, `libEGL warning: DRI3 error: Could not get DRI3 device` (tanpa akselerasi GL DRI3 di SVGA virtual), `atk-bridge: get_device_events_reply: unknown signature`, serta saat penutupan `CRITICAL **: void fl_view_set_textures(FlView *, GdkGLContext *, GPtrArray *): assertion 'FL_IS_VIEW(self)' failed`.
-     - Pada saat yang sama, kegagalan autologin live session membuat `gnome-initial-setup` membuat user live tanpa `NOPASSWD:ALL` (`sudo: terminal diperlukan untuk membaca kata sandi` saat bootstrap keluar), dan 3 entri opsional `nextcloud`, `rocketchat-server`, `mosquitto` sempat mengembalikan `HTTP 500` saat kueri snapd (namun `SnapList/loader` tetap berstatus `SUCCESS`).
-     - Akibatnya, instalasi ke disk tetap mengandalkan `subiquity.cmd.tui` sebagai fallback yang sukses penuh.
+     - `journalctl -b` dan stderr mencatat `im-ibus.so: undefined symbol: ibus_input_context_set_post_process_key_event`, `libEGL warning: DRI3 error: Could not get DRI3 device`, `atk-bridge: get_device_events_reply: unknown signature`, serta saat penutupan `fl_view_set_textures` (catatan: warning `DRI3` dan `im-ibus.so` juga muncul di ISO Ubuntu asli yang **sukses**, sehingga bukan penyebab kegagalan).
+     - Pada saat yang sama, bentrok `.disk/info` (`LabKita Linux 0.3`) + `groupadd --system labkita` di `scripts/customize.sh` menggagalkan pembuatan user autologin `casper` (`uid 1000`), sehingga sesi live jatuh ke `gnome-initial-setup` (user dibuat manual tanpa `NOPASSWD:ALL`).
+     - Akibatnya, instalasi ke disk resmi menggunakan jalur TUI **`subiquity.cmd.tui`**.
 
-## 4. Eksperimen Kontrol Installer GUI, Kernel, dan Spot-check
+## 4. Eksperimen Kontrol Installer GUI, Perbandingan ISO, & Bisect 3 Build
 
-Ringkasan (detail & bukti di [`CONTROL-EXPERIMENT.md`](CONTROL-EXPERIMENT.md)):
+Ringkasan (detail & bukti lengkap di [`CONTROL-EXPERIMENT.md`](CONTROL-EXPERIMENT.md)):
 
-- **Ubuntu 24.04.5.1 asli di VMX yang sama: installer GUI selesai.** LabKita 0.3: **gagal** pada 3D acceleration mati **dan** hidup. 3D bukan penyebab. **Penyebab belum ditemukan.**
+- **Kontrol Ubuntu 24.04.5.1 asli (VMX identik): installer GUI selesai.** LabKita 0.3: **gagal** baik dengan 3D acceleration mati **maupun** hidup, sehingga 3D acceleration bukan penyebab.
+- **Perbandingan ISO Ubuntu asli vs LabKita 0.3:** `/etc/gdm3/custom.conf`, `/etc/casper.conf`, `/etc/sudoers.d/casper`, `casper/initrd` (`SHA256` identik), 13 snap seed, dan `minimal.standard.live.manifest` (`115` paket) **identik**. Perbedaan nyata ada pada tabrakan `.disk/info` (`"LabKita Linux 0.3"`) + `groupadd --system labkita`, `casper/install-sources.yaml` (2 entri `langpack` vs 1 entri `locale_support: none`), `minimal.manifest` (`+280` paket), `grub.cfg` (`locale=id_ID.UTF-8`), serta lapisan live (`etc/dconf/*`, symlink `etc/default/locale -> ../locale.conf`, `snapd/state.json`).
+- **Bisect bertahap (maksimal 3 build, 3D mati):**
+  - Build #1 (repack `minimal.standard.live.squashfs` tanpa `customize.sh`): **LULUS** (`10-bisect1-repack-nocustomize.png`).
+  - Build #2 (+ `config/packages.txt`, locale `id_ID.UTF-8`, `grub.cfg`, 1-entri `install-sources.yaml`): **LULUS** (`11-bisect2-pkgs-locale-yaml.png`).
+  - Build #3 (+ `payload/` tema/ikon `WhiteSur`, wallpaper, `dconf`, `labkita-runtime.service`, `os-release`/`lsb-release`, tanpa `.disk/info` `"LabKita..."` & `groupadd labkita`): **LULUS** (`12-bisect3-theme-dconf-systemd-pass.png`).
+  - **Keterbatasan terbuka:** Dalam batas 3 build, pemicu langsung dialog *"Ada yang salah"* belum terpicu ulang (kandidat tersisa: bentrok `.disk/info` + `groupadd labkita` ke `gnome-initial-setup`, atau delta lapisan live Cubic). ISO 0.3 tetap tidak diubah; instalasi resmi memakai **`subiquity.cmd.tui`**.
 - Kernel 0.2 `-31` (19 Nov) vs `-43` (16 Nov): ISO selalu berisi `-31`; `-43` kemungkinan berasal dari langkah update online installer yang berjalan pada 16 Nov tetapi tidak tampak pada 19 Nov (alasannya tidak terbukti).
 - Spot-check 9 screenshot benchmark: tidak ada selisih angka terhadap tabel.
 - Kesimpulan benchmark: **tidak ada perbedaan yang dapat dibuktikan** antara 0.3 dan 0.1/0.2.

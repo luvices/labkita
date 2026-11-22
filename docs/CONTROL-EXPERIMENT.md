@@ -64,3 +64,35 @@ Tidak ada selisih angka pada 9 screenshot yang dicek (6 run lain tidak dicek ula
 
 - 0.3 vs 0.1 dan 0.3 vs 0.2: **tidak ada perbedaan yang dapat dibuktikan** (rentang RAM tumpang tindih dengan 0.1 dan 0.2; kernel berbeda `-43` vs `-31`, dan penyebab perbedaan kernel adalah kondisi instalasi, bukan LabKita).
 - 0.2 vs 0.1 (sama-sama kernel `-31`): pada 5 run, 0.2 lebih tinggi pada RAM (1058–1080 vs 1016–1056 MiB) dan boot (9,072–9,458 vs 8,359–8,676 s) tanpa tumpang tindih. Ini hanya satu VM, n=5, dan dengan desktop berbeda; **tidak diklaim sebagai sebab (mis. tema WhiteSur) dan tidak ada klaim "lebih cepat/ringan" untuk versi mana pun**.
+
+## 6. Perbandingan ISO Ubuntu 24.04.5.1 Asli vs LabKita 0.3
+
+Dilakukan diff isi ISO dan squashfs antara Ubuntu `24.04.5.1` asli dan `labkita-linux-0.3-amd64.iso` tanpa build baru:
+
+| Berkas / Lapisan | Hasil Diff | Status Kandidat |
+| :-- | :-- | :-- |
+| `/etc/gdm3/custom.conf` | Identik (`#AutomaticLogin*` tetap dikomentari) | Bukan penyebab langsung perbedaan |
+| `/etc/casper.conf` (lapisan live) | Identik (`USERNAME="ubuntu"`, `HOST="ubuntu"`, `# export FLAVOUR="Ubuntu"`) | Tidak diubah `customize.sh` |
+| `/etc/sudoers.d/casper` & `casper/initrd` | Identik (`initrd` vs `initrd.gz` SHA256 `26edba6a...`) | Identik byte-for-byte |
+| `/var/lib/snapd/seed/seed.yaml` (live) | 13 snap seed identik (termasuk `ubuntu-desktop-bootstrap_680`); hanya pemformatan YAML (`1182` vs `1130` B) | Minimal layer 0.3 juga memuat `thunderbird_1255.snap` |
+| `minimal.standard.live.manifest` | `115` vs `115` paket (0 selisih) | Identik |
+| `.disk/info` + `groupadd --system labkita` | `.disk/info` 0.3 = `"LabKita Linux 0.3 (20261117)"`; `scripts/casper` menurunkan `FLAVOUR=labkita` → `USERNAME=labkita`, lalu bertabrakan dengan grup sistem `labkita` (`customize.sh:107`) sehingga `user-setup-apply` gagal membuat UID `1000` dan GDM jatuh ke `gnome-initial-setup` | **Kandidat kuat penyebab gagal autologin & sesi non-standar installer** |
+| `casper/install-sources.yaml` | Ubuntu: 2 entri (`langpack`, `preinstalled_langs`). LabKita 0.3: 1 entri (`ubuntu-desktop-minimal`, `locale_support: none`) + symlink `minimal.standard.squashfs -> minimal.squashfs` | **Kandidat perubahan konfigurasi installer** |
+| `minimal.manifest` | `1490` vs `1768` paket (`+280` gabungan `minimal.standard` + `config/packages.txt`, 4 pembaruan minor `glib2.0`) | **Kandidat perubahan paket** |
+| `boot/grub/grub.cfg` & lapisan live | Tambahan cmdline `locale=id_ID.UTF-8 keyboard-configuration/layoutcode=us console-setup/layoutcode=us`; lapisan live 0.3 juga memuat `etc/dconf/*`, `etc/default/keyboard`, symlink `etc/default/locale -> ../locale.conf`, serta `var/lib/snapd/state.json` berbeda (`369747` vs `235001` B) | **Kandidat perubahan boot, locale, & dconf** |
+
+## 7. Eksperimen Bisect Bertahap (Maksimal 3 Build)
+
+Seluruh build uji dijalankan pada VMX identik (`labkita-test.vmx`: `mks.enable3d = "FALSE"`, disk kosong 40 GB) di atas dasar Ubuntu 24.04.5.1. ISO final `labkita-linux-0.3-amd64.iso` **tidak diubah**.
+
+| Build | Lapisan Kustomisasi yang Diuji | Hasil Live Boot & Installer GUI | Bukti |
+| :-- | :-- | :-- | :-- |
+| **Bisect #1** | Repack `minimal.standard.live.squashfs` tanpa `customize.sh` + regenerasi `md5sum.txt` + `xorriso` | **LULUS** — autologin `ubuntu`, installer GUI mencapai *Choose your language:* tanpa error | `10-bisect1-repack-nocustomize.png` |
+| **Bisect #2** | Bisect #1 + 19 paket `config/packages.txt` + locale `id_ID.UTF-8` (`/etc/default/locale`, `Asia/Jakarta`, `grub.cfg` `locale=id_ID.UTF-8`) + 1-entri `install-sources.yaml` (`locale_support: none`) + symlink `minimal.standard.squashfs -> minimal.squashfs` (tanpa `.disk/info` LabKita / `groupadd labkita` / tema) | **LULUS** — autologin `ubuntu`, installer GUI mencapai *Pilih bahasa Anda: Bahasa Indonesia* | `11-bisect2-pkgs-locale-yaml.png` |
+| **Bisect #3** | Bisect #2 + seluruh `payload/` (tema/ikon/kursor `WhiteSur`, wallpaper LabKita, `etc/dconf/db/local.d/20-labkita`, `dconf update`, `labkita-runtime.service`, `/etc/labkita-release`, `/etc/os-release` `PRETTY_NAME`, `/etc/lsb-release`, `/etc/skel/*`), tetap tanpa `.disk/info` `"LabKita..."` dan tanpa `groupadd --system labkita` | **LULUS** — autologin `ubuntu` dengan wallpaper & tema LabKita aktif, installer GUI mencapai *Pilih bahasa Anda: Bahasa Indonesia* tanpa error | `12-bisect3-theme-dconf-systemd-pass.png` |
+
+### Kesimpulan Bisect & Keterbatasan Terbuka
+
+- **Terbukti tidak menyebabkan crash GUI installer (saat autologin `casper` utuh):** mekanisme repack `squashfs`/`xorriso`, pemasangan paket `config/packages.txt`, konfigurasi locale `id_ID.UTF-8` + `grub.cfg`, `install-sources.yaml` 1-entri (`locale_support: none`), tema/ikon `WhiteSur` + `dconf`, serta layanan `labkita-runtime.service`.
+- **Keterbatasan terbuka (batas maksimal 3 build tercapai):** Error `"Ada yang salah"` pada `ubuntu-desktop-bootstrap` **belum terpicu ulang** dalam 3 build bisect di atas. Delta yang belum diisolasi dengan build ke-4 antara `Bisect #3` dan `labkita-linux-0.3-amd64.iso` adalah: (1) tabrakan `.disk/info` (`"LabKita Linux 0.3"`) + `groupadd --system labkita` yang sudah terbukti di source `casper` menggagalkan autologin UID `1000` sehingga sesi jatuh ke `gnome-initial-setup`, serta (2) delta spesifik hasil repack Cubic pada `minimal.standard.live.squashfs` (`etc/default/locale -> ../locale.conf`, `etc/dconf/profile/ibus`, `var/lib/snapd/state.json`).
+- **Prosedur instalasi resmi LabKita Linux 0.3:** Karena ISO 0.3 tetap tidak diubah, instalasi resmi ke disk dilakukan melalui jalur teks **`subiquity.cmd.tui`** (`sudo /snap/ubuntu-desktop-bootstrap/current/bin/subiquity/subiquity/cmd/tui.py` atau `sudo subiquity.cmd.tui`).
