@@ -100,9 +100,11 @@ Pengujian empiris dilakukan ulang **setelah instalasi penuh ke disk kosong** pad
 | **Ruang Kerja Tmpfs** | `/run/labkita` (`1777`) | Mode `1777` | Mode `1777` | **Mode `1777` aktif (`noexec` pada `/run`)** | **LULUS** |
 
 > **Catatan Analisis Kinerja Empiris (Tanpa Klaim "Lebih Ringan/Cepat"):**  
-> Pada 5 kali pengujian identik setelah instalasi per versi, **LabKita 0.3 tidak lebih ringan maupun lebih cepat secara konsisten dibanding 0.1**: konsumsi RAM rata-rata `0.3` tercatat **`1.058,2 MiB`** (rentang `1.046–1.067 MiB`) dan `0.2` **`1.068,2 MiB`** (`1.058–1.080 MiB`), dibanding `0.1` **`1.038,2 MiB`** (`1.016–1.056 MiB`) karena tambahan tema WhiteSur & ekstensi dock (dengan rentang `0.3` saling tumpang tindih dengan `0.1` dan `0.2`). Untuk waktu boot, rata-rata `0.3` adalah **`8,808 detik`** (`8,460s–9,014s`, tumpang tindih dengan `0.1` **`8,460s`** / `8,359s–8,676s`); meski 5 run `0.3` seluruhnya berada di bawah rentang `0.2` (`9,317s` / `9,072s–9,458s`), **perbedaan versi kernel (`7.0.0-43-generic` pada `0.3` vs `7.0.0-31-generic` pada `0.1`/`0.2`) menjadi variabel pembeda**, sehingga selisih tersebut tidak diklaim sebagai hasil optimasi LabKita. Sisa RAM tersedia `0.3` rata-rata **`2.852,0 MiB`** (~`2,79 GiB`) tetap memadai untuk praktikum.
+> Pada 5 kali pengujian identik setelah instalasi per versi, **tidak ada perbedaan yang dapat dibuktikan antara 0.3 dan 0.1/0.2, dan tidak ada klaim lebih ringan/lebih cepat untuk versi mana pun**: konsumsi RAM rata-rata `0.3` tercatat **`1.058,2 MiB`** (rentang `1.046–1.067 MiB`) dan `0.2` **`1.068,2 MiB`** (`1.058–1.080 MiB`), dibanding `0.1` **`1.038,2 MiB`** (`1.016–1.056 MiB`) (dengan rentang `0.3` saling tumpang tindih dengan `0.1` dan `0.2`). Untuk waktu boot, rata-rata `0.3` adalah **`8,808 detik`** (`8,460s–9,014s`, tumpang tindih dengan `0.1` **`8,460s`** / `8,359s–8,676s`); meski 5 run `0.3` seluruhnya berada di bawah rentang `0.2` (`9,317s` / `9,072s–9,458s`), **perbedaan versi kernel (`7.0.0-43-generic` pada `0.3` vs `7.0.0-31-generic` pada `0.1`/`0.2`) menjadi variabel pembeda**, sehingga selisih tersebut tidak diklaim sebagai hasil optimasi LabKita. Sisa RAM tersedia `0.3` rata-rata **`2.852,0 MiB`** (~`2,79 GiB`) tetap memadai untuk praktikum.
 
-*Dokumentasi lengkap hasil pengujian, kegagalan nyata, dan 28 tangkapan layar VM asli tersedia di [`docs/evidence/`](docs/evidence/) (termasuk [`docs/evidence/benchmarks/`](docs/evidence/benchmarks/)) dan [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md).*
+*Eksperimen kontrol installer GUI (Ubuntu asli sukses; LabKita 0.3 gagal pada 3D mati maupun hidup; 3 build bisect bertahap—repack tanpa `customize.sh`, paket+locale+YAML, serta tema `WhiteSur`/`dconf`/`labkita-runtime.service` tanpa bentrok `.disk/info`+`groupadd labkita`—ketiganya lulus sehingga pemicu langsung `"Ada yang salah"` tetap menjadi keterbatasan terbuka), penjelasan kernel `-31` vs `-43`, dan spot-check angka: [`docs/CONTROL-EXPERIMENT.md`](docs/CONTROL-EXPERIMENT.md).*
+
+*Dokumentasi lengkap hasil pengujian, kegagalan nyata, dan tangkapan layar VM asli tersedia di [`docs/evidence/`](docs/evidence/) (termasuk [`docs/evidence/benchmarks/`](docs/evidence/benchmarks/) dan [`docs/evidence/control/`](docs/evidence/control/)) serta [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md).*
 
 ---
 
@@ -113,7 +115,7 @@ Pengujian empiris dilakukan ulang **setelah instalasi penuh ke disk kosong** pad
 - **CPU:** Minimal 2 vCPU
 - **RAM:** Minimal 4096 MB (4 GB)
 - **Penyimpanan:** Minimal 25 GB
-- **Display:** Akselerasi 3D aktif, resolusi disarankan minimal 1280×800
+- **Display:** Resolusi disarankan minimal 1280×800 (akselerasi 3D opsional)
 
 ### B. Menjalankan Live Session
 1. Buat VM baru dan pasang file `labkita-linux-0.3-amd64.iso` pada drive CD/DVD virtual.
@@ -125,8 +127,12 @@ Pengujian empiris dilakukan ulang **setelah instalasi penuh ke disk kosong** pad
    ```
 5. Buka editor Geany dari dock untuk mulai mengerjakan program C atau Python.
 
-### C. Menyiapkan Akun Praktikan (Instalasi Fisik Lab)
-Jika sistem dipasang permanen pada PC laboratorium, siapkan akun mahasiswa dengan:
+### C. Prosedur Instalasi Resmi (`subiquity.cmd.tui`) & Akun Praktikan
+Karena installer GUI normal (`ubuntu-desktop-bootstrap`) pada ISO 0.3 masih terhenti di dialog *"Ada yang salah"* (keterbatasan terbuka; pemicu langsung belum terisolasi dalam 3 build bisect), prosedur instalasi resmi ke disk adalah jalur TUI:
+```bash
+sudo /snap/ubuntu-desktop-bootstrap/current/bin/subiquity/subiquity/cmd/tui.py
+```
+Setelah instalasi selesai dan reboot ke sistem terinstal, siapkan akun mahasiswa dengan:
 ```bash
 sudo labkita-postinstall praktikan
 ```

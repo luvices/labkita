@@ -403,7 +403,7 @@ def create_deck():
 
     benchmarks = [
         ("Konsumsi RAM Rata-rata & Rentang", "free -m (VM 4 GB / 3.911 MiB)", "0.1 [7.0.0-31]: 1.038,2 MiB avg (1.016–1.056)\n0.2 [7.0.0-31]: 1.068,2 MiB avg (1.058–1.080)\n0.3 [7.0.0-43]: 1.058,2 MiB avg (1.046–1.067)\nSisa RAM 0.3 avg: 2.852,0 MiB (~2,79 GiB)"),
-        ("Waktu Booting Rata-rata & Rentang", "systemd-analyze time (5x Reboot)", "0.1 [7.0.0-31]: 8,460s avg (8,359–8,676s)\n0.2 [7.0.0-31]: 9,317s avg (9,072–9,458s)\n0.3 [7.0.0-43]: 8,808s avg (8,460–9,014s)\nCatatan: Tidak diklaim lebih cepat/ringan (rentang overlap & beda kernel)."),
+        ("Waktu Booting Rata-rata & Rentang", "systemd-analyze time (5x Reboot)", "0.1 [7.0.0-31]: 8,460s avg (8,359–8,676s)\n0.2 [7.0.0-31]: 9,317s avg (9,072–9,458s)\n0.3 [7.0.0-43]: 8,808s avg (8,460–9,014s)\nKesimpulan: tidak ada perbedaan yang dapat dibuktikan (overlap & beda kernel)."),
         ("Variabel Kernel & Layanan Boot", "uname -r & systemd-analyze blame", "Kernel 0.1 & 0.2: 7.0.0-31-generic | 0.3: 7.0.0-43-generic\nplymouth-quit-wait: 2,18–2,85s di seluruh versi\nsnapd.seeded (~0,98–1,22s) & snapd.service (~0,82–1,08s)\ngraphical.target avg: 5,180s (0.1) | 5,918s (0.2) | 5,532s (0.3)"),
         ("Identitas & Kapasitas Media ISO 0.3", "Cubic 2026.09.110 & SHA256", "Berkas: labkita-linux-0.3-amd64.iso\nUkuran: 6.520.272.896 bytes (~6,07 GiB / 6,52 GB)\nSHA256: 21f38dc158a010e6f80920274dd7b8cd...f045387\nmd5sum.txt: 957/957 OK (loop ISO) & casper-md5check pass")
     ]
@@ -473,9 +473,9 @@ def create_deck():
     p.font.color.rgb = c_accent
     p.space_after = Pt(10)
     sol_pts = [
-        "Meski casper-md5check 'pass' & subiquity-server mencapai state WAITING (error: null), GUI Flutter ubuntu-desktop-bootstrap tetap menampilkan 'Ada yang salah'.",
-        "Log ubuntu_bootstrap.log terhenti setelah 'Inhibiting Gnome session'; journalctl/stderr mencatat error GTK/Flutter (DRI3, im-ibus.so undefined symbol, fl_view_set_textures).",
-        "Fallback subiquity.cmd.tui tetap menuntaskan partisi LVM dan instalasi 0.3 ke disk 40 GB dengan mulus."
+        "Kontrol ISO Ubuntu 24.04.5.1 asli di VMX identik (3D mati) menyelesaikan instalasi GUI dengan sukses; LabKita 0.3 tetap gagal pada 3D mati dan 3D hidup — kegagalan berasal dari kustomisasi LabKita, bukan VMware.",
+        "Pada LabKita 0.3, sesi live jatuh ke gnome-initial-setup akibat bentrok .disk/info + groupadd labkita; uji bisect 3 build (repack, paket+locale+YAML, tema/dconf/systemd tanpa bentrok grup) ketiganya lulus, sehingga pemicu 'Ada yang salah' dicatat sebagai keterbatasan terbuka.",
+        "Jalur TUI subiquity.cmd.tui menuntaskan partisi LVM & instalasi 0.3 ke disk 40 GB dengan mulus sebagai prosedur resmi."
     ]
     for s in sol_pts:
         p = tf2.add_paragraph()
@@ -573,8 +573,8 @@ def create_deck():
     concls = [
         "Produk Terwujud: ISO labkita-linux-0.3-amd64.iso (~6,07 GiB, SHA256 21f38dc1...) terverifikasi md5sum 957/957 OK & terinstal via subiquity TUI.",
         "Perbaikan 0.3 Terbukti: ~/Dokumen/Panduan-LabKita terbaca langsung di Firefox Snap, labkita-check uji baca Snap OK, printf -- postinstall & label 0.3 tuntas.",
-        "Benchmark 5x & Variabel Kernel: RAM avg 1.058,2 MiB (0.3) vs 1.038,2 (0.1) & 1.068,2 (0.2); boot avg 8,808s (7.0.0-43) vs 8,460s (0.1) & 9,317s (0.2, 7.0.0-31).",
-        "Transparansi Jujur: Kegagalan GUI installer ('Ada yang salah') & live autologin tetap dicatat apa adanya tanpa klaim lebih cepat/ringan."
+        "Benchmark 5x & Variabel Kernel: RAM avg 1.058,2 MiB (0.3) vs 1.038,2 (0.1) & 1.068,2 (0.2); boot avg 8,808s (7.0.0-43) vs 8,460s (0.1) & 9,317s (0.2, 7.0.0-31) — tidak ada perbedaan yang dapat dibuktikan.",
+        "Transparansi Jujur: Installer GUI gagal akibat kustomisasi LabKita (kontrol Ubuntu asli lulus; 3D bukan penyebab); instalasi resmi memakai subiquity.cmd.tui, tanpa klaim lebih cepat/ringan."
     ]
     for c in concls:
         p = tf.add_paragraph()

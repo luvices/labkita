@@ -15,7 +15,7 @@
 | **3. Uji Mandiri & Uji Baca Snap (`labkita-check`)** | 01:30 – 02:15 (45s) | Terminal eksekusi `labkita-check` & `labkita-guide` Firefox Snap | Pembuktian `labkita-check` menguji lokasi non-dotfolder `~/Dokumen/Panduan-LabKita` dan pembacaan nyata `snap run --shell firefox`, lalu membuka panduan langsung di GUI Firefox Snap. |
 | **4. Uji Offline Total & Eksekusi Program** | 02:15 – 03:00 (45s) | `nmcli networking off`, kompilasi C & Python | Mematikan jaringan VM secara total, membuktikan kompilasi GCC (`~/Praktikum`) dan Python multiproses (`processes.py`) berjalan 100% luring, serta tmpfs `/run/labkita`. |
 | **5. Keamanan & Fix `labkita-postinstall`** | 03:00 – 03:50 (50s) | `sudo labkita-postinstall praktikan`, `id`, `stat`, `ls` | Pembuatan akun praktikan mulus tanpa error `printf --`, pembuktian izin privat `0700` dan isolasi non-sudo. |
-| **6. Benchmark 5x (0.1 vs 0.2 vs 0.3) & Penutup** | 03:50 – 04:30 (40s) | `uname -r`, `free -m`, `systemd-analyze time`, Slide Penutup | Menunjukkan rata-rata & rentang 5x pengukuran RAM (`1.038,2` / `1.068,2` / `1.058,2 MiB`) dan boot (`8,460s` / `9,317s` / `8,808s`), perbedaan kernel (`7.0.0-31` vs `7.0.0-43`), dan kesimpulan jujur. |
+| **6. Benchmark 5x (0.1 vs 0.2 vs 0.3) & Penutup** | 03:50 – 04:30 (40s) | `uname -r`, `free -m`, `systemd-analyze time`, Slide Penutup | Menunjukkan rata-rata & rentang 5x pengukuran RAM (`1.038,2` / `1.068,2` / `1.058,2 MiB`) dan boot (`8,460s` / `9,317s` / `8,808s`), perbedaan kernel (`7.0.0-31` vs `7.0.0-43`), dan kesimpulan: tidak ada perbedaan yang dapat dibuktikan. |
 
 ---
 
@@ -27,7 +27,7 @@
   - Tampilkan VMware Workstation menyala, memilih *"Coba atau Pasang LabKita Linux 0.3 (Bahasa Indonesia)"* di GRUB.
 - **Voiceover:**
   > *"Halo semuanya! Di video demonstrasi Final Project Sistem Operasi kali ini, kelompok kami mempresentasikan **LabKita Linux versi 0.3**, distribusi berbasis Ubuntu 24.04.5 LTS untuk praktikum pemrograman dasar tanpa koneksi internet.*  
-  > *Pada rilis 0.3 ini, seluruh label rilis telah diperbarui menjadi 0.3 dan manifest `md5sum.txt` telah diregenerasi sehingga `casper-md5check` lolos 100%. Secara jujur kami juga melaporkan bahwa di VM uji, sesi live masih membuka `gnome-initial-setup` dan installer GUI `ubuntu-desktop-bootstrap` tetap berhenti di dialog 'Ada yang salah', sehingga instalasi ke disk dijalankan melalui jalur fallback `subiquity.cmd.tui`."*
+  > *Pada rilis 0.3 ini, seluruh label rilis telah diperbarui menjadi 0.3 dan manifest `md5sum.txt` telah diregenerasi sehingga `casper-md5check` lolos 100%. Berdasarkan uji kontrol menggunakan ISO Ubuntu 24.04.5.1 asli yang berhasil di VM identik (dengan 3D mati), kegagalan installer GUI `ubuntu-desktop-bootstrap` ('Ada yang salah') berasal dari kustomisasi LabKita, bukan karena VMware. Uji bisect 3 build bertahap (tanpa bentrok grup `labkita`) lulus seluruhnya sehingga pemicu langsung error masih menjadi keterbatasan terbuka; sesi live 0.3 juga membuka `gnome-initial-setup`, sehingga instalasi resmi ke disk dijalankan melalui `subiquity.cmd.tui`."*
 
 ---
 
@@ -100,7 +100,7 @@
   - Tampilkan slide perbandingan 5x run per versi (`0.1`, `0.2`, `0.3`) dan slide identitas tim (Dafa Zahran, Rafly Fauzi Pratama, Muhammad Ilham Rizky, Vadien Athallah Lukman) beserta tautan repositori `https://github.com/luvices/labkita`.
 - **Voiceover:**
   > *"Terakhir, dari 5 kali pengukuran ulang di VM yang sama setelah instalasi penuh: RAM rata-rata 0.3 tercatat 1.058,2 MiB (rentang 1.046–1.067 MiB), dibanding 0.1 (1.038,2 MiB; 1.016–1.056 MiB) dan 0.2 (1.068,2 MiB; 1.058–1.080 MiB). Waktu boot total 0.3 rata-rata 8,808 detik (8,460–9,014s), dibanding 0.1 (8,460s; 8,359–8,676s) dan 0.2 (9,317s; 9,072–9,458s).*  
-  > *Perlu dicatat bahwa 0.3 menggunakan kernel `7.0.0-43-generic` sedangkan 0.1 dan 0.2 memakai `7.0.0-31-generic`, sehingga tidak ada klaim 'lebih cepat' atau 'lebih ringan'. Dengan sisa RAM ~2,85 GiB, LabKita Linux 0.3 siap dipakai praktikum offline. Terima kasih!"*
+  > *Perlu dicatat bahwa 0.3 berjalan di kernel `7.0.0-43-generic` sedangkan 0.1 dan 0.2 di `7.0.0-31-generic` akibat perbedaan langkah update online saat instalasi, dan rentang pengukuran saling tumpang tindih — sehingga **tidak ada perbedaan yang dapat dibuktikan** dan tidak ada klaim 'lebih cepat' atau 'lebih ringan'. Dengan sisa RAM ~2,85 GiB, LabKita Linux 0.3 siap dipakai praktikum offline. Terima kasih!"*
 
 ---
 
