@@ -24,8 +24,8 @@ if [[ -e /home/$account || -L /home/$account ]]; then
     exit 2
 fi
 
-getent group labkita >/dev/null || groupadd --system labkita
-useradd --create-home --user-group --shell /bin/bash --groups labkita "$account"
+getent group labkita-praktikum >/dev/null || groupadd --system labkita-praktikum
+useradd --create-home --user-group --shell /bin/bash --groups labkita-praktikum "$account"
 chmod 0700 "/home/$account"
 
 # Salin materi panduan (lokasi non-dotfolder lolos sandbox Snap) dan contoh kode ke ruang kerja pengguna
