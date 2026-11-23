@@ -61,7 +61,7 @@ def create_deck():
     p.font.color.rgb = c_accent
 
     p = tf1.add_paragraph()
-    p.text = "LabKita Linux 0.4"
+    p.text = "LabKita Linux 0.5"
     p.font.size = Pt(44)
     p.font.bold = True
     p.font.color.rgb = c_white
@@ -186,14 +186,14 @@ def create_deck():
     # SLIDE 4: ARSITEKTUR & ALUR KERJA BUILD
     # -------------------------------------------------------------
     s4 = prs.slides.add_slide(blank_layout)
-    add_header(s4, "Arsitektur & Alur Kerja Pembuatan (Cubic Pipeline)")
+    add_header(s4, "Arsitektur & Alur Kerja Build 0.5 (WSL Pipeline, Tag v0.5-iso)")
 
     steps = [
         ("Step 1: Sumber Resmi", "Ubuntu 24.04.5 LTS Desktop amd64 ISO resmi diverifikasi integritas SHA256."),
-        ("Step 2: Ekstraksi Cubic", "Cubic mengekstrak filesystem SquashFS asli ke chroot/systemd-nspawn container."),
-        ("Step 3: Injeksi Payload", "Pemasangan paket (GCC, Python, Geany), wallpapers, service systemd, dan panduan."),
-        ("Step 4: Regenerasi ISO", "Regenerasi md5sum.txt (957/957 OK) & xorriso hasilkan ISO (~6,07 GiB)."),
-        ("Step 5: Verifikasi VM", "Uji autologin live, GUI vs TUI di disk kosong, Firefox Snap, & 5x benchmark 0.1–0.4.")
+        ("Step 2: Ekstraksi WSL", "tools/build_v05.py mengekstrak ISO & SquashFS (resep Bisect #3, non-Cubic)."),
+        ("Step 3: Injeksi Payload", "Pemasangan paket (GCC, Python, Geany), normalisasi LF, WhiteSur, grup labkita-praktikum."),
+        ("Step 4: Regenerasi ISO", ".disk/info berkutip 'Noble Numbat', md5sum.txt (1016/1016 OK), xorriso (~6,19 GiB)."),
+        ("Step 5: Verifikasi VM", "Autologin live ubuntu, GUI installer penuh, Firefox Snap, & 5x benchmark 0.1–0.5.")
     ]
 
     for idx, (st, desc) in enumerate(steps):
@@ -267,10 +267,10 @@ def create_deck():
     p.space_after = Pt(10)
     items2 = [
         "Tema WhiteSur & Dock: Tema GTK/Ikon/Kursor WhiteSur, tombol kiri, dock tengah bawah.",
-        "Wallpaper & Bahasa: Gradien minimalis LabKita + Bahasa Indonesia + label konsisten 0.4.",
+        "Wallpaper & Bahasa: Gradien minimalis LabKita + Bahasa Indonesia + label konsisten 0.5.",
         "Panduan Lolos Snap: Disalin ke ~/Dokumen/Panduan-LabKita agar terbaca Firefox Snap.",
         "Manajemen Akun: labkita-postinstall buat akun praktikan 0700 non-sudo (grup labkita-praktikum).",
-        "Suite Diagnostik: labkita-check 23/23 LULUS + uji baca nyata sandbox Firefox Snap (AppArmor OK)."
+        "Suite Diagnostik: labkita-check SEMUA LULUS + uji baca nyata sandbox Firefox Snap (AppArmor OK)."
     ]
     for it in items2:
         p = tf2.add_paragraph()
@@ -355,13 +355,13 @@ def create_deck():
     p.font.color.rgb = RGBColor(21, 128, 61)
     p.space_after = Pt(8)
     passed_items = [
-        "Integritas ISO & Casper: md5sum 957/957 OK (kecuali boot.catalog, eltorito.img, .yaml.original).",
-        "Autologin Live Session (PULIH): casper.log bebas error grup; langsung masuk desktop labkita.",
-        "Instalasi TUI & Branding 0.4: GRUB ID 0.4, subiquity.cmd.tui sukses, os-release & sambutan 0.4.",
-        "Desktop WhiteSur & ID: Tema WhiteSur, tombol kiri, dock tengah, wallpaper, Bahasa Indonesia.",
-        "Panduan 0.4 di Firefox Snap: ~/Dokumen/Panduan-LabKita terbuka normal & labkita-check 23/23 LULUS.",
-        "labkita-postinstall: Akun praktikan 0 error, isolasi 0700, non-sudo, grup labkita-praktikum.",
-        "Offline Total (nmcli off) & Tmpfs: GCC (~/Praktikum), Python, processes.py sukses; /run/labkita 1777."
+        "Integritas ISO 0.5: md5sum 1016/1016 OK (kecuali boot.catalog & eltorito.img).",
+        "Autologin Live Session: .disk/info diawali 'Ubuntu' -> autologin ubuntu mulus tanpa GIS.",
+        "Installer GUI LULUS PENUH: ubuntu-desktop-bootstrap selesai hingga 'Instalasi selesai' (0.5).",
+        "Desktop WhiteSur & ID: Sambutan 0.5, os-release 0.5, tema WhiteSur, dock tengah, Bahasa ID.",
+        "Panduan 0.5 di Firefox Snap: ~/Dokumen/Panduan-LabKita terbuka & labkita-check SEMUA LULUS.",
+        "labkita-postinstall: Akun praktikan grup labkita-praktikum, isolasi 0700, non-sudo.",
+        "Offline Total & Tmpfs: C/Python/fork & /run/labkita 1777 terverifikasi aktif."
     ]
     for c in passed_items:
         p = tf.add_paragraph()
@@ -377,16 +377,16 @@ def create_deck():
     tf2 = c7b.text_frame
     tf2.word_wrap = True
     p = tf2.paragraphs[0]
-    p.text = "Kegagalan & Keterbatasan Terbuka 0.4"
+    p.text = "Kontras 0.1–0.4 (Cubic) vs 0.5 (WSL)"
     p.font.size = Pt(15)
     p.font.bold = True
     p.font.color.rgb = RGBColor(185, 28, 28)
     p.space_after = Pt(8)
     failed_items = [
-        "GAGAL — Installer GUI ISO 0.4: Tidak dipulihkan oleh fix grup ('Ada yang salah' setelah Inhibiting Gnome session); penyebab installer GUI belum teridentifikasi.",
-        "KANDIDAT TERSISA (BELUM DIUJI): .disk/info diawali 'LabKita' membuat casper menurunkan USERNAME=labkita (bukan 'ubuntu' spt Bisect #3 WSL), plus faktor Cubic vs WSL.",
-        "PROSEDUR RESMI: Instalasi ke disk wajib via jalur TUI subiquity.cmd.tui.",
-        "CATATAN TEKNIS — Flag noexec /run: Partisi /run bersifat noexec, sehingga biner C dikompilasi di ~/Praktikum."
+        "Build Cubic 0.1–0.4 Gagal GUI: Seluruh ISO hasil Cubic (termasuk 0.4) gagal GUI 'Ada yang salah'; build WSL (Bisect #3 / 0.5) berhasil.",
+        "Penyebab Teridentifikasi: ProductService._extractIsoInfo melempar RangeError bila .disk/info tanpa tanda kutip '\"'; format kutip di 0.5 memulihkan GUI.",
+        "PROSEDUR RESMI 0.5: Installer GUI (ubuntu-desktop-bootstrap); TUI subiquity.cmd.tui sebagai cadangan.",
+        "CATATAN TEKNIS: /run berflag noexec, biner C dikompilasi di ~/Praktikum; CRLF checkout Windows dinormalisasi LF di tools/build_v05.py."
     ]
     for f_it in failed_items:
         p = tf2.add_paragraph()
@@ -396,16 +396,16 @@ def create_deck():
         p.space_after = Pt(5)
 
     # -------------------------------------------------------------
-    # SLIDE 8: TOLOK UKUR KINERJA & BENCHMARK (0.1 vs 0.2 vs 0.3 vs 0.4)
+    # SLIDE 8: TOLOK UKUR KINERJA & BENCHMARK (0.1 vs 0.2 vs 0.3 vs 0.4 vs 0.5)
     # -------------------------------------------------------------
     s8 = prs.slides.add_slide(blank_layout)
-    add_header(s8, "Tolok Ukur Empiris 0.1 vs 0.2 vs 0.3 vs 0.4 (5x per Versi, VM Identik)")
+    add_header(s8, "Tolok Ukur Empiris 0.1–0.5 (5x per Versi, VM Identik)")
 
     benchmarks = [
-        ("Konsumsi RAM Rata-rata & Rentang", "free -m (VM 4 GB / 3.911 MiB)", "0.1 [7.0.0-31]: 1.038,2 MiB (1.016–1.056) | 0.2: 1.068,2 MiB (1.058–1.080)\n0.3 [7.0.0-43]: 1.058,2 MiB (1.046–1.067)\n0.4 [7.0.0-43]: 1.062,6 MiB avg (1.043–1.075 MiB)\nSisa RAM 0.4 avg: 2.847,8 MiB (~2,78 GiB)"),
-        ("Waktu Booting Rata-rata & Rentang", "systemd-analyze time (5x Reboot)", "0.1: 8,460s (8,359–8,676s) | 0.2: 9,317s (9,072–9,458s)\n0.3: 8,808s (8,460–9,014s) | 0.4: 9,185s avg (8,520–10,713s)\nKesimpulan: tidak ada perbedaan yang dapat dibuktikan (rentang saling tumpang tindih & beda kernel)."),
-        ("Variabel Kernel & Layanan Boot", "uname -r & systemd-analyze blame", "Kernel 0.1/0.2: 7.0.0-31-generic | 0.3/0.4: 7.0.0-43-generic (dari security updates TUI)\nplymouth-quit-wait: 2,18–3,04s | snapd.seeded: ~1,02–1,16s\ngraphical.target avg: 5,180s (0.1) | 5,918s (0.2) | 5,532s (0.3) | 5,779s (0.4)"),
-        ("Identitas & Kapasitas Media ISO 0.4", "Cubic 2026.09.110 & SHA256", "Berkas: labkita-linux-0.4-amd64.iso\nUkuran: 6.520.395.776 bytes (~6,07 GiB / 6,52 GB)\nSHA256: 7ae9e815a02e58ca5f700344541aadba...87f64b9d4\nMD5: 00ea1d333ab0e52b953d7fe3806044ed | Unduh: https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing")
+        ("Konsumsi RAM Rata-rata & Rentang", "free -m (VM 4 GB / 3.911 MiB)", "0.1 [7.0.0-31]: 1.038,2 | 0.2: 1.068,2 | 0.3 [7.0.0-43]: 1.058,2\n0.4 [7.0.0-43]: 1.062,6 MiB (1.043–1.075)\n0.5 [7.0.0-43]: 1.042,8 MiB avg (1.031–1.054 MiB)\nSisa RAM 0.5 avg: 2.867,6 MiB (~2,80 GiB)"),
+        ("Waktu Booting Rata-rata & Rentang", "systemd-analyze time (5x Reboot)", "0.1: 8,460s | 0.2: 9,317s | 0.3: 8,808s | 0.4: 9,185s\n0.5: 9,036s avg (8,349–9,515s; gfx avg 5,686s)\nKesimpulan: tidak ada perbedaan yang dapat dibuktikan (rentang saling tumpang tindih & beda kernel)."),
+        ("Variabel Kernel & Layanan Boot", "uname -r & systemd-analyze blame", "Kernel 0.1/0.2: 7.0.0-31-generic | 0.3/0.4/0.5: 7.0.0-43-generic\nplymouth-quit-wait (0.5): 2,098–2,874s | snapd.seeded: 1,062–1,238s\ngraphical.target avg: 5,180 (0.1) | 5,918 (0.2) | 5,532 (0.3) | 5,779 (0.4) | 5,686 (0.5)"),
+        ("Identitas & Kapasitas Media ISO 0.5", "Build WSL (v0.5-iso) & SHA256", "Berkas: labkita-linux-0.5-amd64.iso\nUkuran: 6.643.179.520 bytes (~6,19 GiB / 6,64 GB)\nSHA256: d0dae277d140decd3e1ecaff9b908c55...46f5f1c\nMD5: b73178250b61cdfd900e3a3f8bdca660 | Unduh: [LINK-DRIVE-ISO-0.5]")
     ]
 
     for idx, (head, cmd, stats) in enumerate(benchmarks):
@@ -443,15 +443,15 @@ def create_deck():
     tf = c1.text_frame
     tf.word_wrap = True
     p = tf.paragraphs[0]
-    p.text = "Perbaikan yang Tuntas di Rilis 0.4"
+    p.text = "Perbaikan yang Tuntas di Rilis 0.5 (v0.5-iso)"
     p.font.size = Pt(16)
     p.font.bold = True
     p.font.color.rgb = c_primary
     p.space_after = Pt(10)
     b_pts = [
-        "Pulihkan Autologin Live (labkita-praktikum): Hapus bentrok grup 'labkita' -> casper sukses buat UID 1000 & masuk desktop langsung tanpa GIS.",
-        "Lolos Sandbox Firefox Snap & Diagnostik: Panduan 0.4 di ~/Dokumen/Panduan-LabKita; labkita-check lulus 23/23 (snap run firefox OK).",
-        "Postinstall & Integritas ISO: Akun praktikan 0 error (grup labkita-praktikum), metadata 0.4 konsisten, & md5sum 957/957 OK."
+        "Pulihkan Installer GUI Penuh: .disk/info diawali 'Ubuntu' + codename berkutip 'Noble Numbat' lolos casper & ProductService._extractIsoInfo -> GUI selesai.",
+        "Lolos Sandbox Firefox Snap & Diagnostik: Panduan 0.5 di ~/Dokumen/Panduan-LabKita; labkita-check SEMUA LULUS (snap run firefox OK).",
+        "Normalisasi LF, Postinstall & Integritas ISO: .gitattributes + build_v05.py cegah error CRLF; akun praktikan grup labkita-praktikum; md5sum 1016/1016 OK."
     ]
     for b in b_pts:
         p = tf.add_paragraph()
@@ -467,15 +467,15 @@ def create_deck():
     tf2 = c2.text_frame
     tf2.word_wrap = True
     p = tf2.paragraphs[0]
-    p.text = "Bisect #1–#4 (WSL) vs ISO 0.4 (Cubic)"
-    p.font.size = Pt(16)
+    p.text = "Bisect #1–#4 vs Build Cubic 0.1–0.4 vs Build WSL 0.5"
+    p.font.size = Pt(15)
     p.font.bold = True
     p.font.color.rgb = c_accent
     p.space_after = Pt(10)
     sol_pts = [
-        "Penyebab Autologin Terbukti & Pulih di 0.4: Bisect #4 buktikan bentrok .disk/info + groupadd labkita ('The group labkita already exists'); fix grup labkita-praktikum memulihkan autologin live labkita.",
-        "Installer GUI Belum Pulih: Fix grup TIDAK memulihkan ubuntu-desktop-bootstrap pada ISO 0.4 ('Ada yang salah'); penyebab installer GUI belum teridentifikasi.",
-        "Kandidat Tersisa (Belum Diuji) & Prosedur Resmi: .disk/info diawali 'LabKita' menurunkan USERNAME=labkita (vs 'ubuntu' di Bisect #3 WSL) belum diuji. Prosedur resmi = TUI subiquity.cmd.tui."
+        "Penyebab Autologin & GUI Terungkap: Bentrok grup 'labkita' merusak autologin (pulih via labkita-praktikum di 0.4), sedangkan .disk/info tanpa kutip memicu RangeError ProductService di installer GUI.",
+        "Build WSL 0.5 Lulus vs Build Cubic 0.1–0.4 Gagal GUI: Resep WSL (Bisect #3) + .disk/info berkutip pada 0.5 menuntaskan GUI hingga 'Instalasi selesai'.",
+        "Prosedur Resmi 0.5 = Installer GUI: ubuntu-desktop-bootstrap menjadi jalur resmi instalasi 0.5; TUI subiquity.cmd.tui menjadi prosedur cadangan."
     ]
     for s in sol_pts:
         p = tf2.add_paragraph()
@@ -488,14 +488,14 @@ def create_deck():
     # SLIDE 10: BUKTI TANGKAPAN LAYAR NYATA VM TERINSTAL
     # -------------------------------------------------------------
     s_ev = prs.slides.add_slide(blank_layout)
-    add_header(s_ev, "Bukti Tangkapan Layar Asli VM 0.4 (docs/evidence/)")
+    add_header(s_ev, "Bukti Tangkapan Layar Asli VM 0.5 (docs/evidence/)")
 
     ev_dir = Path("docs/evidence")
     ev_shots = [
-        ("Live Autologin 0.4 Langsung Desktop (Tanpa GIS)", ev_dir / "0.4-01-live-autologin-desktop.png"),
-        ("os-release 0.4 & labkita-check 23/23 LULUS", ev_dir / "0.4-08-os-release-and-labkita-check.png"),
-        ("Firefox Snap Membuka Panduan LabKita 0.4", ev_dir / "0.4-10-firefox-snap-guide.png"),
-        ("Benchmark 0.4 Run 1 (7.0.0-43, free/analyze)", ev_dir / "benchmarks" / "v04-r1.png"),
+        ("Installer GUI 0.5 Selesai Penuh (Instalasi selesai)", ev_dir / "0.5-07-gui-install-complete.png"),
+        ("labkita-check 0.5 SEMUA LULUS (Firefox Snap AppArmor OK)", ev_dir / "0.5-12-os-release-and-labkita-check.png"),
+        ("Firefox Snap Membuka Panduan LabKita 0.5", ev_dir / "0.5-14-labkita-guide-firefox.png"),
+        ("Benchmark 0.5 Run 1 (7.0.0-43, free/analyze)", ev_dir / "benchmarks" / "v05-r1.png"),
     ]
     for idx, (cap, img_p) in enumerate(ev_shots):
         col = idx % 2
@@ -518,7 +518,7 @@ def create_deck():
     add_header(s10, "Struktur Tim & Pembagian Peran Kelompok")
 
     team = [
-        ("Dafa Zahran — 257006111188", "Ketua Kelompok, Manajer Proyek & Integrasi (Build)", "Mengoordinasikan seluruh tahapan proyek, pipeline build Cubic, regenerasi md5sum & mastering ISO (labkita-linux-0.4-amd64.iso), repositori GitHub (github.com/luvices/labkita), dan kepatuhan silabus tugas."),
+        ("Dafa Zahran — 257006111188", "Ketua Kelompok, Manajer Proyek & Integrasi (Build)", "Mengoordinasikan seluruh tahapan proyek, pipeline build WSL (tools/build_v05.py, tag v0.5-iso) & arsip Cubic, regenerasi md5sum (1016/1016 OK), repositori GitHub (github.com/luvices/labkita), dan kepatuhan silabus tugas."),
         ("Rafly Fauzi Pratama — 257006111152", "Pengembang Inti (Core Developer) & Toolchain", "Mengembangkan skrip kustomisasi Cubic (scripts/customize.sh), instalasi & konfigurasi compiler (GCC, G++, Python 3, Geany IDE), serta perancangan skrip pengujian labkita-check."),
         ("Muhammad Ilham Rizky — 257006111154", "Sistem, Keamanan & Penguji Kualitas (Sys, Sec & QA)", "Merancang layanan systemd labkita-runtime.service (tmpfs sticky bit 1777), skrip akun praktikan non-sudo (labkita-postinstall), isolasi izin 0700, serta tolok ukur benchmark RAM dan boot time."),
         ("Vadien Athallah Lukman — 257006111160", "Antarmuka, Dokumentasi & Media (UI/UX & Docs)", "Mendesain identitas visual distro (wallpaper SVG LabKita, konfigurasi dconf), modul materi panduan praktikum dan contoh kode (C/Python), penyusunan Laporan PDF Bab I-V, slide PPTX, dan naskah demo video.")
@@ -571,10 +571,10 @@ def create_deck():
     p.font.color.rgb = c_primary
     p.space_after = Pt(10)
     concls = [
-        "Produk Terwujud: ISO labkita-linux-0.4-amd64.iso (~6,07 GiB, SHA256 7ae9e815...87f64b9d4) terverifikasi md5sum 957/957 OK, autologin live pulih, & terinstal via subiquity TUI.",
-        "Perbaikan 0.4 & Fitur Praktikum: Grup labkita-praktikum pulihkan autologin live; labkita-check 23/23 LULUS, Firefox Snap OK, postinstall 0 error.",
-        "Benchmark 5x & Variabel Kernel: RAM avg 1.062,6 MiB (0.4) vs 1.038,2 / 1.068,2 / 1.058,2 MiB; boot avg 9,185s (7.0.0-43 dari security updates TUI) vs 8,460s / 9,317s (7.0.0-31) — tidak ada perbedaan yang dapat dibuktikan.",
-        "Transparansi Jujur: Bentrok grup 'labkita' terbukti menyebabkan gagal autologin (pulih di 0.4); installer GUI tidak ikut pulih & penyebabnya belum teridentifikasi (.disk/info 'LabKita' -> USERNAME=labkita belum diuji). Prosedur resmi = TUI."
+        "Produk Terwujud: ISO labkita-linux-0.5-amd64.iso (~6,19 GiB, SHA256 d0dae277...46f5f1c, tag v0.5-iso) lolos md5sum 1016/1016 OK, autologin live ubuntu, & instalasi GUI penuh.",
+        "GUI Installer Pulih & Fitur Praktikum Lengkap: Build WSL + .disk/info berkutip memulihkan GUI (vs gagal di Cubic 0.1–0.4); labkita-check SEMUA LULUS, Firefox Snap OK, postinstall 0 error.",
+        "Benchmark 5x & Variabel Kernel: RAM avg 1.042,8 MiB (0.5) vs 1.038,2 / 1.068,2 / 1.058,2 / 1.062,6 MiB; boot avg 9,036s (7.0.0-43) vs 8,460–9,317s — tidak ada perbedaan yang dapat dibuktikan.",
+        "Prosedur Resmi & Cadangan: Jalur instalasi resmi 0.5 adalah GUI ubuntu-desktop-bootstrap, dengan TUI subiquity.cmd.tui sebagai cadangan."
     ]
     for c in concls:
         p = tf.add_paragraph()
@@ -590,13 +590,13 @@ def create_deck():
     tf2 = c2.text_frame
     tf2.word_wrap = True
     p = tf2.paragraphs[0]
-    p.text = "Rencana Pengembangan Rilis 0.5"
+    p.text = "Rencana Pengembangan Masa Depan (0.6+)"
     p.font.size = Pt(16)
     p.font.bold = True
     p.font.color.rgb = c_accent
     p.space_after = Pt(10)
     future = [
-        "Isolasi Build Cubic vs WSL: Bandingkan manifest & lapisan live build Cubic vs WSL untuk menuntaskan error GUI installer ubuntu-desktop-bootstrap.",
+        "Reproducible CI Container Build: Mengemas pipeline tools/build_v05.py dalam image container Linux terstandar agar zero dependency pada host Windows/WSL.",
         "Penyelarasan Ikon Dock WhiteSur: Audit ulang cache ikon tema WhiteSur agar seluruh ikon favorit dock konsisten.",
         "Evaluasi Desktop Ringan: Menguji varian XFCE4/Openbox bila ditargetkan untuk PC laboratorium ber-RAM kecil.",
         "Kiosk Mode Ujian: Profil penguncian jaringan dan terminal untuk sesi evaluasi/ujian pemrograman."
@@ -629,7 +629,7 @@ def create_deck():
     p.space_after = Pt(10)
 
     p = tf12.add_paragraph()
-    p.text = "LabKita Linux 0.4 — Ruang Belajar, Siap Offline."
+    p.text = "LabKita Linux 0.5 — Ruang Belajar, Siap Offline."
     p.font.size = Pt(22)
     p.font.color.rgb = c_accent
     p.space_after = Pt(20)

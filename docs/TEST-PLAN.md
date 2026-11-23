@@ -1,27 +1,29 @@
-# Rencana dan Hasil Pengujian LabKita Linux 0.4
+# Rencana dan Hasil Pengujian LabKita Linux 0.5
 
-Dokumen ini mencatat hasil verifikasi dan audit nyata pada **LabKita Linux 0.4** (`labkita-linux-0.4-amd64.iso`, Cubic `2026.09.110-release~202609120048~ubuntu24.04.1`) beserta riwayat perbandingan `0.1`, `0.2`, dan `0.3` yang diuji langsung pada VMware Workstation (`labkita-test.vmx`, 2 vCPU, RAM 4 GB / `3911 MiB` usable, disk virtual 40 GB SCSI kosong). Seluruh tangkapan layar pada [`docs/evidence/`](evidence/) merupakan capture layar VM asli, termasuk pengujian yang masih gagal di 0.4.
+Dokumen ini mencatat hasil verifikasi dan audit nyata pada **LabKita Linux 0.5** (`labkita-linux-0.5-amd64.iso`, dibangun di WSL lewat [`tools/build_v05.py`](../tools/build_v05.py) dari tag `v0.5-iso`) beserta riwayat perbandingan `0.1`, `0.2`, `0.3`, dan `0.4` (build Cubic) yang diuji langsung pada VMware Workstation (`labkita-test.vmx`, 2 vCPU, RAM 4 GB / `3911 MiB` usable, disk virtual 40 GB SCSI kosong, `mks.enable3d = "FALSE"`). Seluruh tangkapan layar pada [`docs/evidence/`](evidence/) merupakan capture layar VM asli.
 
-## 1. Daftar Pengujian Fungsional & Integritas Media (0.4)
+## 1. Daftar Pengujian Fungsional & Integritas Media (0.5 vs 0.4)
 
-| Pengujian | Target | Hasil Nyata di VM 0.4 | Status | Bukti |
+| Pengujian | Target | Hasil Nyata di VM 0.5 (Build WSL) | Status 0.5 | Bukti |
 | :--- | :--- | :--- | :---: | :--- |
-| **Integritas ISO `md5sum.txt` & Hash Host** | Regenerasi `md5sum.txt` di `custom-disk` dan kecocokan SHA256/MD5 di Windows | Di ISO terpasang loop: **`957/957` berkas `OK`** (`MD5_VERIFY_EXIT=0`, mengecualikan `boot.catalog`, `./boot/grub/i386-pc/eltorito.img` yang di-patch `xorriso --grub2-boot-info`, dan `./casper/install-sources.yaml.original`). SHA256 Linux & `Get-FileHash` Windows identik (`7ae9e815a02e58ca5f700344541aadba3db47a6b5a15c942c9b0e4587f64b9d4`). Di VM live: `casper-md5check` seluruh berkas `OK` | **LULUS** | `dist/labkita-linux-0.4-amd64.iso.sha256` |
-| **Autologin Live Session (`labkita`)** | Langsung masuk ke desktop live tanpa wizard `gnome-initial-setup` | Setelah grup sistem diubah menjadi `labkita-praktikum`, `casper.log` bersih dari `"The group 'labkita' already exists."` dan autologin `labkita` (`uid=1000`) langsung masuk desktop WhiteSur | **LULUS** | `docs/evidence/0.4-01-live-autologin-desktop.png` |
-| **Installer GUI (`ubuntu-desktop-bootstrap`)** | Instalasi ke disk kosong lewat wizard grafis normal | **Masih gagal** memunculkan dialog *"Ada yang salah"* (`ubuntu_bootstrap.log` berhenti setelah `Inhibiting Gnome session`), meskipun autologin `labkita` sudah berhasil dan `casper-md5check` `pass` | **GAGAL** | `docs/evidence/0.4-02-gui-installer-error.png` |
-| **Instalasi Resmi ke Disk via `subiquity.cmd.tui`** | Instalasi penuh ke `/dev/sda` pada disk kosong 40 GB | Sumber tampil **`(X) LabKita Linux 0.4`**, partisi LVM + instalasi tuntas (*"Installation complete!"*) hingga reboot ke sistem terinstal | **LULUS (Prosedur Resmi)** | `docs/evidence/0.4-03-tui-source-labkita04.png`, `0.4-04`, `0.4-05` |
-| **Konsistensi Branding & Metadata 0.4** | Tidak ada sisa label `0.1`–`0.3` di metadata & dialog | `/etc/os-release` (`PRETTY_NAME="LabKita Linux 0.4 (Noble Numbat)"`), `/etc/labkita-release` (`VERSION="0.4"`), layar sambutan (`Selamat datang di LabKita Linux 0.4`), & deskripsi rilis konsisten `0.4` | **LULUS** | `docs/evidence/0.4-06-installed-welcome-0.4.png`, `0.4-08-os-release-and-labkita-check.png` |
-| **Desktop WhiteSur, Dock & Bahasa Indonesia** | Tema GTK/Ikon/Kursor WhiteSur, tombol kiri, dock tengah, UI Indonesia | Tema WhiteSur, tombol kiri, dock tengah bawah, wallpaper LabKita, top bar `Sen 23 Nov`, `Rumah`, & menu berbahasa Indonesia | **LULUS** | `docs/evidence/0.4-07-installed-desktop-dock.png` |
-| **Uji Diagnostik `labkita-check` (Dengan Tes Baca Snap)** | Seluruh toolchain, tmpfs, layanan, & pembacaan panduan Firefox Snap | **23/23 `[LULUS]`**, termasuk `Lokasi panduan non-dotfolder (~/Dokumen)` (`~/Dokumen/Panduan-LabKita/index.html`) dan **`Pembacaan panduan oleh sandbox Firefox Snap (AppArmor OK)`** | **LULUS** | `docs/evidence/0.4-08-os-release-and-labkita-check.png` |
-| **Lokasi & Pembacaan Panduan di Firefox Snap** | Panduan offline dibuka langsung lewat `labkita-guide` di Firefox Snap | Firefox Snap merender `file:///home/labkitavm/Dokumen/Panduan-LabKita/index.html` dengan badge **`LabKita Linux 0.4`** tanpa blokir AppArmor | **LULUS** | `docs/evidence/0.4-10-firefox-snap-guide.png` |
-| **Fix Grup `labkita-praktikum` & `labkita-postinstall`** | Akun praktikan non-sudo, izin `0700`, bebas grup `labkita` & error `printf` | `sudo labkita-postinstall praktikan` `[SUKSES]` (0 error `printf`), `getent group labkita` kosong, `labkita-praktikum:x:986:praktikan`, `id praktikan` (`uid=1001`, tanpa `sudo`), `/home/praktikan` mode `700` | **LULUS** | `docs/evidence/0.4-09-postinstall-praktikan-check.png` |
+| **Integritas ISO `md5sum.txt` & Hash Host** | Regenerasi `md5sum.txt` final dan kecocokan SHA256/MD5 di Windows | Di ISO terpasang loop: **`1016/1016` berkas `OK`** (`MD5_EXIT=0`, mengecualikan `boot.catalog` dan `./boot/grub/i386-pc/eltorito.img` yang di-patch `xorriso --grub2-boot-info`). SHA256 Windows `Get-FileHash`: `d0dae277d140decd3e1ecaff9b908c551109a10efd069b1472acd34b046f5f1c` | **LULUS** | `dist/labkita-linux-0.5-amd64.iso.sha256` |
+| **GRUB & Autologin Live Session (`ubuntu`)** | Boot GRUB 0.5 & langsung masuk desktop live tanpa `gnome-initial-setup` | Menu GRUB tampil `Coba atau Pasang LabKita Linux 0.5 (Bahasa Indonesia)`. `.disk/info` diawali `"Ubuntu"` & grup `labkita-praktikum` → `casper` membuat user `ubuntu` (`uid=1000`), autologin langsung desktop tanpa `gnome-initial-setup` | **LULUS** | `docs/evidence/0.5-01-grub-menu.png`, `0.5-08` |
+| **Installer GUI Resmi (`ubuntu-desktop-bootstrap`)** | Instalasi ke disk kosong 40 GB lewat wizard grafis normal | Berjalan lancar melalui seluruh tahap Bahasa Indonesia (Pemilihan bahasa, Aksesibilitas, Papan ketik, Offline, Hapus disk, Identitas `labadmin`, Zona waktu `Asia/Jakarta`, Ringkasan) hingga **"Instalasi selesai — Ubuntu 24.04 LabKita 0.5 telah terpasang dan siap digunakan"** *(kontras dengan build Cubic `0.1`–`0.4` yang gagal dialog "Ada yang salah")* | **LULUS (Prosedur Resmi)** | `docs/evidence/0.5-02` s.d. `0.5-07-gui-install-complete.png` |
+| **Installer TUI (`subiquity.cmd.tui`)** | Prosedur cadangan apabila instalasi grafis tidak dipakai | Tetap tersedia pada snap `ubuntu-desktop-bootstrap` (digunakan sebagai prosedur utama pada arsip `0.1`–`0.4`) | **CADANGAN** | `docs/evidence/0.4-03` s.d. `0.4-05` |
+| **Konsistensi Branding & Metadata 0.5** | Seluruh metadata & sambutan tampil `0.5` | `/etc/os-release` (`PRETTY_NAME="LabKita Linux 0.5 (Noble Numbat)"`), `/etc/labkita-release` (`0.5`), layar sambutan (`Selamat datang di LabKita Linux 0.5 (Noble Numbat)!`), & panduan badge `LabKita Linux 0.5` konsisten | **LULUS** | `docs/evidence/0.5-10`, `v05-r1.png` |
+| **Desktop WhiteSur, Dock & Bahasa Indonesia** | Tema GTK/Ikon/Kursor WhiteSur, tombol kiri, dock tengah, UI Indonesia | Tema WhiteSur, tombol kiri, dock tengah bawah, wallpaper LabKita, top bar `Sen 23 Nov`, `Rumah`, & UI berbahasa Indonesia | **LULUS** | `docs/evidence/0.5-11-desktop-whitesur-dock.png` |
+| **Uji Diagnostik `labkita-check`** | Toolchain, lokalisasi, tema, tmpfs, layanan, & baca Firefox Snap | Seluruh pemeriksaan **`[LULUS]`** (`SEMUA PEMERIKSAAN LULUS`), termasuk `~/Dokumen/Panduan-LabKita`, Python/C/fork, tmpfs `/run/labkita` `1777`, `labkita-runtime.service` aktif, & `Pembacaan panduan oleh sandbox Firefox Snap (AppArmor OK)` | **LULUS** | `docs/evidence/0.5-12-os-release-and-labkita-check.png` |
+| **Panduan Lokal di Firefox Snap (`labkita-guide`)** | Panduan offline dibuka langsung di Firefox Snap | Firefox Snap membuka & merender `file:///home/labadmin/Dokumen/Panduan-LabKita/index.html` dengan badge **`LabKita Linux 0.5`** tanpa blokir AppArmor | **LULUS** | `docs/evidence/0.5-14-labkita-guide-firefox.png` |
+| **`labkita-postinstall praktikan` & Isolasi `0700`** | Akun praktikan non-sudo, grup `labkita-praktikum`, izin `0700`, tanpa grup `labkita` | `sudo labkita-postinstall praktikan` `[SUKSES]`, `id praktikan` = `uid=1001(praktikan) gid=1001(praktikan) groups=1001(praktikan),986(labkita-praktikum)` (tanpa `sudo`, tidak ada grup `labkita`), `/home/praktikan` mode `700` | **LULUS** | `docs/evidence/0.5-13-postinstall-praktikan.png` |
 
-## 2. Pengukuran Kinerja 0.1 vs 0.2 vs 0.3 vs 0.4 Setelah Instalasi (5x per Versi)
+*(Catatan jujur pra-perbaikan di FASE 3: build ke-2 `0.5` sempat mengalami error `/usr/bin/env: 'python3\r'` / `'bash\r'` pada `labkita-check`, `labkita-postinstall`, dan `labkita-guide` akibat checkout Windows Git berakhiran CRLF. Masalah diselesaikan melalui `.gitattributes` + normalisasi LF di `tools/build_v05.py` pada build final `d0dae277...`, yang kemudian lulus seluruh FASE 1–4 di atas.)*
 
-Setiap versi (`0.1`, `0.2`, `0.3`, `0.4`) diinstal ulang bersih satu per satu ke disk virtual kosong 40 GB pada **VM yang sama** (`labkita-test.vmx`: 2 vCPU, RAM 4.096 MB / `3.911 MiB` terbaca kernel Linux), lalu dijalankan **5 kali cold boot bersih per versi** dengan pembacaan `uname -r`, `free -m`, dan `systemd-analyze time` di terminal tepat 20 detik setelah desktop selesai login.
+## 2. Pengukuran Kinerja 0.1 vs 0.2 vs 0.3 vs 0.4 vs 0.5 Setelah Instalasi (5x per Versi)
+
+Setiap versi (`0.1`–`0.5`) diinstal ulang bersih satu per satu ke disk virtual kosong 40 GB pada **VM yang sama** (`labkita-test.vmx`: 2 vCPU, RAM 4.096 MB / `3.911 MiB` terbaca kernel Linux), lalu dijalankan **5 kali cold boot bersih per versi** dengan pembacaan `uname -r`, `free -m`, dan `systemd-analyze time` di terminal 20 detik setelah desktop selesai login.
 
 > **Variabel Tidak Terkontrol (Perbedaan Versi Kernel):**  
-> Instalasi bersih LabKita `0.1` dan `0.2` berjalan pada kernel **`7.0.0-31-generic`**, sedangkan `0.3` dan `0.4` terinstal berjalan pada kernel **`7.0.0-43-generic`** (karena tahap *downloading and installing security updates* berjalan saat instalasi; ISO `0.1`–`0.4` tetap membawa `7.0.0-31-generic`).
+> Instalasi bersih LabKita `0.1` dan `0.2` berjalan pada kernel **`7.0.0-31-generic`**, sedangkan `0.3`, `0.4`, dan `0.5` terinstal berjalan pada kernel **`7.0.0-43-generic`**.
 
 ### A. Konsumsi Memori RAM (`free -m` — Used / Available dalam MiB)
 
@@ -31,6 +33,7 @@ Setiap versi (`0.1`, `0.2`, `0.3`, `0.4`) diinstal ulang bersih satu per satu ke
 | **LabKita 0.2** (`7.0.0-31-generic`) | 1072 / 2839 | 1080 / 2830 | 1072 / 2839 | 1059 / 2851 | 1058 / 2852 | **1.068,2 MiB** | **1.058–1.080 MiB** | 2.842,2 MiB *(2.830–2.852)* |
 | **LabKita 0.3** (`7.0.0-43-generic`) | 1049 / 2861 | 1067 / 2844 | 1067 / 2843 | 1062 / 2848 | 1046 / 2864 | **1.058,2 MiB** | **1.046–1.067 MiB** | 2.852,0 MiB *(2.843–2.864)* |
 | **LabKita 0.4** (`7.0.0-43-generic`) | 1043 / 2868 | 1051 / 2860 | 1075 / 2835 | 1071 / 2839 | 1073 / 2837 | **1.062,6 MiB** | **1.043–1.075 MiB** | 2.847,8 MiB *(2.835–2.868)* |
+| **LabKita 0.5** (`7.0.0-43-generic`) | 1041 / 2870 | 1039 / 2871 | 1049 / 2861 | 1054 / 2857 | 1031 / 2879 | **1.042,8 MiB** | **1.031–1.054 MiB** | 2.867,6 MiB *(2.857–2.879)* |
 
 ### B. Waktu Booting Sistem (`systemd-analyze time` — Total & `graphical.target`)
 
@@ -40,26 +43,30 @@ Setiap versi (`0.1`, `0.2`, `0.3`, `0.4`) diinstal ulang bersih satu per satu ke
 | **LabKita 0.2** (`7.0.0-31-generic`) | 9,437s | 9,401s | 9,458s | 9,218s | 9,072s | **9,317s** *(3,330s + 5,987s)* | **9,072s–9,458s** | **5,918s** *(5,786s–6,057s)* |
 | **LabKita 0.3** (`7.0.0-43-generic`) | 8,840s | 8,938s | 8,788s | 8,460s | 9,014s | **8,808s** *(3,197s + 5,610s)* | **8,460s–9,014s** | **5,532s** *(5,215s–5,717s)* |
 | **LabKita 0.4** (`7.0.0-43-generic`) | 10,713s | 8,520s | 8,726s | 8,967s | 9,000s | **9,185s** *(3,363s + 5,822s)* | **8,520s–10,713s** | **5,779s** *(5,202s–6,823s)* |
+| **LabKita 0.5** (`7.0.0-43-generic`) | 9,515s | 9,444s | 9,370s | 8,349s | 8,502s | **9,036s** *(3,287s + 5,749s)* | **8,349s–9,515s** | **5,686s** *(5,132s–6,100s)* |
 
-Bukti seluruh 20 screenshot pengukuran (`5x` per versi) tersedia di [`docs/evidence/benchmarks/`](evidence/benchmarks/): `v01-r1.png` s.d. `v04-r5.png`.
+Bukti seluruh 25 screenshot pengukuran (`5x` per versi) tersedia di [`docs/evidence/benchmarks/`](evidence/benchmarks/): `v01-r1.png` s.d. `v05-r5.png`.
 
-## 3. Analisis Jujur: Hasil Kinerja, Bisect #1–#4, & Uji ISO 0.4
+## 3. Analisis Jujur: Hasil Kinerja, Build WSL (`0.5`) vs Cubic (`0.1`–`0.4`)
 
 1. **Tidak Ada Klaim "Lebih Ringan" atau "Lebih Cepat":**
-   - **Memori RAM:** Rentang `0.4` (`1.043–1.075 MiB`, rata-rata `1.062,6 MiB`) saling tumpang tindih dengan `0.1` (`1.016–1.056 MiB`), `0.2` (`1.058–1.080 MiB`), dan `0.3` (`1.046–1.067 MiB`).
-   - **Waktu Boot:** Rentang `0.4` (`8,520s–10,713s`, rata-rata `9,185s`) saling tumpang tindih dengan `0.2` dan `0.3` (serta mencakup `8,520s`–`8,726s`), ditambah adanya variabel perbedaan kernel (`7.0.0-43-generic` vs `7.0.0-31-generic`). Kesimpulan: **tidak ada perbedaan yang dapat dibuktikan** antarversi.
-   - **Komponen terlama (`systemd-analyze blame`):** Didominasi oleh `plymouth-quit-wait.service` (`~2,18s–3,04s`), `snapd.seeded.service` (`~0,98s–1,22s`), `snapd.service` (`~0,82s–1,10s`), `NetworkManager.service`, dan `gpu-manager.service`.
-2. **Temuan Bisect #1–#4 vs Hasil Nyata ISO 0.4 (Cubic):**
-   - Pada bisect manual di **WSL** (bukan Cubic): **Bisect #1–#3 lulus seluruhnya** hingga layar pemilihan bahasa installer GUI (`10`–`12`), sedangkan pada **Bisect #4** (= Bisect #3 + `.disk/info` `"LabKita Linux 0.3"` + `groupadd --system labkita`) sesi live gagal autologin dengan log `casper.log: fatal: The group 'labkita' already exists.` dan jatuh ke `gnome-initial-setup`, diikuti error GUI *"Ada yang salah"* (`13`–`14`). Hal ini membuktikan bentrok grup `labkita` sebagai penyebab **kegagalan autologin live**.
-   - **Uji perbaikan pada ISO 0.4 hasil Cubic (`labkita-praktikum`):** Penggantian grup menjadi `labkita-praktikum` dan penghapusan grup `labkita` lama **terbukti memulihkan autologin live `labkita`** tanpa `gnome-initial-setup` (`0.4-01`). Namun, **kegagalan installer GUI (`ubuntu-desktop-bootstrap`) TIDAK dipulihkan oleh fix grup ini** dan tetap menampilkan dialog *"Ada yang salah"* setelah `Inhibiting Gnome session` (`0.4-02`).
-   - **Status penyebab installer GUI:** Penyebab kegagalan installer GUI **belum teridentifikasi**. Kandidat tersisa yang **belum diuji** adalah `.disk/info` yang diawali `"LabKita"` sehingga `casper` menurunkan `USERNAME=labkita` (alih-alih `ubuntu` pada Bisect #3 WSL), di samping perbedaan build Cubic vs WSL. **Jalur TUI `subiquity.cmd.tui` tetap ditetapkan sebagai prosedur instalasi resmi**.
+   - **Memori RAM:** Rentang `0.5` (`1.031–1.054 MiB`, rata-rata `1.042,8 MiB`) saling tumpang tindih dengan `0.1` (`1.016–1.056 MiB`), `0.3` (`1.046–1.067 MiB`), dan `0.4` (`1.043–1.075 MiB`).
+   - **Waktu Boot:** Rentang `0.5` (`8,349s–9,515s`, rata-rata `9,036s`) bertumpang tindih dengan seluruh versi `0.1`–`0.4`, ditambah variabel kernel (`7.0.0-43-generic` vs `7.0.0-31-generic`). Kesimpulan: **tidak ada perbedaan yang dapat dibuktikan** antarversi.
+   - **Komponen terlama (`systemd-analyze blame` 0.5):** Didominasi oleh `plymouth-quit-wait.service` (`2,098s–2,874s`), `snapd.seeded.service` (`1,062s–1,238s`), `snapd.service` (`0,912s–1,191s`), `NetworkManager.service`, `gpu-manager.service`, dan `apport.service`.
+2. **Installer GUI Berhasil di Build WSL `0.5` vs Gagal di Build Cubic `0.1`–`0.4`:**
+   - Installer GUI `ubuntu-desktop-bootstrap` **berfungsi penuh pada build WSL `0.5`** (`tools/build_v05.py`, resep Bisect #3 + `.disk/info` berkutip `"Noble Numbat"`), sedangkan **gagal pada seluruh build Cubic `0.1`–`0.4`**.
+   - Penelusuran `strace` & kode `canonical/ubuntu-desktop-provision` (`ProductService._extractIsoInfo`) menemukan bahwa `.disk/info` tanpa tanda kutip `"` melempar `RangeError` (bukan `Exception`) sehingga `ubuntu-desktop-bootstrap` langsung jatuh ke layar error *"Ada yang salah"* tanpa menulis `/var/log/installer/telemetry`. Di `0.5`, `.disk/info` memakai format `Ubuntu 24.04 LabKita 0.5 "Noble Numbat" - Release amd64 (20261122)` yang kompatibel dengan `casper` maupun `ProductService`. Faktor tambahan di lapisan build Cubic tidak diisolasi ulang di Cubic karena rilis `0.5` memakai pipeline WSL.
+   - **Prosedur instalasi resmi 0.5 kini adalah jalur GUI (`ubuntu-desktop-bootstrap`)**, dan jalur TUI **`subiquity.cmd.tui`** menjadi **prosedur cadangan** (dan prosedur utama untuk arsip `0.1`–`0.4`).
 
 ## 4. Eksperimen Kontrol, Kernel, & Spot-check
 
 Ringkasan (detail & bukti lengkap di [`CONTROL-EXPERIMENT.md`](CONTROL-EXPERIMENT.md)):
 
-- **Kontrol Ubuntu 24.04.5.1 asli (VMX identik): installer GUI selesai.** LabKita 0.3: gagal pada 3D mati & hidup (3D bukan penyebab). Warning `DRI3` dan `im-ibus.so` juga muncul di Ubuntu asli yang sukses.
-- **Autologin vs Installer GUI (Bisect #1–#4 & ISO 0.4 Cubic):** Kegagalan **autologin** terbukti disebabkan bentrok grup `'labkita'` (`casper.log: fatal: The group 'labkita' already exists.`) dan **dipulihkan di 0.4** lewat grup `labkita-praktikum`. Sebaliknya, **kegagalan installer GUI tidak dipulihkan oleh fix grup dan penyebabnya belum teridentifikasi**; kandidat tersisa (`.disk/info` diawali `"LabKita"` menurunkan `USERNAME=labkita` serta perbedaan Cubic vs WSL) **belum diuji**. Prosedur instalasi resmi = TUI (**`subiquity.cmd.tui`**).
-- **Kernel terinstal:** `0.1`/`0.2` berjalan pada `7.0.0-31-generic`, sedangkan `0.3`/`0.4` berjalan pada `7.0.0-43-generic` (ISO `0.1`–`0.4` tetap membawa `-31`; `-43` berasal dari langkah *downloading and installing security updates* saat instalasi TUI).
-- Spot-check 9 screenshot benchmark 0.1–0.3 serta pembacaan langsung 5 screenshot benchmark 0.4: tidak ada selisih angka terhadap tabel.
-- Kesimpulan benchmark: **tidak ada perbedaan yang dapat dibuktikan** antara `0.1`, `0.2`, `0.3`, dan `0.4`.
+- **Kontrol Ubuntu 24.04.5.1 asli (VMX identik, 3D off): installer GUI selesai.** LabKita 0.3 gagal pada 3D mati & hidup (3D bukan penyebab). Warning `DRI3` dan `im-ibus.so` juga muncul di Ubuntu asli yang sukses.
+- **Bisect #1–#4 (WSL) & Perbaikan di 0.4 (`labkita-praktikum`) → 0.5 (WSL):**
+  - Bisect #4 membuktikan bentrok grup `labkita` menyebabkan **gagal autologin live** (dipulihkan di `0.4` via `labkita-praktikum`).
+  - Uji `username=ubuntu` pada `0.4` menunjukkan penggantian username saja via GRUB belum memulihkan GUI pada ISO Cubic `0.4`.
+  - Build **LabKita 0.5** di WSL (`tools/build_v05.py`, dari tag `v0.5-iso`) dengan `.disk/info` diawali `"Ubuntu"` dan menyertakan codename berkutip `"Noble Numbat"` berhasil memulihkan installer GUI sepenuhnya sampai selesai ke disk kosong (`0.5-02` s.d. `0.5-07`).
+- **Kernel terinstal:** `0.1`/`0.2` berjalan pada `7.0.0-31-generic`, sedangkan `0.3`, `0.4`, dan `0.5` berjalan pada `7.0.0-43-generic`.
+- Pembacaan langsung seluruh screenshot `v04-r1..r5.png` dan `v05-r1..r5.png` (serta spot-check 9 screenshot `0.1`–`0.3`): tidak ada selisih angka terhadap tabel.
+- Kesimpulan benchmark: **tidak ada perbedaan yang dapat dibuktikan** antara `0.1`, `0.2`, `0.3`, `0.4`, dan `0.5`.

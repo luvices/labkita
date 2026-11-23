@@ -1,4 +1,4 @@
-# Konfigurasi Tampilan dan Lingkungan LabKita Linux 0.4 (Gaya macOS Bersih & Minimalis)
+# Konfigurasi Tampilan dan Lingkungan LabKita Linux 0.5 (Gaya macOS Bersih & Minimalis)
 
 [org/gnome/desktop/background]
 picture-uri='file:///usr/share/backgrounds/labkita-gradient.png'
