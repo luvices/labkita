@@ -64,6 +64,8 @@ Laboratorium komputer kampus sering menghadapi masalah koneksi internet yang lam
    - **Python:** Python 3.12.3, modul venv, dan dokumentasi pustaka offline.
    - **Editor & IDE:** Geany 2.0 (terkonfigurasi build shortcut C dan Python), GNU Nano, dan Git 2.43.
    - **Panduan Offline di `~/Dokumen/Panduan-LabKita`:** `labkita-guide` kini menyalin HTML panduan dari `/usr/share/labkita/guide/` ke direktori non-dotfolder `$HOME/Dokumen/Panduan-LabKita/` (menghormati `xdg-user-dir DOCUMENTS`, termasuk `/etc/skel/Dokumen/Panduan-LabKita/`) sehingga **terbuka & terender normal di Firefox Snap** tanpa blokir AppArmor.
+   - **Contoh Program Praktikum (`/usr/share/labkita/examples/`):** Menyertakan contoh kode siap pakai: `hello.c`, `hello.py`, `processes.py`, serta contoh pengayaan `thread_demo.py` (multithreading Python) dan `memory_demo.c` (alokasi memori dinamis C).
+     > **📌 Catatan Pembaruan Pasca-Rilis:** Pembaruan materi panduan praktikum serta contoh kode `thread_demo.py` dan `memory_demo.c` merupakan pembaruan repositori setelah rilis final dan **belum termasuk di dalam berkas ISO 0.5** (ISO dibangun dari tag **`v0.5-iso`**). Untuk mencobanya di dalam VM LabKita 0.5, salin berkas tersebut secara manual ke direktori `~/Praktikum/` atau unduh langsung dari repositori ini.
 
 4. **Isolasi Keamanan & `labkita-postinstall` (Grup `labkita-praktikum`):**
    - Utilitas `/usr/local/sbin/labkita-postinstall` memakai perbaikan **`printf --`** serta grup **`labkita-praktikum`** (tanpa sisa grup `labkita` di `scripts/` maupun `payload/`), sekaligus menyalin panduan ke `/home/<user>/Dokumen/Panduan-LabKita/`.
@@ -119,15 +121,27 @@ Pengujian empiris dilakukan ulang **setelah instalasi penuh ke disk kosong** pad
 - **Penyimpanan:** Minimal 25 GB
 - **Display:** Resolusi disarankan minimal 1280×800 (akselerasi 3D opsional)
 
-### B. Menjalankan Live Session
-1. Buat VM baru dan pasang file `labkita-linux-0.5-amd64.iso` pada drive CD/DVD virtual.
-2. Nyalakan mesin virtual. Pada bootloader GRUB, pilih **"Coba atau Pasang LabKita Linux 0.5 (Bahasa Indonesia)"**.
-3. Sistem langsung melakukan **autologin ke user live `ubuntu`** menuju desktop LabKita dengan jendela installer GUI terbuka (pilih *"Coba Ubuntu"* bila hanya mencoba live) serta antarmuka Bahasa Indonesia dan dock terpusat.
-4. Buka terminal (`Ctrl + Alt + T`) lalu jalankan verifikasi:
+### B. Menjalankan Live Session & Mulai Praktikum
+1. Buat VM baru di VMware atau VirtualBox, lalu pasang berkas `labkita-linux-0.5-amd64.iso` pada drive CD/DVD virtual.
+2. Nyalakan mesin virtual. Pada menu bootloader GRUB, pilih **"Coba atau Pasang LabKita Linux 0.5 (Bahasa Indonesia)"**.
+3. Sistem akan otomatis **autologin sebagai user live `ubuntu`** menuju desktop LabKita dengan dock terpusat di bawah. Jendela installer GUI akan muncul otomatis; pilih opsi *"Coba Ubuntu"* jika hanya ingin menjalankan sesi live praktikum tanpa memasang ke disk.
+4. Buka terminal (`Ctrl + Alt + T`), lalu siapkan folder kerja praktikum Anda:
    ```bash
+   # Siapkan folder latihan dan salin seluruh modul contoh
+   mkdir -p "$HOME/Praktikum"
+   cp -n /usr/share/labkita/examples/* "$HOME/Praktikum/"
+   cd "$HOME/Praktikum"
+
+   # Uji coba program Python dasar
+   python3 hello.py
+
+   # Uji coba kompilasi dan eksekusi program C dasar
+   gcc -Wall -Wextra hello.c -o hello && ./hello
+
+   # Jalankan pemeriksaan mandiri kesiapan sistem
    labkita-check
    ```
-5. Buka editor Geany dari dock untuk mulai mengerjakan program C atau Python.
+5. Buka editor **Geany** dari dock untuk mulai menulis atau mengedit kode C dan Python. Untuk panduan langkah demi langkah lengkap secara offline, klik ikon **Panduan LabKita** di dock.
 
 ### C. Prosedur Instalasi Resmi (Installer GUI) & Cadangan (TUI `subiquity.cmd.tui`)
 Pada rilis **0.5** (dibangun dari tag **`v0.5-iso`**), **prosedur instalasi resmi menggunakan installer GUI normal (`ubuntu-desktop-bootstrap`)** yang otomatis muncul saat sesi live: pilih bahasa (*Bahasa Indonesia*), papan ketik, opsi *Pasang Ubuntu*, *Hapus disk dan pasang Ubuntu*, buat akun admin (mis. `labadmin`), zona waktu `Asia/Jakarta`, lalu klik **Pasang** hingga *"Instalasi selesai"* dan mulai ulang.
