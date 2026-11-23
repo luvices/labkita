@@ -21,7 +21,7 @@ Proyek ini dikembangkan sebagai luaran **Final Project Mata Kuliah Sistem Operas
 | **SHA256 Checksum** | `d0dae277d140decd3e1ecaff9b908c551109a10efd069b1472acd34b046f5f1c` |
 | **MD5 Checksum** | `b73178250b61cdfd900e3a3f8bdca660` |
 | **Metode & Tag Build** | Build WSL [`tools/build_v05.py`](tools/build_v05.py) (resep Bisect #3, non-Cubic) dari tag **`v0.5-iso`** |
-| **Status Verifikasi** | Teruji di VM (`md5sum` loop ISO `957/957 OK`, `Get-FileHash` Windows identik, autologin live `labkita` **berhasil** tanpa `gnome-initial-setup`, `labkita-check` `23/23` + uji baca sandbox Firefox Snap lulus, `labkita-postinstall praktikum` dengan grup `labkita-praktikum` lulus; **installer GUI normal `ubuntu-desktop-bootstrap` masih gagal dialog *"Ada yang salah"* di ISO build Cubic** sehingga prosedur instalasi resmi memakai jalur TUI `subiquity.cmd.tui` — lihat [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md) & [`docs/CONTROL-EXPERIMENT.md`](docs/CONTROL-EXPERIMENT.md)) |
+| **Status Verifikasi** | **LULUS PENUH** di VM uji (`md5sum` loop ISO **`1016/1016 OK`**, `Get-FileHash` Windows identik, autologin live `ubuntu` langsung desktop, **installer GUI normal `ubuntu-desktop-bootstrap` selesai hingga `"Instalasi selesai"`**, `labkita-check` seluruh pemeriksaan lulus termasuk sandbox Firefox Snap AppArmor OK, `labkita-postinstall praktikan` grup `labkita-praktikum` `0700` non-`sudo`, `labkita-guide` Firefox Snap OK — lihat [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md) & [`docs/CONTROL-EXPERIMENT.md`](docs/CONTROL-EXPERIMENT.md)) |
 
 ### Produk / Unduhan & Verifikasi Integritas Berkas
 - **Unduhan ISO 0.5:** `[LINK-DRIVE-ISO-0.5]` (`labkita-linux-0.5-amd64.iso`, ukuran `6.643.179.520 bytes`, dibangun dari tag `v0.5-iso`)
