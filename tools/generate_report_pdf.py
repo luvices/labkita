@@ -442,7 +442,7 @@ def build_story(styles, toc_pages):
         ("bab5", "BAB V PENUTUP", 0),
         ("bab5a", "A. Kesimpulan", 1),
         ("bab5b", "B. Keterbatasan dan Catatan Jujur Rilis 0.5", 1),
-        ("bab5c", "C. Saran Pengembangan Rilis Selanjutnya (LabKita Linux 0.6)", 1),
+        ("bab5c", "C. Saran Pengembangan Lanjutan", 1),
         ("dafpus", "DAFTAR PUSTAKA", 0),
         ("lamp", "LAMPIRAN", 0),
         ("lamp1", "Lampiran 1: Tautan Repositori Kode Sumber dan Berkas ISO", 1),
@@ -621,9 +621,9 @@ def build_story(styles, toc_pages):
                 styles["TblCellLeft"],
             ),
             Paragraph(
-                "Mengoordinasikan pembagian modul tim, pipeline build Cubic, regenerasi manifest md5sum & "
-                "mastering ISO (labkita-linux-0.4-amd64.iso), manajemen repositori GitHub "
-                "(https://github.com/luvices/labkita), dan keselarasan luaran tugas.",
+                "Mengoordinasikan pembagian modul tim, build WSL (tools/build_v05.py untuk 0.5; Cubic untuk "
+                "arsip 0.1\u20130.4), regenerasi manifest md5sum & mastering ISO (labkita-linux-0.5-amd64.iso), "
+                "manajemen repositori GitHub (https://github.com/luvices/labkita), dan keselarasan luaran tugas.",
                 styles["TblCellLeft"],
             ),
         ],
@@ -1398,9 +1398,11 @@ def build_story(styles, toc_pages):
 
     story.append(TOCMarker("bab5c"))
     story.append(
-        Paragraph("C. Saran Pengembangan Rilis Selanjutnya (LabKita Linux 0.6)", styles["SubHeading"])
+        Paragraph("C. Saran Pengembangan Lanjutan", styles["SubHeading"])
     )
-    story.append(p_body("Untuk pengembangan rilis berikutnya (LabKita Linux 0.6), disarankan perbaikan terfokus berikut:"))
+    story.append(
+        p_body("Sebagai catatan pengembangan lanjutan di luar cakupan rilis final 0.5, perbaikan terfokus yang dapat dieksplorasi meliputi:")
+    )
     story.append(
         num_item(
             "1.",

@@ -556,7 +556,7 @@ def create_deck():
     # SLIDE 11: KESIMPULAN & SARAN
     # -------------------------------------------------------------
     s11 = prs.slides.add_slide(blank_layout)
-    add_header(s11, "Kesimpulan & Rencana Pengembangan Masa Depan")
+    add_header(s11, "Kesimpulan & Saran Pengembangan Lanjutan")
 
     c1 = s11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.6), Inches(4.8))
     c1.fill.solid()
@@ -590,7 +590,7 @@ def create_deck():
     tf2 = c2.text_frame
     tf2.word_wrap = True
     p = tf2.paragraphs[0]
-    p.text = "Rencana Pengembangan Masa Depan (0.6+)"
+    p.text = "Saran Pengembangan Lanjutan"
     p.font.size = Pt(16)
     p.font.bold = True
     p.font.color.rgb = c_accent

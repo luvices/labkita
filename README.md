@@ -12,11 +12,11 @@ Proyek ini dikembangkan sebagai luaran **Final Project Mata Kuliah Sistem Operas
 | Atribut | Detail |
 | --- | --- |
 | **Nama Distro** | LabKita Linux |
-| **Versi Rilis** | **0.5** *(arsip `0.4` tetap tersedia)* |
+| **Versi Rilis** | **0.5 (Final — versi akhir resmi)** |
 | **Basis Sistem** | Ubuntu 24.04.5 LTS Desktop (amd64) |
 | **Arsitektur** | x86_64 / amd64 |
-| **Nama Berkas ISO** | `labkita-linux-0.5-amd64.iso` *(0.4: `labkita-linux-0.4-amd64.iso`)* |
-| **Tautan Unduhan ISO** | `https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing` *(arsip 0.4: https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing)* |
+| **Nama Berkas ISO** | `labkita-linux-0.5-amd64.iso` |
+| **Tautan Unduhan ISO** | `https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing` |
 | **Ukuran Berkas** | 6.643.179.520 bytes (~6,19 GiB / 6,64 GB) |
 | **SHA256 Checksum** | `d0dae277d140decd3e1ecaff9b908c551109a10efd069b1472acd34b046f5f1c` |
 | **MD5 Checksum** | `b73178250b61cdfd900e3a3f8bdca660` |
@@ -24,9 +24,8 @@ Proyek ini dikembangkan sebagai luaran **Final Project Mata Kuliah Sistem Operas
 | **Status Verifikasi** | **LULUS PENUH** di VM uji (`md5sum` loop ISO **`1016/1016 OK`**, `Get-FileHash` Windows identik, autologin live `ubuntu` langsung desktop, **installer GUI normal `ubuntu-desktop-bootstrap` selesai hingga `"Instalasi selesai"`**, `labkita-check` seluruh pemeriksaan lulus termasuk sandbox Firefox Snap AppArmor OK, `labkita-postinstall praktikan` grup `labkita-praktikum` `0700` non-`sudo`, `labkita-guide` Firefox Snap OK — lihat [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md) & [`docs/CONTROL-EXPERIMENT.md`](docs/CONTROL-EXPERIMENT.md)) |
 
 ### Produk / Unduhan & Verifikasi Integritas Berkas
-- **Unduhan ISO 0.5:** `https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing` (`labkita-linux-0.5-amd64.iso`, ukuran `6.643.179.520 bytes`, dibangun dari tag `v0.5-iso`)
-- **Arsip ISO 0.4:** `https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing` (`labkita-linux-0.4-amd64.iso`, ukuran `6.520.395.776 bytes`)
-- **Prosedur Instalasi Resmi:** **Installer GUI (`ubuntu-desktop-bootstrap`)** pada ISO `0.5` (lihat Bagian 4.C). Jalur TUI **`subiquity.cmd.tui`** tetap tersedia sebagai **prosedur cadangan** (dan prosedur utama arsip `0.1`–`0.4` build Cubic).
+- **Unduhan ISO Final 0.5 (Satu-Satunya Rilis Resmi):** `https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing` (`labkita-linux-0.5-amd64.iso`, ukuran `6.643.179.520 bytes`, dibangun dari tag **`v0.5-iso`**). Versi **0.5** merupakan versi final proyek dan satu-satunya rilis yang diunduh; rilis `0.1`–`0.4` hanya dicatat sebagai arsip dan riwayat pengujian.
+- **Prosedur Instalasi Resmi:** **Installer GUI (`ubuntu-desktop-bootstrap`)** pada ISO `0.5` (lihat Bagian 4.C). Jalur TUI **`subiquity.cmd.tui`** tetap tersedia sebagai **prosedur cadangan** (serta catatan prosedur kerja pada arsip pengujian `0.1`–`0.4` build Cubic).
 - Sebelum mengimpor atau membakar ISO ke media instalasi, lakukan verifikasi integritas berkas:
 
 - **PowerShell (Windows):**
@@ -105,7 +104,7 @@ Pengujian empiris dilakukan ulang **setelah instalasi penuh ke disk kosong** pad
 
 > **Ringkasan Perbandingan Build WSL (`0.5`) vs Build Cubic (`0.1`–`0.4`):**  
 > - **Installer GUI berfungsi penuh pada build WSL `0.5` (`tools/build_v05.py`, resep Bisect #3) dan gagal pada build Cubic `0.1`–`0.4`:** Selain perbedaan pipeline Cubic vs WSL (belum diisolasi ulang di Cubic), pengujian `0.5` #1 vs #2 serta kode `ProductService._extractIsoInfo()` membuktikan bahwa `.disk/info` tanpa tanda kutip `"` melempar `RangeError` tak tertangkap di `ubuntu-desktop-bootstrap`. Di `0.5` final, `.disk/info` menggunakan tanda kutip codename dan diawali `"Ubuntu"` sehingga autologin live `ubuntu` maupun instalasi GUI berjalan penuh hingga selesai.  
-> - **Prosedur instalasi resmi LabKita Linux 0.5:** **Installer GUI normal (`ubuntu-desktop-bootstrap`)**, sedangkan jalur TUI **`subiquity.cmd.tui`** dijadikan **prosedur cadangan** (dan tetap prosedur utama bagi pengguna arsip `0.1`–`0.4`).
+> - **Prosedur instalasi resmi LabKita Linux 0.5 (Final):** **Installer GUI normal (`ubuntu-desktop-bootstrap`)**, sedangkan jalur TUI **`subiquity.cmd.tui`** dijadikan **prosedur cadangan** (sebagaimana catatan riwayat pengujian arsip `0.1`–`0.4`).
 
 *Detail lengkap eksperimen kontrol, bisect #1–#4, uji `username=ubuntu`, dan verifikasi `0.5` tersedia di [`docs/CONTROL-EXPERIMENT.md`](docs/CONTROL-EXPERIMENT.md), bukti VM di [`docs/evidence/`](docs/evidence/), serta matriks uji di [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md).*
 
@@ -133,7 +132,7 @@ Pengujian empiris dilakukan ulang **setelah instalasi penuh ke disk kosong** pad
 ### C. Prosedur Instalasi Resmi (Installer GUI) & Cadangan (TUI `subiquity.cmd.tui`)
 Pada rilis **0.5** (dibangun dari tag **`v0.5-iso`**), **prosedur instalasi resmi menggunakan installer GUI normal (`ubuntu-desktop-bootstrap`)** yang otomatis muncul saat sesi live: pilih bahasa (*Bahasa Indonesia*), papan ketik, opsi *Pasang Ubuntu*, *Hapus disk dan pasang Ubuntu*, buat akun admin (mis. `labadmin`), zona waktu `Asia/Jakarta`, lalu klik **Pasang** hingga *"Instalasi selesai"* dan mulai ulang.
 
-Sebagai **prosedur cadangan** (atau untuk arsip `0.1`–`0.4` build Cubic), gunakan installer TUI melalui terminal live:
+Sebagai **prosedur cadangan** (mengikuti metode yang sebelumnya dipakai pada riwayat pengujian arsip `0.1`–`0.4`), gunakan installer TUI melalui terminal live:
 ```bash
 sudo snap run --shell ubuntu-desktop-bootstrap.subiquity-server -c "subiquity.cmd.tui"
 ```
@@ -149,7 +148,7 @@ Skrip akan membuat user `praktikan`, mengaitkannya ke grup sistem `labkita-prakt
 
 | No | Nama | NPM | Peran | Tugas & Kontribusi |
 | :---: | :--- | :---: | :--- | :--- |
-| 1 | **Dafa Zahran** | **257006111188** | Ketua Kelompok & Integrasi Build | Koordinasi proyek, pipeline mastering ISO via Cubic, manajemen repositori GitHub, integrasi rilis v0.4, dan orkestrasi pengujian VM. |
+| 1 | **Dafa Zahran** | **257006111188** | Ketua Kelompok & Integrasi Build | Koordinasi proyek, build WSL (`tools/build_v05.py` untuk `0.5`; Cubic untuk arsip `0.1`–`0.4`), regenerasi manifest md5sum & mastering ISO `labkita-linux-0.5-amd64.iso` (`v0.5-iso`), manajemen repositori GitHub, dan orkestrasi pengujian VM. |
 | 2 | **Rafly Fauzi Pratama** | **257006111152** | Pengembang Inti & Toolchain | Pembuatan skrip kustomisasi Cubic (`customize.sh`), perbaikan lokalisasi Bahasa Indonesia (`id_ID.UTF-8`), konfigurasi compiler GCC/G++, Python, Geany IDE, serta pengembangan suite `labkita-check`. |
 | 3 | **Muhammad Ilham Rizky** | **257006111154** | Sistem, Keamanan & QA | Implementasi unit systemd tmpfs (`labkita-runtime.service`), skrip isolasi non-sudo (`labkita-postinstall`), perbaikan launcher Firefox Snap, serta eksekusi benchmark empiris RAM & boot time VM. |
 | 4 | **Vadien Athallah Lukman** | **257006111160** | UI/UX, Dokumentasi & Media | Integrasi tema WhiteSur GTK & ikon, tipografi Inter font, desain wallpaper orisinal gradien LabKita, penyusunan laporan akhir proyek (PDF), slide presentasi (PPTX), dan naskah demo. |
@@ -165,11 +164,10 @@ labkita-linux/
 ├── config/
 │   └── packages.txt             # Daftar paket esensial tambahan
 ├── dist/
-│   ├── labkita-kit.tar.gz       # Arsip payload untuk injeksi Cubic
-│   ├── labkita-linux-0.4-amd64.iso.md5      # Checksum MD5 berkas ISO 0.4
-│   ├── labkita-linux-0.4-amd64.iso.sha256   # Checksum SHA256 berkas ISO 0.4
-│   ├── labkita-linux-0.5-amd64.iso.md5      # Checksum MD5 berkas ISO 0.5
-│   └── labkita-linux-0.5-amd64.iso.sha256   # Checksum SHA256 berkas ISO 0.5 (arsip 0.1-0.4)
+│   ├── labkita-kit.tar.gz       # Arsip payload kustomisasi
+│   ├── labkita-linux-0.5-amd64.iso.md5      # Checksum MD5 ISO final 0.5
+│   ├── labkita-linux-0.5-amd64.iso.sha256   # Checksum SHA256 ISO final 0.5
+│   └── labkita-linux-0.1..0.4-amd64.iso.*   # Checksum arsip riwayat pengujian 0.1–0.4
 ├── docs/
 │   ├── BUILD-CUBIC.md           # Prosedur pembuatan ISO dengan Cubic
 │   ├── CONTRIBUTING.md          # Panduan kolaborasi & konvensi commit git
