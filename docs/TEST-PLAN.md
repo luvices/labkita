@@ -70,3 +70,47 @@ Ringkasan (detail & bukti lengkap di [`CONTROL-EXPERIMENT.md`](CONTROL-EXPERIMEN
 - **Kernel terinstal:** `0.1`/`0.2` berjalan pada `7.0.0-31-generic`, sedangkan `0.3`, `0.4`, dan `0.5` berjalan pada `7.0.0-43-generic`.
 - Pembacaan langsung seluruh screenshot `v04-r1..r5.png` dan `v05-r1..r5.png` (serta spot-check 9 screenshot `0.1`–`0.3`): tidak ada selisih angka terhadap tabel.
 - Kesimpulan benchmark: **tidak ada perbedaan yang dapat dibuktikan** antara `0.1`, `0.2`, `0.3`, `0.4`, dan `0.5`.
+## 5. Investigasi Tampilan Ikon Terminal & Berkas di Dock (Hipotesis Teknis)
+
+Pada catatan pengujian antarmuka, ditemukan bahwa ikon **Terminal** (`org.gnome.Terminal`) dan **Berkas** (`org.gnome.Nautilus`) tampak kosong atau tidak muncul saat aplikasi dalam keadaan tidak aktif pada dock (hanya muncul saat aplikasi aktif/berjalan).
+
+### A. Perintah Investigasi dan Bukti Nyata Berkas
+
+Investigasi berkas ikon dilakukan langsung pada direktori tema WhiteSur di dalam payload repositori menggunakan PowerShell di lingkungan pengembang lokal:
+
+```powershell
+# 1. Memeriksa ukuran berkas SVG ikon Terminal
+Get-Item payload/usr/share/icons/WhiteSur/apps/scalable/org.gnome.Terminal.svg | Select-Object Name, Length
+# Output:
+# Name                   Length
+# ----                   ------
+# org.gnome.Terminal.svg     12
+
+# 2. Membaca isi teks berkas ikon Terminal
+Get-Content payload/usr/share/icons/WhiteSur/apps/scalable/org.gnome.Terminal.svg
+# Output:
+# terminal.svg
+
+# 3. Memeriksa ukuran berkas SVG ikon Nautilus (Berkas)
+Get-Item payload/usr/share/icons/WhiteSur/apps/scalable/org.gnome.Nautilus.svg | Select-Object Name, Length
+# Output:
+# Name                   Length
+# ----                   ------
+# org.gnome.Nautilus.svg     16
+
+# 4. Membaca isi teks berkas ikon Nautilus (Berkas)
+Get-Content payload/usr/share/icons/WhiteSur/apps/scalable/org.gnome.Nautilus.svg
+# Output:
+# file-manager.svg
+```
+
+### B. Hipotesis Teknis Penyebab Masalah
+
+Berdasarkan pemeriksaan isi berkas di atas, dirumuskan hipotesis teknis berikut:
+
+1. **Berkas Symlink Berubah Menjadi Plain Text:** Berkas `org.gnome.Terminal.svg` (12 byte) dan `org.gnome.Nautilus.svg` (16 byte) bukan merupakan berkas XML/SVG grafis yang valid, melainkan teks biasa yang berisi nama berkas target (`terminal.svg` dan `file-manager.svg`). Hal ini mengindikasikan bahwa symlink Unix tertulis sebagai file teks biasa saat diekstraksi atau diarsip di lingkungan sistem berkas tertentu tanpa flag symlink yang sesuai.
+2. **Kegagalan Parser Grafis GNOME (librsvg):** Ketika dock GNOME Shell memuat ikon aplikasi yang sedang tidak aktif melalui desktop file (`org.gnome.Terminal.desktop` dan `org.gnome.Nautilus.desktop`), pustaka `librsvg` atau `GdkPixbuf` mencoba mem-parsing berkas teks 12/16 byte tersebut sebagai berkas grafis XML SVG. Karena formatnya bukan XML valid, parser gagal merender ikon sehingga dock menampilkan kotak kosong atau ikon fallback yang tidak tampak.
+3. **Mengapa Ikon Muncul Saat Aplikasi Berjalan:** Saat jendela aplikasi aktif, GNOME Shell dapat mengambil ikon runtime dari properti jendela X11/Wayland (`_NET_WM_ICON` atau icon cache memori proses), sehingga ikon dapat tampil saat aplikasi dibuka.
+
+> **Catatan Integritas Pengujian (PENTING):**  
+> Temuan di atas berstatus **HIPOTESIS TEKNIS** yang didasarkan pada audit berkas lokal. Hipotesis ini **belum diuji coba dan belum divalidasi langsung di dalam mesin virtual (VM) / live ISO LabKita**. Sesuai aturan keras proyek, konfigurasi tema ikon di `payload/` **tidak diubah** sebelum verifikasi nyata dapat dijalankan di lingkungan VM.
