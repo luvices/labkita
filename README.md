@@ -16,7 +16,7 @@ Proyek ini dikembangkan sebagai luaran **Final Project Mata Kuliah Sistem Operas
 | **Basis Sistem** | Ubuntu 24.04.5 LTS Desktop (amd64) |
 | **Arsitektur** | x86_64 / amd64 |
 | **Nama Berkas ISO** | `labkita-linux-0.5-amd64.iso` *(0.4: `labkita-linux-0.4-amd64.iso`)* |
-| **Tautan Unduhan ISO** | `[LINK-DRIVE-ISO-0.5]` *(arsip 0.4: https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing)* |
+| **Tautan Unduhan ISO** | `https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing` *(arsip 0.4: https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing)* |
 | **Ukuran Berkas** | 6.643.179.520 bytes (~6,19 GiB / 6,64 GB) |
 | **SHA256 Checksum** | `d0dae277d140decd3e1ecaff9b908c551109a10efd069b1472acd34b046f5f1c` |
 | **MD5 Checksum** | `b73178250b61cdfd900e3a3f8bdca660` |
@@ -24,7 +24,7 @@ Proyek ini dikembangkan sebagai luaran **Final Project Mata Kuliah Sistem Operas
 | **Status Verifikasi** | **LULUS PENUH** di VM uji (`md5sum` loop ISO **`1016/1016 OK`**, `Get-FileHash` Windows identik, autologin live `ubuntu` langsung desktop, **installer GUI normal `ubuntu-desktop-bootstrap` selesai hingga `"Instalasi selesai"`**, `labkita-check` seluruh pemeriksaan lulus termasuk sandbox Firefox Snap AppArmor OK, `labkita-postinstall praktikan` grup `labkita-praktikum` `0700` non-`sudo`, `labkita-guide` Firefox Snap OK — lihat [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md) & [`docs/CONTROL-EXPERIMENT.md`](docs/CONTROL-EXPERIMENT.md)) |
 
 ### Produk / Unduhan & Verifikasi Integritas Berkas
-- **Unduhan ISO 0.5:** `[LINK-DRIVE-ISO-0.5]` (`labkita-linux-0.5-amd64.iso`, ukuran `6.643.179.520 bytes`, dibangun dari tag `v0.5-iso`)
+- **Unduhan ISO 0.5:** `https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing` (`labkita-linux-0.5-amd64.iso`, ukuran `6.643.179.520 bytes`, dibangun dari tag `v0.5-iso`)
 - **Arsip ISO 0.4:** `https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing` (`labkita-linux-0.4-amd64.iso`, ukuran `6.520.395.776 bytes`)
 - **Prosedur Instalasi Resmi:** **Installer GUI (`ubuntu-desktop-bootstrap`)** pada ISO `0.5` (lihat Bagian 4.C). Jalur TUI **`subiquity.cmd.tui`** tetap tersedia sebagai **prosedur cadangan** (dan prosedur utama arsip `0.1`–`0.4` build Cubic).
 - Sebelum mengimpor atau membakar ISO ke media instalasi, lakukan verifikasi integritas berkas:

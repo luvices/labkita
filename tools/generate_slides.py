@@ -405,7 +405,7 @@ def create_deck():
         ("Konsumsi RAM Rata-rata & Rentang", "free -m (VM 4 GB / 3.911 MiB)", "0.1 [7.0.0-31]: 1.038,2 | 0.2: 1.068,2 | 0.3 [7.0.0-43]: 1.058,2\n0.4 [7.0.0-43]: 1.062,6 MiB (1.043–1.075)\n0.5 [7.0.0-43]: 1.042,8 MiB avg (1.031–1.054 MiB)\nSisa RAM 0.5 avg: 2.867,6 MiB (~2,80 GiB)"),
         ("Waktu Booting Rata-rata & Rentang", "systemd-analyze time (5x Reboot)", "0.1: 8,460s | 0.2: 9,317s | 0.3: 8,808s | 0.4: 9,185s\n0.5: 9,036s avg (8,349–9,515s; gfx avg 5,686s)\nKesimpulan: tidak ada perbedaan yang dapat dibuktikan (rentang saling tumpang tindih & beda kernel)."),
         ("Variabel Kernel & Layanan Boot", "uname -r & systemd-analyze blame", "Kernel 0.1/0.2: 7.0.0-31-generic | 0.3/0.4/0.5: 7.0.0-43-generic\nplymouth-quit-wait (0.5): 2,098–2,874s | snapd.seeded: 1,062–1,238s\ngraphical.target avg: 5,180 (0.1) | 5,918 (0.2) | 5,532 (0.3) | 5,779 (0.4) | 5,686 (0.5)"),
-        ("Identitas & Kapasitas Media ISO 0.5", "Build WSL (v0.5-iso) & SHA256", "Berkas: labkita-linux-0.5-amd64.iso\nUkuran: 6.643.179.520 bytes (~6,19 GiB / 6,64 GB)\nSHA256: d0dae277d140decd3e1ecaff9b908c55...46f5f1c\nMD5: b73178250b61cdfd900e3a3f8bdca660 | Unduh: [LINK-DRIVE-ISO-0.5]")
+        ("Identitas & Kapasitas Media ISO 0.5", "Build WSL (v0.5-iso) & SHA256", "Berkas: labkita-linux-0.5-amd64.iso\nUkuran: 6.643.179.520 bytes (~6,19 GiB / 6,64 GB)\nSHA256: d0dae277d140decd3e1ecaff9b908c55...46f5f1c\nMD5: b73178250b61cdfd900e3a3f8bdca660 | Unduh: https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing")
     ]
 
     for idx, (head, cmd, stats) in enumerate(benchmarks):

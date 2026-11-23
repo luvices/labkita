@@ -656,7 +656,7 @@ def build_pdf(filename="docs/LAPORAN-PROYEK-LABKITA.pdf"):
     story.append(Paragraph(
         "• <b>Repositori GitHub Resmi:</b> <font color='#1E3A8A'><u>https://github.com/luvices/labkita</u></font> (memuat skrip build WSL <code>tools/build_v05.py</code>, kustomisasi, paket, dokumen pengujian, generator laporan, dan bukti tangkapan layar; rilis 0.5 dibangun dari tag <code>v0.5-iso</code>).<br/>"
         "• <b>Berkas Citra ISO Resmi (0.5):</b> <code>labkita-linux-0.5-amd64.iso</code> (Ukuran: 6.643.179.520 bytes / ~6,19 GiB / 6,64 GB).<br/>"
-        "• <b>Tautan Unduhan ISO 0.5:</b> <code>[LINK-DRIVE-ISO-0.5]</code> *(arsip ISO 0.4 Cubic tetap tersedia di Google Drive)*<br/>"
+        "• <b>Tautan Unduhan ISO 0.5:</b> <code>https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing</code> *(arsip ISO 0.4 Cubic tetap tersedia di Google Drive)*<br/>"
         "• <b>Verifikasi SHA256 (0.5):</b> <code>d0dae277d140decd3e1ecaff9b908c551109a10efd069b1472acd34b046f5f1c</code><br/>"
         "• <b>Verifikasi MD5 (0.5):</b> <code>b73178250b61cdfd900e3a3f8bdca660</code><br/>"
         "• <b>Metode Build 0.5:</b> Skrip WSL <code>tools/build_v05.py</code> (resep Bisect #3, tag <code>v0.5-iso</code>)",
