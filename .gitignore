@@ -8,3 +8,8 @@ __pycache__/
 cubic-project/
 build/
 *.credentials.json
+*.pdf
+*.pptx
+*.mp4
+*.mkv
+*.mov

@@ -51,7 +51,7 @@ Gunakan pesan commit yang deskriptif, terstruktur, dan berbahasa Indonesia atau 
 
 - `feat:` Penambahan fitur, skrip, atau komponen baru.
 - `fix:` Perbaikan bug, kesalahan konfigurasi, atau perizinan berkas.
-- `docs:` Pembaruan dokumen, panduan, slide presentasi, atau laporan PDF.
+- `docs:` Pembaruan dokumentasi, panduan offline, catatan uji, atau spesifikasi sistem.
 - `test:` Penambahan pengujian mandiri, hasil benchmark, atau tangkapan layar uji.
 - `chore:` Pemeliharaan repositori, struktur folder, atau konfigurasi paket.
 
