@@ -41,7 +41,7 @@ def verify_guide_open(report, base):
         readable_html = (
             no_dot
             and target_path.is_file()
-            and "Praktikum Pemrograman Mandiri" in target_path.read_text(encoding="utf-8", errors="ignore")
+            and "Panduan Praktikum LabKita Linux" in target_path.read_text(encoding="utf-8", errors="ignore")
         )
         report("Lokasi panduan non-dotfolder (~/Dokumen)", readable_html, str(target_path or prep.stderr.strip()))
     except (OSError, subprocess.SubprocessError) as error:
@@ -75,7 +75,7 @@ def verify_guide_open(report, base):
                     timeout=15,
                     env=run_env,
                 )
-                ok = sandbox.returncode == 0 and "Praktikum Pemrograman Mandiri" in sandbox.stdout
+                ok = sandbox.returncode == 0 and "Panduan Praktikum LabKita Linux" in sandbox.stdout
                 report("Pembacaan panduan oleh sandbox Firefox Snap", ok, sandbox.stderr.strip() if not ok else "AppArmor OK")
                 return
             except (OSError, subprocess.SubprocessError) as error:
@@ -99,7 +99,7 @@ def main():
         if not ok:
             failures.append(label)
 
-    print("=== Pemeriksaan Kesiapan LabKita Linux 0.5.1 ===")
+    print("=== Pemeriksaan Kesiapan LabKita Linux 0.6 ===")
 
     # 1. Pemeriksaan Toolchain & Aplikasi Dasar
     for command in ("python3", "gcc", "g++", "make", "geany", "git", "man"):
@@ -138,6 +138,7 @@ def main():
     report("Tema Kursor WhiteSur", Path("/usr/share/icons/WhiteSur-cursors").is_dir())
     report("Wallpaper Orisinal LabKita", Path("/usr/share/backgrounds/labkita-gradient.png").is_file() or Path("/usr/share/backgrounds/labkita.svg").is_file())
     report("Aset Splash Boot LabKita (Plymouth)", Path("/usr/share/plymouth/themes/spinner/watermark.png").is_file() and Path("/usr/share/plymouth/themes/spinner/bgrt-fallback.png").is_file())
+    report("Logo Login GDM LabKita", Path("/usr/share/pixmaps/labkita-gdm-logo.png").is_file() and Path("/etc/dconf/profile/gdm").is_file())
 
     # 5. Pengujian Kompilasi dan Eksekusi Kode Praktikum
     with tempfile.TemporaryDirectory(prefix="labkita-check-") as directory:

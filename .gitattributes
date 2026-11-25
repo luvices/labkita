@@ -1,6 +1,7 @@
 *.sh text eol=lf
 *.py text eol=lf
 *.c text eol=lf
+*.html text eol=lf
 *.yaml text eol=lf
 *.yml text eol=lf
 *.plymouth text eol=lf
@@ -9,6 +10,10 @@
 payload/usr/local/bin/* text eol=lf
 payload/usr/local/sbin/* text eol=lf
 payload/etc/dconf/db/local.d/* text eol=lf
+payload/etc/dconf/db/gdm.d/* text eol=lf
 payload/etc/dconf/profile/* text eol=lf
 payload/etc/systemd/system/* text eol=lf
+payload/etc/skel/.config/* text eol=lf
+payload/usr/share/gdm/dconf/* text eol=lf
+payload/usr/share/glib-2.0/schemas/* text eol=lf
 payload/usr/share/icons/*/index.theme text eol=lf

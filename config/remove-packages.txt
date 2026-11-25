@@ -11,3 +11,4 @@ gnome-font-viewer
 gnome-logs
 baobab
 seahorse
+unattended-upgrades

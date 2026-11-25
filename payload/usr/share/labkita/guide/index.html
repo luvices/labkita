@@ -3,372 +3,965 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Panduan Praktikum - LabKita Linux 0.5.1</title>
+  <title>Panduan Praktikum LabKita Linux 0.6</title>
   <style>
     :root {
       color-scheme: light;
-      --ink: #18334d;
-      --blue: #0071e3;
-      --green: #16a34a;
-      --paper: #f5f8fc;
-      --line: #d2dbe6;
-      --card-bg: #ffffff;
-      --code-bg: #f0f4f9;
+      --paper: #f6f5f0;
+      --surface: #ffffff;
+      --surface-muted: #efede6;
+      --ink: #141923;
+      --ink-muted: #4b5563;
+      --border: #d5dbe3;
+      --accent: #1d4ed8;
+      --accent-hover: #1e40af;
+      --accent-soft: #eff6ff;
+      --ok: #15803d;
+      --ok-soft: #f0fdf4;
+      --code-bg: #0f172a;
+      --code-ink: #f8fafc;
     }
+
     * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+
     body {
       margin: 0;
       background: var(--paper);
       color: var(--ink);
-      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "DejaVu Sans", sans-serif;
+      font-family: "Inter", "Ubuntu", system-ui, -apple-system, "Segoe UI", sans-serif;
       font-size: 16px;
       line-height: 1.65;
     }
-    header, main, footer {
-      max-width: 880px;
-      margin: auto;
-      padding: 24px 32px;
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
-    header {
-      border-bottom: 2px solid var(--blue);
-      padding-top: 36px;
+
+    .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      max-width: 1220px;
+      margin: 0 auto;
+      min-height: 100vh;
     }
-    .badge {
-      display: inline-block;
-      padding: 4px 12px;
-      background: #e1edfe;
-      color: var(--blue);
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      letter-spacing: 0.3px;
-    }
-    h1 {
-      font-size: clamp(28px, 5vw, 42px);
-      line-height: 1.2;
-      letter-spacing: -0.5px;
-      margin: 10px 0 8px;
-      color: #0b1f33;
-    }
-    .subtitle {
-      margin: 0 0 20px;
-      color: #435b75;
-      font-size: 17px;
-    }
-    nav {
+
+    /* Sidebar Workbench */
+    aside.sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 24px 20px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
       display: flex;
-      gap: 10px 22px;
-      flex-wrap: wrap;
-      margin-top: 16px;
+      flex-direction: column;
+      gap: 20px;
     }
-    nav a {
-      color: var(--blue);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 4px 0;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    section {
-      padding: 30px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    h2 {
-      font-size: 21px;
-      margin: 0 0 10px;
-      color: #0b1f33;
-    }
-    .step-num {
-      display: inline-flex;
+
+    .brand {
+      display: flex;
       align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      background: var(--blue);
-      color: #fff;
-      border-radius: 50%;
-      font-size: 14px;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand-title {
       font-weight: 700;
-      margin-right: 8px;
-      vertical-align: middle;
+      font-size: 16px;
+      line-height: 1.25;
+      color: var(--ink);
     }
-    p {
-      margin: 8px 0;
-      color: #2c4159;
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--ink-muted);
+      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
     }
-    .cmd-label {
+
+    .progress-box {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 13px;
       font-weight: 600;
-      color: #556b82;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 14px 0 4px;
+      margin-bottom: 8px;
     }
-    pre {
-      padding: 14px 18px;
-      background: var(--code-bg);
-      border-left: 4px solid var(--blue);
-      border-radius: 6px;
-      overflow-x: auto;
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      font-size: 14px;
-      line-height: 1.5;
-      color: #1a202c;
-      margin: 0 0 10px;
-    }
-    code {
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      background: #e8eef5;
-      padding: 2px 6px;
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--border);
       border-radius: 4px;
-      font-size: 0.9em;
-      color: #0b1f33;
+      overflow: hidden;
     }
-    pre code {
-      background: transparent;
-      padding: 0;
-      color: inherit;
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width 160ms ease;
     }
-    .tip, .warn {
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-top: 14px;
-      line-height: 1.55;
+
+    .progress-fill.done { background: var(--ok); }
+
+    .btn-reset {
+      margin-top: 10px;
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink-muted);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
     }
-    .tip {
-      background: #eef7ff;
-      border: 1px solid #c8e1fb;
-      color: #1a4971;
+
+    .btn-reset:hover {
+      color: var(--ink);
+      border-color: var(--ink-muted);
     }
-    .warn {
-      background: #fff8e6;
-      border: 1px solid #f5d485;
-      color: #734e00;
+
+    nav.toc {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
-    .tip strong, .warn strong {
-      display: block;
+
+    .toc-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
       margin-bottom: 4px;
     }
-    .compare {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 14px;
+
+    .toc a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 6px;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 500;
+      border-left: 3px solid transparent;
     }
-    .compare-box {
-      background: #ffffff;
-      border: 1px solid var(--line);
+
+    .toc a:hover {
+      background: var(--paper);
+      text-decoration: none;
+    }
+
+    .toc a.active {
+      background: var(--accent-soft);
+      color: var(--accent-hover);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .toc-tag {
+      font-size: 11px;
+      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+      color: var(--ink-muted);
+    }
+
+    .toc a.completed .toc-tag {
+      color: var(--ok);
+      font-weight: 700;
+    }
+
+    /* Main Content */
+    main.content {
+      padding: 36px 44px 64px;
+      max-width: 880px;
+    }
+
+    header.hero {
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--ink);
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 32px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .lead {
+      margin: 0;
+      font-size: 17px;
+      color: var(--ink-muted);
+      max-width: 68ch;
+    }
+
+    .env-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 32px;
+    }
+
+    .env-cell {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 8px;
       padding: 14px 16px;
     }
-    .compare-box h4 {
-      margin: 0 0 8px;
-      font-size: 15px;
-      color: #0b1f33;
-    }
-    .compare-box ul {
-      margin: 0;
-      padding-left: 20px;
-      font-size: 13.5px;
-      color: #3b5066;
-    }
-    .compare-box li {
+
+    .env-cell dt {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--ink-muted);
       margin-bottom: 4px;
     }
-    footer {
-      font-size: 13.5px;
-      color: #6a7f96;
-      text-align: center;
-      padding: 32px 0 48px;
+
+    .env-cell dd {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
     }
-    @media (max-width: 640px) {
-      header, main, footer { padding: 16px 18px; }
-      .compare { grid-template-columns: 1fr; }
+
+    section.module {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 26px;
+      margin-bottom: 22px;
+    }
+
+    .module-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .module-num {
+      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    .check-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 11px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--paper);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .check-label input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--ok);
+      cursor: pointer;
+    }
+
+    .check-label.is-done {
+      background: var(--ok-soft);
+      border-color: #86efac;
+      color: var(--ok);
+    }
+
+    p { margin: 10px 0; }
+    ul, ol { margin: 10px 0; padding-left: 22px; }
+    li { margin-bottom: 6px; }
+
+    code {
+      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+      font-size: 0.92em;
+      background: var(--surface-muted);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+    }
+
+    .cmd-block {
+      margin: 14px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #1e293b;
+    }
+
+    .cmd-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 12px;
+      background: #1e293b;
+      color: #cbd5e1;
+      font-size: 12px;
+      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+    }
+
+    .btn-copy {
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #f8fafc;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 120ms ease, border-color 120ms ease;
+    }
+
+    .btn-copy:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .btn-copy.copied {
+      background: var(--ok);
+      border-color: var(--ok);
+    }
+
+    pre {
+      margin: 0;
+      padding: 14px 16px;
+      background: var(--code-bg);
+      color: var(--code-ink);
+      overflow-x: auto;
+      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .task-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .task-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent-hover);
+      margin-bottom: 6px;
+    }
+
+    .note-box {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .mini-panel {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+
+    .mini-panel h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    table.ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    table.ref-table th, table.ref-table td {
+      text-align: left;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    table.ref-table th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--ink-muted);
+      background: var(--paper);
+    }
+
+    details.hint {
+      margin-top: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      background: var(--surface);
+    }
+
+    details.hint summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    footer.doc-foot {
+      margin-top: 32px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    @media (max-width: 920px) {
+      .shell { display: block; }
+      aside.sidebar {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      main.content {
+        width: 100%;
+        padding: 24px 16px 48px;
+      }
+      .module-top { flex-wrap: wrap; }
+      .env-strip, .split-grid { grid-template-columns: minmax(0, 1fr); }
+      table.ref-table { display: block; overflow-x: auto; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <span class="badge">LabKita Linux 0.5.1</span>
-  <h1>Praktikum Pemrograman Mandiri.<br>Lancar Tanpa Internet.</h1>
-  <p class="subtitle">
-    Seluruh compiler, pustaka, editor, dan contoh program praktikum sudah tersedia langsung di dalam sistem.
-  </p>
-  <nav aria-label="Daftar Isi">
-    <a href="#mulai">1. Siapkan Folder</a>
-    <a href="#python">2. Pemrograman Python</a>
-    <a href="#c">3. Pemrograman C</a>
-    <a href="#proses">4. Proses &amp; Thread</a>
-    <a href="#tmpfs">5. Ruang Sementara</a>
-    <a href="#bantuan">6. Bantuan Offline</a>
-  </nav>
-</header>
+<div class="shell">
+  <aside class="sidebar" aria-label="Navigasi Modul Praktikum">
+    <div class="brand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="40" height="40" role="img" aria-label="Logo LabKita Linux">
+        <rect x="8" y="8" width="112" height="112" rx="24" fill="#1E3A5F" stroke="#38BDF8" stroke-width="5"/>
+        <path d="M36 42 L64 64 L36 86" fill="none" stroke="#38BDF8" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="66" y="76" width="28" height="10" rx="5" fill="#F8FAFC"/>
+        <rect x="86" y="34" width="12" height="12" rx="3" fill="#38BDF8"/>
+      </svg>
+      <div>
+        <div class="brand-title">LabKita Linux</div>
+        <div class="brand-sub">Buku Kerja v0.6</div>
+      </div>
+    </div>
 
-<main>
+    <div class="progress-box">
+      <div class="progress-head">
+        <span>Progres Tugas</span>
+        <span id="progressText">0 / 7 modul</span>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-fill" id="progressBar"></div>
+      </div>
+      <button type="button" class="btn-reset" id="resetProgress">Reset Progres</button>
+    </div>
 
-  <!-- BAGIAN 1 -->
-  <section id="mulai">
-    <h2><span class="step-num">1</span> Siapkan Folder Latihan</h2>
-    <p>
-      Buka aplikasi <strong>Terminal</strong> lewat pintasan <code>Ctrl + Alt + T</code> atau klik ikon terminal di dock bawah.
-      Salin seluruh contoh berkas praktikum bawaan sistem ke folder kerja pribadi Anda di <code>~/Praktikum</code>:
-    </p>
-    <div class="cmd-label">Jalankan di Terminal:</div>
-    <pre>mkdir -p "$HOME/Praktikum"
+    <nav class="toc">
+      <div class="toc-label">Daftar Modul</div>
+      <a href="#modul-1" data-nav="m1"><span>1. Shell &amp; Berkas</span><span class="toc-tag" id="tag-m1">M1</span></a>
+      <a href="#modul-2" data-nav="m2"><span>2. Python Dasar &amp; I/O</span><span class="toc-tag" id="tag-m2">M2</span></a>
+      <a href="#modul-3" data-nav="m3"><span>3. C, GCC &amp; GDB</span><span class="toc-tag" id="tag-m3">M3</span></a>
+      <a href="#modul-4" data-nav="m4"><span>4. Proses &amp; PID</span><span class="toc-tag" id="tag-m4">M4</span></a>
+      <a href="#modul-5" data-nav="m5"><span>5. Threading &amp; Lock</span><span class="toc-tag" id="tag-m5">M5</span></a>
+      <a href="#modul-6" data-nav="m6"><span>6. Akun &amp; Tmpfs</span><span class="toc-tag" id="tag-m6">M6</span></a>
+      <a href="#modul-7" data-nav="m7"><span>7. Proyek Integrasi</span><span class="toc-tag" id="tag-m7">M7</span></a>
+      <a href="#referensi"><span>Referensi Offline</span><span class="toc-tag">MAN</span></a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="hero">
+      <p class="eyebrow">Lingkungan Praktikum Offline</p>
+      <h1>Panduan Kerja &amp; Tugas Pemrograman Sistem Operasi</h1>
+      <p class="lead">
+        Seluruh compiler C/C++, debugger GDB, Python 3, editor Geany, contoh program, dan manual
+        dokumentasi sudah tersedia di dalam sistem tanpa memerlukan sambungan internet.
+      </p>
+    </header>
+
+    <dl class="env-strip" aria-label="Ringkasan Lingkungan Sistem">
+      <div class="env-cell">
+        <dt>Toolchain Bawaan</dt>
+        <dd>GCC, G++, Make, GDB, Python 3, Geany</dd>
+      </div>
+      <div class="env-cell">
+        <dt>Dua Akun Bawaan</dt>
+        <dd><code>labkita</code> (Admin) &amp; <code>praktikan</code> (0700)</dd>
+      </div>
+      <div class="env-cell">
+        <dt>Ruang Sementara RAM</dt>
+        <dd><code>/run/labkita</code> (tmpfs, data saja / noexec)</dd>
+      </div>
+    </dl>
+
+    <!-- MODUL 1 -->
+    <section class="module" id="modul-1">
+      <div class="module-top">
+        <div>
+          <div class="module-num">MODUL 01</div>
+          <h2>Orientasi Shell, Diagnostik, &amp; Manajemen Berkas</h2>
+        </div>
+        <label class="check-label" data-label="m1">
+          <input type="checkbox" data-mod="m1"> Selesai
+        </label>
+      </div>
+      <p>
+        Buka Terminal lewat <code>Ctrl + Alt + T</code> atau ikon terminal di dock bawah. Salin
+        berkas contoh bawaan dari <code>/usr/share/labkita/examples/</code> ke folder pribadi
+        <code>~/Praktikum</code>, lalu jalankan pemeriksaan sistem.
+      </p>
+      <div class="cmd-block">
+        <div class="cmd-bar"><span>Terminal Bash</span><button type="button" class="btn-copy">Salin</button></div>
+        <pre>mkdir -p "$HOME/Praktikum"
 cp -n /usr/share/labkita/examples/* "$HOME/Praktikum/"
 cd "$HOME/Praktikum"
-ls -la</pre>
-    <p>
-      Hasil perintah <code>ls -la</code> akan menampilkan berkas latihan:
-      <code>hello.c</code>, <code>hello.py</code>, <code>memory_demo.c</code>, <code>processes.py</code>, dan <code>thread_demo.py</code>.
-    </p>
-    <div class="tip">
-      <strong>💡 Tips Menulis Kode:</strong>
-      Gunakan editor <strong>Geany</strong> yang ringan dan sudah disiapkan khusus praktikum C dan Python.
-      Anda bisa membukanya melalui ikon di dock bawah atau menu aplikasi. Jangan lupa simpan berkas (<code>Ctrl + S</code>) sebelum menjalankan kode di terminal.
-    </div>
-  </section>
-
-  <!-- BAGIAN 2 -->
-  <section id="python">
-    <h2><span class="step-num">2</span> Menjalankan Program Python</h2>
-    <p>
-      Python 3 sudah terpasang dan siap digunakan tanpa perlu koneksi internet maupun package manager tambahan:
-    </p>
-    <div class="cmd-label">Contoh dasar (hello world):</div>
-    <pre>cd "$HOME/Praktikum"
-python3 hello.py</pre>
-    <p>Keluaran standar: <code>Halo dari LabKita Linux!</code></p>
-
-    <div class="cmd-label">Contoh multithreading:</div>
-    <pre>python3 thread_demo.py</pre>
-    <p>
-      Program <code>thread_demo.py</code> menggunakan modul standar <code>threading</code> untuk menjalankan dua thread pekerja secara bersamaan (konkuren).
-      Perhatikan bahwa kedua thread berjalan di bawah Process ID (PID) yang sama karena berbagi ruang memori yang identik.
-    </p>
-    <div class="tip">
-      <strong>📌 Eksplorasi Mandiri:</strong>
-      Buka <code>thread_demo.py</code> di Geany, amati komentar penjelas di dalam kode, dan coba ubah jumlah iterasi atau tambahkan thread ketiga.
-    </div>
-  </section>
-
-  <!-- BAGIAN 3 -->
-  <section id="c">
-    <h2><span class="step-num">3</span> Mengompilasi dan Menjalankan Bahasa C</h2>
-    <p>
-      Kompiler GCC (GNU C Compiler) sudah terpasang lengkap dengan pustaka standar C. Alur kerja praktikum C: tulis kode &rarr; kompilasi &rarr; jalankan biner.
-    </p>
-    <div class="cmd-label">Program dasar C:</div>
-    <pre>cd "$HOME/Praktikum"
-gcc -Wall -Wextra hello.c -o hello
-./hello</pre>
-
-    <div class="cmd-label">Contoh alokasi memori dinamis (Heap):</div>
-    <pre>gcc -Wall -Wextra memory_demo.c -o memory_demo
-./memory_demo</pre>
-    <p>
-      Program <code>memory_demo.c</code> mendemonstrasikan cara memesan memori di Heap dengan <code>malloc()</code>,
-      memeriksa validitas pointer (cek <code>NULL</code>), menggunakan memori tersebut, lalu mengembalikannya ke sistem operasi
-      dengan <code>free()</code> serta menyetel pointer ke <code>NULL</code> untuk mencegah <em>dangling pointer</em>.
-    </p>
-    <div class="tip">
-      <strong>❓ Mengapa memakai <code>-Wall -Wextra</code>?</strong>
-      Kedua opsi ini mengaktifkan seluruh peringatan standar kompiler. Jika ada kode yang berpotensi menimbulkan bug atau kebocoran memori,
-      GCC akan langsung memberikan peringatan saat kompilasi.
-    </div>
-  </section>
-
-  <!-- BAGIAN 4 -->
-  <section id="proses">
-    <h2><span class="step-num">4</span> Mempelajari Konsep Proses &amp; Thread</h2>
-    <p>
-      Dua contoh program di bawah ini memperlihatkan perbedaan mendasar antara model proses terpisah (multiprocessing)
-      dan model thread (multithreading) pada sistem operasi Linux:
-    </p>
-    <div class="cmd-label">Uji multiprocessing (fork):</div>
-    <pre>python3 "$HOME/Praktikum/processes.py"
-ps -u "$USER" -o pid,ppid,comm,state</pre>
-
-    <div class="compare">
-      <div class="compare-box">
-        <h4>🔀 Proses (<code>processes.py</code>)</h4>
-        <ul>
-          <li>Setiap proses anak memiliki nomor <strong>PID sendiri</strong>.</li>
-          <li>PPID menunjuk ke nomor PID proses induk.</li>
-          <li>Ruang memori <strong>terisolasi</strong> antar proses.</li>
-          <li>Kerusakan di satu proses tidak langsung merusak proses lain.</li>
-        </ul>
+ls -la
+labkita-check</pre>
       </div>
-      <div class="compare-box">
-        <h4>🧵 Thread (<code>thread_demo.py</code>)</h4>
-        <ul>
-          <li>Semua thread berbagi <strong>PID yang sama</strong>.</li>
-          <li>Berjalan di dalam ruang alamat satu proses.</li>
-          <li>Memori heap dan data <strong>dibagi bersama</strong>.</li>
-          <li>Lebih ringan, tetapi butuh sinkronisasi yang cermat.</li>
-        </ul>
+      <div class="task-box">
+        <div class="task-title">Tugas 1: Struktur Direktori &amp; Hak Akses</div>
+        <ol>
+          <li>Di dalam <code>~/Praktikum</code>, buat subdirektori <code>tugas1/src</code>, <code>tugas1/bin</code>, dan <code>tugas1/out</code> dengan satu perintah <code>mkdir -p</code>.</li>
+          <li>Ubah izin folder <code>tugas1/out</code> menjadi privat pemilik saja (<code>chmod 700</code>) dan cek hasilnya memakai <code>stat -c "%a %n" tugas1/*</code>.</li>
+          <li>Salin <code>hello.c</code> ke <code>tugas1/src/</code> lalu catat perbedaan izin sebelum dan sesudah.</li>
+        </ol>
       </div>
-    </div>
-    <div class="tip">
-      <strong>💡 Pengamatan Terminal:</strong>
-      Jalankan <code>processes.py</code> lalu periksa kolom PID dan PPID pada perintah <code>ps</code>.
-      Bandingkan dengan keluaran <code>thread_demo.py</code> di mana nomor PID-nya tetap sama untuk seluruh thread.
-    </div>
-  </section>
+    </section>
 
-  <!-- BAGIAN 5 -->
-  <section id="tmpfs">
-    <h2><span class="step-num">5</span> Memanfaatkan Ruang Kerja Sementara (/run/labkita)</h2>
-    <p>
-      LabKita menyediakan RAM Disk berkecepatan tinggi di folder <code>/run/labkita</code> (tmpfs) dengan izin akses bersama (sticky bit <code>1777</code>).
-      Folder ini sangat cocok untuk berkas sementara atau uji coba cepat yang tidak perlu disimpan permanen.
-    </p>
-    <div class="cmd-label">Uji coba RAM disk:</div>
-    <pre>ls -ld /run/labkita
-echo "Catatan praktikum sementara" > /run/labkita/coba.txt
-cat /run/labkita/coba.txt
-systemctl status labkita-runtime.service --no-pager</pre>
+    <!-- MODUL 2 -->
+    <section class="module" id="modul-2">
+      <div class="module-top">
+        <div>
+          <div class="module-num">MODUL 02</div>
+          <h2>Pemrograman Python Dasar &amp; Pengolahan Berkas</h2>
+        </div>
+        <label class="check-label" data-label="m2">
+          <input type="checkbox" data-mod="m2"> Selesai
+        </label>
+      </div>
+      <p>
+        Python 3 berjalan langsung di terminal atau lewat editor <strong>Geany</strong>. Mulai
+        dengan menguji skrip contoh <code>hello.py</code>.
+      </p>
+      <div class="cmd-block">
+        <div class="cmd-bar"><span>Terminal Bash</span><button type="button" class="btn-copy">Salin</button></div>
+        <pre>python3 ~/Praktikum/hello.py</pre>
+      </div>
+      <div class="task-box">
+        <div class="task-title">Tugas 2: Rekap Nilai Mahasiswa Offline</div>
+        <ol>
+          <li>Buat berkas data <code>~/Praktikum/nilai.txt</code> berisi minimal 6 baris format <code>Nama,Nilai</code> (contoh: <code>Andi,85</code>).</li>
+          <li>Tulis skrip <code>rekap_nilai.py</code> yang membaca <code>nilai.txt</code>, menghitung rata-rata, nilai tertinggi, dan nilai terendah.</li>
+          <li>Simpan ringkasan hasil ke berkas baru <code>~/Praktikum/ringkasan.txt</code> dan tampilkan isinya lewat <code>cat ringkasan.txt</code>.</li>
+        </ol>
+      </div>
+    </section>
 
-    <div class="warn">
-      <strong>⚠️ Perhatian Penting:</strong>
-      Seluruh isi di dalam <code>/run/labkita</code> berada di memori RAM dan akan <strong>hilang secara otomatis</strong> saat komputer dimatikan atau di-restart.
-      Selalu simpan kode program dan laporan tugas Anda di <code>~/Praktikum</code>.
-      <br><br>
-      Partisi <code>/run</code> dipasang dengan opsi keamanan <code>noexec</code> oleh sistem operasi.
-      Oleh karena itu, berkas biner executable (seperti <code>./hello</code> atau <code>./memory_demo</code>) harus dikompilasi dan dijalankan dari <code>~/Praktikum</code>, bukan dari <code>/run/labkita</code>.
-    </div>
-  </section>
+    <!-- MODUL 3 -->
+    <section class="module" id="modul-3">
+      <div class="module-top">
+        <div>
+          <div class="module-num">MODUL 03</div>
+          <h2>Bahasa C, Alokasi Memori Dinamis, &amp; Debugging GDB</h2>
+        </div>
+        <label class="check-label" data-label="m3">
+          <input type="checkbox" data-mod="m3"> Selesai
+        </label>
+      </div>
+      <p>
+        Gunakan flag peringatan ketat <code>-Wall -Wextra</code> dan simbol debug <code>-g</code>
+        saat mengompilasi program C. Program <code>memory_demo.c</code> mendemonstrasikan alokasi
+        blok heap dengan <code>malloc()</code> dan pembebasan dengan <code>free()</code>.
+      </p>
+      <div class="cmd-block">
+        <div class="cmd-bar"><span>Terminal Bash</span><button type="button" class="btn-copy">Salin</button></div>
+        <pre>cd ~/Praktikum
+gcc -Wall -Wextra -g hello.c -o hello &amp;&amp; ./hello
+gcc -Wall -Wextra -g memory_demo.c -o memory_demo &amp;&amp; ./memory_demo</pre>
+      </div>
+      <div class="task-box">
+        <div class="task-title">Tugas 3: Eksperimen Memori &amp; Breakpoint GDB</div>
+        <ol>
+          <li>Salin <code>memory_demo.c</code> ke <code>tugas_mem.c</code>, ubah agar menerima jumlah elemen dari input pengguna (<code>scanf</code>) dan mengisi deret kuadrat.</li>
+          <li>Tambahkan fungsi <code>cetak_statistik()</code> untuk mencari nilai maksimum di array heap tersebut.</li>
+          <li>Jalankan biner hasil kompilasi di dalam <code>gdb ./tugas_mem</code>, pasang breakpoint (<code>break main</code>), jalankan per baris (<code>next</code>), lalu cetak nilai pointer (<code>print larik_dinamis</code>).</li>
+        </ol>
+      </div>
+    </section>
 
-  <!-- BAGIAN 6 -->
-  <section id="bantuan">
-    <h2><span class="step-num">6</span> Akses Manual &amp; Diagnostik Offline</h2>
-    <p>
-      Bila Anda membutuhkan referensi saat praktikum tanpa sambungan internet, gunakan manual bawaan Linux dan utilitas pemeriksaan mandiri:
-    </p>
-    <div class="cmd-label">Perintah diagnostik &amp; manual:</div>
-    <pre>labkita-check            # Memverifikasi kesiapan seluruh komponen sistem
-man gcc                  # Manual resmi opsi dan penggunaan kompiler GCC
-man 3 printf             # Dokumentasi fungsi printf bahasa C
-man 3 malloc             # Dokumentasi alokasi memori dinamis (malloc/free)
-python3 -m pydoc math    # Dokumentasi modul Python (ganti math sesuai kebutuhan)</pre>
-    <div class="tip">
-      <strong>📖 Navigasi Manual (man page):</strong>
-      Gunakan tombol <code>Panah Atas / Bawah</code> atau <code>Spasi</code> untuk menggulir halaman.
-      Ketik <code>/kata_kunci</code> lalu tekan <code>Enter</code> untuk mencari kata.
-      Tekan tombol <code>q</code> untuk keluar dari tampilan manual.
-    </div>
-  </section>
+    <!-- MODUL 4 -->
+    <section class="module" id="modul-4">
+      <div class="module-top">
+        <div>
+          <div class="module-num">MODUL 04</div>
+          <h2>Manajemen Proses, <code>fork()</code>, &amp; Pengamatan PID/PPID</h2>
+        </div>
+        <label class="check-label" data-label="m4">
+          <input type="checkbox" data-mod="m4"> Selesai
+        </label>
+      </div>
+      <p>
+        Setiap proses Linux memiliki nomor unik <strong>PID</strong> dan proses induk
+        <strong>PPID</strong>. Berkas <code>processes.py</code> memakai <code>fork</code> agar
+        proses anak menunjuk langsung ke proses induknya.
+      </p>
+      <div class="cmd-block">
+        <div class="cmd-bar"><span>Terminal Bash</span><button type="button" class="btn-copy">Salin</button></div>
+        <pre>python3 ~/Praktikum/processes.py</pre>
+      </div>
+      <div class="task-box">
+        <div class="task-title">Tugas 4: Pohon Proses 4 Worker</div>
+        <ol>
+          <li>Buat <code>multi_worker.py</code> yang meluncurkan 4 proses anak bersamaan, masing-masing tidur selama 5 detik (<code>time.sleep(5)</code>) agar sempat diamati.</li>
+          <li>Saat skrip berjalan, buka tab terminal kedua dan jalankan <code>ps -ef --forest | grep python3</code> untuk membuktikan satu PID induk membawahi 4 PID anak.</li>
+          <li>Catat hasil pengamatan PID dan PPID kelima proses tersebut.</li>
+        </ol>
+      </div>
+    </section>
 
-</main>
+    <!-- MODUL 5 -->
+    <section class="module" id="modul-5">
+      <div class="module-top">
+        <div>
+          <div class="module-num">MODUL 05</div>
+          <h2>Multithreading, Shared Memory, &amp; Sinkronisasi Lock</h2>
+        </div>
+        <label class="check-label" data-label="m5">
+          <input type="checkbox" data-mod="m5"> Selesai
+        </label>
+      </div>
+      <p>
+        Berbeda dengan proses terpisah, seluruh thread berada di dalam satu PID dan berbagi ruang
+        memori global yang sama. Akses serentak ke variabel yang sama dapat memicu <em>race condition</em>.
+      </p>
+      <div class="cmd-block">
+        <div class="cmd-bar"><span>Terminal Bash</span><button type="button" class="btn-copy">Salin</button></div>
+        <pre>python3 ~/Praktikum/thread_demo.py</pre>
+      </div>
+      <div class="task-box">
+        <div class="task-title">Tugas 5: Simulasi &amp; Perbaikan Race Condition</div>
+        <ol>
+          <li>Tulis <code>race_lab.py</code> berisi 4 thread yang masing-masing menaikkan penghitung global <code>saldo = saldo + 1</code> sebanyak 100.000 kali (target akhir seharusnya 400.000).</li>
+          <li>Bandingkan hasil eksekusi <strong>tanpa</strong> <code>threading.Lock()</code> dan <strong>dengan</strong> <code>with lock:</code>.</li>
+          <li>Catat durasi waktu masing-masing pendekatan menggunakan <code>time.perf_counter()</code>.</li>
+        </ol>
+      </div>
+    </section>
 
-<footer>
-  LabKita Linux 0.5.1 &bull; Proyek Final Praktikum Sistem Operasi &bull; Departemen Informatika, Universitas Siliwangi
-</footer>
+    <!-- MODUL 6 -->
+    <section class="module" id="modul-6">
+      <div class="module-top">
+        <div>
+          <div class="module-num">MODUL 06</div>
+          <h2>Isolasi Akun Praktikan &amp; Ruang Kerja RAM (<code>tmpfs</code>)</h2>
+        </div>
+        <label class="check-label" data-label="m6">
+          <input type="checkbox" data-mod="m6"> Selesai
+        </label>
+      </div>
+      <p>
+        Direktori <code>/run/labkita</code> dimuat di RAM memakai filesystem <code>tmpfs</code>
+        dan berizin sticky bit <code>1777</code>. Seluruh berkas di sini hilang saat sistem dimatikan,
+        sedangkan izin <code>/home/praktikan</code> terkunci <code>0700</code> dan tidak memiliki hak <code>sudo</code>.
+      </p>
+      <div class="cmd-block">
+        <div class="cmd-bar"><span>Terminal Bash</span><button type="button" class="btn-copy">Salin</button></div>
+        <pre>id
+stat -c "%a %U %n" "$HOME" /run/labkita
+df -h /run/labkita
+mount | grep "on /run "</pre>
+      </div>
+      <div class="split-grid">
+        <div class="mini-panel">
+          <h3>Disimpan Permanen</h3>
+          <p><code>~/Praktikum</code><br>Simpan kode sumber C/Python dan hasil biner terkompilasi agar tetap ada setelah reboot.</p>
+        </div>
+        <div class="mini-panel">
+          <h3>Temporer RAM (Noexec)</h3>
+          <p><code>/run/labkita/$USER</code><br>Gunakan untuk log uji atau berkas data besar sementara. Jangan taruh executable di sini karena <code>/run</code> dipasang <code>noexec</code>.</p>
+        </div>
+      </div>
+      <div class="task-box">
+        <div class="task-title">Tugas 6: Pengujian Sticky Bit &amp; Tmpfs</div>
+        <ol>
+          <li>Buat folder kerja sementara <code>mkdir -p /run/labkita/$USER</code> dan tulis file log pengujian sebesar 5 MB memakai <code>dd if=/dev/zero of=/run/labkita/$USER/uji.bin bs=1M count=5</code>.</li>
+          <li>Amati perubahan pemakaian di <code>df -h /run/labkita</code>, lalu hapus lagi berkas sementara tersebut.</li>
+          <li>Uji mencoba menyalin biner <code>~/Praktikum/hello</code> ke <code>/run/labkita/$USER/</code> dan jalankan untuk memverifikasi proteksi kernel <code>noexec</code>.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- MODUL 7 -->
+    <section class="module" id="modul-7">
+      <div class="module-top">
+        <div>
+          <div class="module-num">MODUL 07</div>
+          <h2>Proyek Mini Integrasi C + Python (Offline End-to-End)</h2>
+        </div>
+        <label class="check-label" data-label="m7">
+          <input type="checkbox" data-mod="m7"> Selesai
+        </label>
+      </div>
+      <p>
+        Gabungkan pemrograman C (komputasi atau pencatat data cepat) dengan Python (olah data)
+        dalam satu alur pipa kerja lokal tanpa jaringan.
+      </p>
+      <div class="task-box">
+        <div class="task-title">Tugas 7: Generator Data C &amp; Penganalisis Python</div>
+        <ol>
+          <li>Buat program C <code>gen_log.c</code> yang menulis 50 baris data simulasi suhu (<code>detik,suhu</code>) ke berkas <code>/run/labkita/$USER/suhu.csv</code>.</li>
+          <li>Kompilasi dengan <code>gcc -Wall -Wextra -O2 gen_log.c -o ~/Praktikum/gen_log</code>.</li>
+          <li>Buat skrip Python <code>analisa_suhu.py</code> untuk membaca CSV tersebut, menghitung rata-rata, menandai angka di atas ambang batas, lalu jalankan berurutan dengan perintah <code>./gen_log &amp;&amp; python3 analisa_suhu.py</code>.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- REFERENSI OFFLINE -->
+    <section class="module" id="referensi">
+      <div class="module-top">
+        <div>
+          <div class="module-num">REFERENSI CEPAT</div>
+          <h2>Manual &amp; Diagnostik Tanpa Internet</h2>
+        </div>
+      </div>
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>Perintah</th>
+            <th>Fungsi Offline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>labkita-check</code></td>
+            <td>Memeriksa kesiapan compiler, panduan HTML Firefox Snap, locale, tema, Plymouth, dan ruang RAM.</td>
+          </tr>
+          <tr>
+            <td><code>man gcc</code></td>
+            <td>Manual lengkap opsi kompiler C/C++ (<code>-Wall</code>, <code>-g</code>, <code>-O2</code>, <code>-pthread</code>).</td>
+          </tr>
+          <tr>
+            <td><code>man 3 malloc</code></td>
+            <td>Dokumentasi fungsi alokasi heap C (<code>malloc</code>, <code>calloc</code>, <code>realloc</code>, <code>free</code>).</td>
+          </tr>
+          <tr>
+            <td><code>man 2 fork</code></td>
+            <td>Dokumentasi system call pembuatan proses anak pada kernel Linux.</td>
+          </tr>
+          <tr>
+            <td><code>python3 -m pydoc threading</code></td>
+            <td>Dokumentasi modul standar Python langsung di terminal (ganti <code>threading</code> sesuai kebutuhan).</td>
+          </tr>
+          <tr>
+            <td><code>sudo labkita-postinstall &lt;nama&gt;</code></td>
+            <td>Untuk admin: menambah akun mahasiswa terisolasi baru (non-<code>sudo</code>, home <code>0700</code>).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <details class="hint">
+        <summary>Tips Navigasi Halaman Manual (<code>man</code>)</summary>
+        <p>
+          Tekan <code>Panah Atas / Bawah</code> atau <code>Spasi</code> untuk menggulir halaman,
+          ketik <code>/kata_kunci</code> lalu <code>Enter</code> untuk mencari kata (tekan <code>n</code>
+          untuk hasil berikutnya), dan tekan <code>q</code> untuk keluar.
+        </p>
+      </details>
+
+      <details class="hint">
+        <summary>Mengapa Biner Tidak Boleh Dijalankan dari <code>/run/labkita</code>?</summary>
+        <p>
+          Partisi <code>/run</code> pada Ubuntu dipasang oleh systemd dengan flag keamanan <code>noexec</code>.
+          Letakkan kode sumber dan file eksekusi di <code>~/Praktikum</code>, lalu simpan file log atau
+          dataset sementara saja di <code>/run/labkita</code>.
+        </p>
+      </details>
+    </section>
+
+    <footer class="doc-foot">
+      LabKita Linux 0.6 &middot; Program Studi Informatika, Universitas Siliwangi &middot; Dokumentasi Lokal Offline
+    </footer>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var STORAGE_KEY = "labkita_guide_v06_progress";
+    var checkboxes = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"][data-mod]'));
+    var progressBar = document.getElementById("progressBar");
+    var progressText = document.getElementById("progressText");
+    var resetBtn = document.getElementById("resetProgress");
+
+    function loadState() {
+      try {
+        var raw = window.localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveState(state) {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        /* Fallback sunyi jika browser memblokir storage pada file:// */
+      }
+    }
+
+    function syncUI(state) {
+      var doneCount = 0;
+      checkboxes.forEach(function (cb) {
+        var mod = cb.getAttribute("data-mod");
+        var isDone = Boolean(state[mod]);
+        cb.checked = isDone;
+
+        var label = cb.closest(".check-label");
+        if (label) label.classList.toggle("is-done", isDone);
+
+        var nav = document.querySelector('.toc a[data-nav="' + mod + '"]');
+        var tag = document.getElementById("tag-" + mod);
+        if (nav) nav.classList.toggle("completed", isDone);
+        if (tag) tag.textContent = isDone ? "OK" : mod.toUpperCase();
+
+        if (isDone) doneCount += 1;
+      });
+
+      var total = checkboxes.length;
+      var pct = total ? Math.round((doneCount / total) * 100) : 0;
+      progressBar.style.width = pct + "%";
+      progressBar.classList.toggle("done", doneCount === total && total > 0);
+      progressText.textContent = doneCount + " / " + total + " modul";
+    }
+
+    var state = loadState();
+    syncUI(state);
+
+    checkboxes.forEach(function (cb) {
+      cb.addEventListener("change", function () {
+        state[cb.getAttribute("data-mod")] = cb.checked;
+        saveState(state);
+        syncUI(state);
+      });
+    });
+
+    resetBtn.addEventListener("click", function () {
+      state = {};
+      saveState(state);
+      syncUI(state);
+    });
+
+    /* Tombol salin perintah terminal (kompatibel clipboard API & fallback file://) */
+    document.querySelectorAll(".cmd-block").forEach(function (block) {
+      var btn = block.querySelector(".btn-copy");
+      var pre = block.querySelector("pre");
+      if (!btn || !pre) return;
+
+      btn.addEventListener("click", function () {
+        var text = pre.textContent;
+        function markCopied() {
+          btn.textContent = "Tersalin";
+          btn.classList.add("copied");
+          window.setTimeout(function () {
+            btn.textContent = "Salin";
+            btn.classList.remove("copied");
+          }, 1500);
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(markCopied, fallbackCopy);
+        } else {
+          fallbackCopy();
+        }
+
+        function fallbackCopy() {
+          var ta = document.createElement("textarea");
+          ta.value = text;
+          ta.setAttribute("readonly", "");
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand("copy");
+            markCopied();
+          } finally {
+            document.body.removeChild(ta);
+          }
+        }
+      });
+    });
+
+    /* Penanda modul aktif pada sidebar saat klik navigasi */
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll(".toc a"));
+    navLinks.forEach(function (link) {
+      link.addEventListener("click", function () {
+        navLinks.forEach(function (l) { l.classList.remove("active"); });
+        link.classList.add("active");
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
