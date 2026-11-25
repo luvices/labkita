@@ -99,7 +99,7 @@ def main():
         if not ok:
             failures.append(label)
 
-    print("=== Pemeriksaan Kesiapan LabKita Linux 0.5 ===")
+    print("=== Pemeriksaan Kesiapan LabKita Linux 0.5.1 ===")
 
     # 1. Pemeriksaan Toolchain & Aplikasi Dasar
     for command in ("python3", "gcc", "g++", "make", "geany", "git", "man"):
@@ -128,11 +128,16 @@ def main():
     except Exception as e:
         report("Zona waktu Asia/Jakarta", False, str(e))
 
-    # 4. Tema Antarmuka & Visual (WhiteSur & Wallpaper Orisinal)
+    # 4. Tema Antarmuka & Visual (WhiteSur, Symlink Ikon, Plymouth & Wallpaper Orisinal)
     report("Tema GTK WhiteSur", Path("/usr/share/themes/WhiteSur-Light").is_dir())
     report("Set Ikon WhiteSur", Path("/usr/share/icons/WhiteSur").is_dir())
+    sample_icon = Path("/usr/share/icons/WhiteSur/apps/scalable/utilities-terminal.svg")
+    sample_link = Path("/usr/share/icons/WhiteSur/status/16/ac-adapter.svg")
+    icons_ok = sample_icon.is_file() and (sample_link.is_symlink() or (sample_link.is_file() and sample_link.stat().st_size > 120))
+    report("Integritas symlink ikon WhiteSur", icons_ok)
     report("Tema Kursor WhiteSur", Path("/usr/share/icons/WhiteSur-cursors").is_dir())
     report("Wallpaper Orisinal LabKita", Path("/usr/share/backgrounds/labkita-gradient.png").is_file() or Path("/usr/share/backgrounds/labkita.svg").is_file())
+    report("Aset Splash Boot LabKita (Plymouth)", Path("/usr/share/plymouth/themes/spinner/watermark.png").is_file() and Path("/usr/share/plymouth/themes/spinner/bgrt-fallback.png").is_file())
 
     # 5. Pengujian Kompilasi dan Eksekusi Kode Praktikum
     with tempfile.TemporaryDirectory(prefix="labkita-check-") as directory:
