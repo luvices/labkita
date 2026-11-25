@@ -1,6 +1,6 @@
 # Atribusi Lisensi & Hak Cipta Komponen Antarmuka (Credits)
 
-Proyek **LabKita Linux 0.2** menggunakan komponen antarmuka sumber terbuka (*open source*) yang berlisensi bebas dan legal. Proyek ini secara ketat **tidak menggunakan aset berpemilik (*proprietary*) milik Apple Inc.** (seperti logo Apple, font San Francisco / SF Pro, maupun wallpaper macOS asli). Seluruh aset telah digantikan dengan padanan berbasis sumber terbuka yang terstandarisasi.
+Proyek **LabKita Linux (0.2 - 0.6)** menggunakan komponen antarmuka sumber terbuka (*open source*) yang berlisensi bebas dan legal. Proyek ini secara ketat **tidak menggunakan aset berpemilik (*proprietary*) milik Apple Inc.** (seperti logo Apple, font San Francisco / SF Pro, maupun wallpaper macOS asli). Seluruh aset telah digantikan dengan padanan berbasis sumber terbuka yang terstandarisasi.
 
 ---
 
@@ -36,3 +36,8 @@ Proyek **LabKita Linux 0.2** menggunakan komponen antarmuka sumber terbuka (*ope
 ## 6. Basis Sistem Distribusi Upstream
 - **Distribusi Basis:** Ubuntu 24.04.5 LTS (Noble Numbat) Desktop amd64 oleh Canonical Ltd.
 - **Kernel & Kompiler:** Linux Kernel (GPL-2.0), GNU Compiler Collection (GPL-3.0), Python 3 (PSF License), Geany IDE (GPL-2.0). Catatan lisensi hulu tersimpan lengkap pada `/usr/share/doc/*/copyright`.
+
+## 7. Identitas Merek & Aset Logo Resmi LabKita Linux (0.6)
+- **Perancang:** Tim Pengembang LabKita Linux (Dafa Zahran, Rafly Fauzi Pratama, Muhammad Ilham Rizky, Vadien Athallah Lukman)
+- **Skrip Generator & Lokasi Aset:** [`tools/generate_brand_assets.py`](../tools/generate_brand_assets.py) dan [`assets/brand/`](../assets/brand/) (`labkita-mark.svg`, `labkita-wordmark-dark.svg`, `labkita-wordmark-light.svg`, beserta berkas PNG 4x supersampled untuk Plymouth, layar login GDM `labkita-gdm-logo.png`, README, dan laporan akhir).
+- **Lisensi:** Creative Commons Attribution 4.0 International (CC-BY 4.0) / MIT License.

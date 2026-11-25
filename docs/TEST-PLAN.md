@@ -114,3 +114,32 @@ Berdasarkan pemeriksaan isi berkas di atas, dirumuskan hipotesis teknis berikut:
 
 > **Catatan Integritas Pengujian (PENTING):**  
 > Temuan di atas berstatus **HIPOTESIS TEKNIS** yang didasarkan pada audit berkas lokal. Hipotesis ini **belum diuji coba dan belum divalidasi langsung di dalam mesin virtual (VM) / live ISO LabKita**. Sesuai aturan keras proyek, konfigurasi tema ikon di `payload/` **tidak diubah** sebelum verifikasi nyata dapat dijalankan di lingkungan VM.
+
+---
+
+## Verifikasi Rilis 0.6 (Autoinstall, Dual Akun, Brand Logo, & Panduan 7 Modul)
+
+Pembaruan cabang `feat/v06-autoinstall-brand` (`tools/build_v06.py`) memverifikasi langsung perbaikan atas temuan ikon WhiteSur, penghapusan Wizard installer yang panjang, penerapan logo LabKita di Plymouth & GDM, serta buku kerja HTML 7 modul.
+
+### A. Integritas Berkas & Lint
+- **Berkas ISO Final:** `labkita-linux-0.6-amd64.iso` berukuran `6.083.645.440 bytes` (~5,67 GiB).
+- **SHA256:** `6a9a055b2833e3ef64e4633db81c061992a73ba4ae91f599c45b9943fdfcd115`
+- **MD5:** `0dd73d162837435295dda31b0e901652`
+- **Verifikasi Loop-Mount ISO (`md5sum.txt`):** `MD5SUM_ALL_OK` (mengecualikan `boot.catalog` & `eltorito.img`).
+- **Validasi Skrip Lokal (`bash tools/verify-linux.sh`):** **LULUS** (sintaks Bash, contoh Python/proses, unit systemd, penolakan host).
+
+### B. Hasil Pengujian Nyata di VMware Workstation (Rilis 0.6)
+Lingkungan uji: VMware Workstation, disk virtual kosong 40 GB, RAM 6144 MB (`5921 MiB` terbaca kernel Linux `7.0.0-44-generic`), 2 vCPU, adaptor NAT aktif.
+
+| Skenario Uji (0.6) | Hasil Aktual di VM 0.6 | Status | Bukti |
+| :--- | :--- | :---: | :--- |
+| **GRUB & Zero-Touch Autoinstall (`nocloud`)** | Menu GRUB default (`Pasang Otomatis LabKita Linux 0.6`) menyelesaikan instalasi ke disk tanpa input manual dalam ~4 menit, tanpa dialog akun/bug OpenGL | **LULUS** | `docs/evidence/0.6-01-grub-autoinstall.png`, `0.6-02` |
+| **Splash Plymouth & Layar Login GDM** | Splash boot Plymouth dan layar login GDM menampilkan logo LabKita; daftar akun langsung memuat **LabKita Admin** & **praktikan** | **LULUS** | `docs/evidence/0.6-03-plymouth-logo.png`, `0.6-04` |
+| **Desktop Admin & Kelengkapan Ikon WhiteSur** | Login `labkita` langsung masuk desktop tanpa GNOME Initial Setup/popup upgrade; Settings & App Grid menampilkan seluruh ikon utuh tanpa ikon kosong | **LULUS** | `docs/evidence/0.6-05`, `0.6-06`, `0.6-07` |
+| **Diagnostik `labkita-check` (Rebuild Final)** | Seluruh 25 baris pemeriksaan menghasilkan **SEMUA PEMERIKSAAN LULUS**, termasuk `Logo Login GDM LabKita` dan baca Firefox Snap (`AppArmor OK`) | **LULUS** | `docs/evidence/0.6-11-labkita-check-pass.png` |
+| **Panduan Kerja 7 Modul & Firefox Snap + Selenium Edge** | Terbuka di Firefox Snap via `labkita-guide`; audit Edge/Selenium memastikan `no_overflow=True` di `1280x800` & `390x844` CDP, `0` error konsol, tombol `Salin` & `localStorage` aktif, kontras >= `4.79:1` | **LULUS** | `docs/evidence/0.6-08-guide-workbook-firefox.png` |
+| **Isolasi & Toolchain Akun `praktikan`** | `stat /home/praktikan` = `700`, `uid=1001` grup `labkita-praktikum`, `sudo -n true` ditolak, kompilasi `gcc ~/Praktikum/hello.c` & `python3 ~/Praktikum/thread_demo.py` sukses offline | **LULUS** | `docs/evidence/0.6-09`, `0.6-10` |
+
+### C. Observasi Sumber Daya 0.6 & Catatan VMware Workstation
+- **Observasi Pasca-Install (VM 6 GB RAM):** `free -m` mencatat `1.076 MiB` used (`4.844 MiB` available), `systemd-analyze` tercatat `22,207s` (`3,610s` kernel + `18,597s` userspace), dan pemakaian disk root `/` sebesar `11 GB / 40 GB`. Karena diukur 1x pada alokasi VM 6 GB RAM (berbeda dari pengujian benchmark 5x cold boot pada VM 4 GB RAM untuk `0.1`-`0.5`), angka `0.6` dicatat sebagai observasi terpisah dan tidak diklaim lebih ringan/cepat dibanding rilis sebelumnya.
+- **Catatan Deploy VMware Workstation GUI:** Gunakan opsi **"I will install the operating system later"** saat membuat VM baru agar *Easy Install* VMware tidak menimpa seed `nocloud`. Setelah instalasi selesai dan reboot ke HDD, nonaktifkan *Connect at power on* pada CD/DVD dan aktifkan **Accelerate 3D graphics** pada Display (atau pilih *Ubuntu on Xorg* di layar GDM) untuk menghindari layar hitam sesi Wayland VMware.

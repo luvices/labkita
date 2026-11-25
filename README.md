@@ -26,6 +26,7 @@ LabKita Linux dirancang agar komputer laboratorium dan mesin virtual dapat dipas
 | **Basis Sistem** | Ubuntu 24.04.5 LTS Desktop (`x86_64` / `amd64`) |
 | **Nama Berkas ISO** | `labkita-linux-0.6-amd64.iso` |
 | **Ukuran Berkas** | `6.083.645.440 bytes` (~5,67 GiB) |
+| **Tautan Unduhan** | [Unduh ISO 0.6 di Google Drive](https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing) |
 | **SHA256** | `6a9a055b2833e3ef64e4633db81c061992a73ba4ae91f599c45b9943fdfcd115` |
 | **MD5** | `0dd73d162837435295dda31b0e901652` |
 | **Metode Build** | Script WSL [`tools/build_v06.py`](tools/build_v06.py) (tanpa bloat `minimal.standard`, dengan `nocloud` autoinstall) |
@@ -108,11 +109,15 @@ sha256sum labkita-linux-0.6-amd64.iso
    labkita-check
    ```
 
+> **Catatan Penting VMware Workstation:**
+> - Saat membuat VM baru, pilih **"I will install the operating system later."** lalu pasangkan file ISO lewat `Customize Hardware -> CD/DVD (SATA)` agar fitur *Easy Install* bawaan VMware tidak menimpa konfigurasi `autoinstall` `nocloud` LabKita.
+> - Setelah instalasi selesai dan reboot ke disk, matikan centang **Connect at power on** pada CD/DVD dan pastikan **Display -> Accelerate 3D graphics** aktif supaya sesi desktop GUI tidak blank hitam setelah login. Apabila sesi Wayland masih menampilkan layar hitam, klik nama akun di GDM lalu pilih **Ubuntu on Xorg** dari ikon gerigi di pojok kanan bawah sebelum menekan Enter.
+
 ---
 
 ## Ringkasan Pengujian &amp; Tolok Ukur Empiris
 
-Pengujian verifikasi `0.6` berjalan nyata di VMware Workstation (`40 GB` disk kosong, `6144 MB` RAM / `5921 MiB` terbaca Linux, 2 vCPU, NIC NAT terhubung): autoinstall tuntas dalam ~4 menit, layar GDM menampilkan logo LabKita serta kedua akun, desktop bersih tanpa dialog sambutan, seluruh ikon tampil utuh, isolasi akun `praktikan` (`0700`, non-`sudo`) terkonfirmasi, serta `labkita-check` lulus penuh. Pada satu observasi pasca-autoinstall di VM 6 GB RAM tersebut tercatat penggunaan `free -m` `1.114 MiB` (avail `4.806 MiB`), `systemd-analyze` `22,207s`, dan penggunaan rootfs `11 GB / 40 GB`.
+Pengujian verifikasi `0.6` berjalan nyata di VMware Workstation (`40 GB` disk kosong, `6144 MB` RAM / `5921 MiB` terbaca Linux, 2 vCPU, NIC NAT terhubung): autoinstall tuntas dalam ~4 menit, layar GDM menampilkan logo LabKita serta kedua akun, desktop bersih tanpa dialog sambutan, seluruh ikon tampil utuh, isolasi akun `praktikan` (`0700`, non-`sudo`) terkonfirmasi, serta `labkita-check` lulus penuh. Pada observasi pasca-autoinstall di VM 6 GB RAM tersebut (kernel `7.0.0-44-generic`) tercatat penggunaan `free -m` `1.076 MiB` (avail `4.844 MiB`), `systemd-analyze` `22,207s`, dan penggunaan rootfs `11 GB / 40 GB`.
 
 Untuk riwayat benchmark komparatif `0.1`-`0.5` yang terstandarisasi pada **VM uji identik 4 GB RAM (`3911 MiB`)** dengan **5 kali cold boot per versi**:
 
