@@ -1,0 +1,14 @@
+# Paket bloat/telemetri non-praktikum pada layer minimal.squashfs.
+# Diverifikasi aman (tidak menghapus gdm3, gnome-shell, nautilus, snapd, atau firefox).
+ubuntu-report
+whoopsie
+apport
+apport-gtk
+apport-symptoms
+yelp
+gnome-characters
+gnome-font-viewer
+gnome-logs
+baobab
+seahorse
+unattended-upgrades

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 100" width="360" height="100" role="img" aria-label="LabKita Linux">
+  <rect x="8" y="14" width="72" height="72" rx="16" fill="#1E3A5F" stroke="#38BDF8" stroke-width="3"/>
+  <path d="M26 36 L44 50 L26 64" fill="none" stroke="#38BDF8" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="45" y="57" width="18" height="7" rx="3.5" fill="#F8FAFC"/>
+  <rect x="57" y="29" width="8" height="8" rx="2" fill="#38BDF8"/>
+  <text x="96" y="48" font-family="Inter, Ubuntu, Segoe UI, Arial, sans-serif" font-size="31" font-weight="700" fill="#F8FAFC">LabKita <tspan fill="#38BDF8">Linux</tspan></text>
+  <text x="97" y="73" font-family="Inter, Ubuntu, Segoe UI, Arial, sans-serif" font-size="14" font-weight="500" letter-spacing="0.4" fill="#94A3B8">Praktikum Mandiri Offline</text>
+</svg>

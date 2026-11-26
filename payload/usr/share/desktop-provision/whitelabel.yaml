@@ -1,0 +1,14 @@
+app-name: LabKita Linux 0.6
+pages:
+  accessibility:
+    visible: false
+  try-or-install:
+    visible: true
+  refresh:
+    visible: false
+  source-selection:
+    visible: false
+  eula:
+    visible: false
+  ubuntu-pro-onboarding:
+    visible: false
