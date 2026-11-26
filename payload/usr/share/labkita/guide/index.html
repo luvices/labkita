@@ -7,19 +7,30 @@
   <style>
     :root {
       color-scheme: light;
-      --paper: #f6f5f0;
-      --surface: #ffffff;
-      --surface-muted: #efede6;
-      --ink: #141923;
-      --ink-muted: #4b5563;
-      --border: #d5dbe3;
+      /* Ramp Warm (unslop tokens) */
+      --bg: #f7f4ee;
+      --surface: #fdfbf7;
+      --raised: #efe9df;
+      --hairline: rgba(31, 27, 22, 0.09);
+      --hairline-strong: rgba(31, 27, 22, 0.16);
+      --ink: #1f1b16;
+      --ink-2: #524a40;
+      --ink-3: #685f54;
+      /* Satu aksen cobalt terkalibrasi (>= 4.5:1 di permukaan terang) */
       --accent: #1d4ed8;
-      --accent-hover: #1e40af;
-      --accent-soft: #eff6ff;
+      --accent-ink: #1e40af;
+      --accent-soft: #eef2ff;
+      /* Semantik positif lembut */
       --ok: #15803d;
-      --ok-soft: #f0fdf4;
-      --code-bg: #0f172a;
-      --code-ink: #f8fafc;
+      --ok-soft: #eef8f1;
+      --ok-border: rgba(21, 128, 61, 0.22);
+      /* Code surface tenang tanpa border neon */
+      --code-bg: #17191e;
+      --code-bar: #1f2229;
+      --code-ink: #eef0f5;
+      --code-muted: #9aa2b1;
+      /* Easing & radius terstandar */
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     * { box-sizing: border-box; }
@@ -27,42 +38,48 @@
     html { scroll-behavior: smooth; }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      * { transition: none !important; }
+      *, *::before, *::after { transition: none !important; }
     }
 
     body {
       margin: 0;
-      background: var(--paper);
+      background: var(--bg);
       color: var(--ink);
       font-family: "Inter", "Ubuntu", system-ui, -apple-system, "Segoe UI", sans-serif;
-      font-size: 16px;
-      line-height: 1.65;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
-    a { color: var(--accent); text-decoration: none; }
+    a {
+      color: var(--accent-ink);
+      text-decoration: none;
+    }
     a:hover { text-decoration: underline; }
     a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
-      outline: 2px solid var(--accent);
+      outline: 2px solid var(--accent-ink);
       outline-offset: 2px;
     }
 
+    /* Proporsi shell desktop nyata (sidebar 264px + konten fluid max 1360px) */
     .shell {
       display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
-      max-width: 1220px;
+      grid-template-columns: 264px minmax(0, 1fr);
+      max-width: 1360px;
       margin: 0 auto;
       min-height: 100vh;
     }
 
-    /* Sidebar Workbench */
+    /* Sidebar */
     aside.sidebar {
       position: sticky;
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      padding: 24px 20px;
+      padding: 24px 16px;
       background: var(--surface);
-      border-right: 1px solid var(--border);
+      border-right: 1px solid var(--hairline);
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -72,198 +89,273 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      padding: 0 4px 16px 4px;
+      border-bottom: 1px solid var(--hairline);
     }
-
+    .brand-mark {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .brand-title {
-      font-weight: 700;
       font-size: 16px;
-      line-height: 1.25;
+      font-weight: 600;
+      line-height: 1.2;
       color: var(--ink);
     }
-
     .brand-sub {
-      font-size: 12px;
-      color: var(--ink-muted);
-      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink-3);
+      margin-top: 2px;
     }
 
     .progress-box {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
+      padding: 12px;
+      background: var(--raised);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
     }
-
     .progress-head {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
+      color: var(--ink);
       margin-bottom: 8px;
+      font-variant-numeric: tabular-nums;
     }
-
+    .progress-count {
+      font-family: "JetBrains Mono", "Ubuntu Mono", "Liberation Mono", "Consolas", monospace;
+      font-size: 12px;
+      color: var(--ink-2);
+    }
     .progress-track {
-      width: 100%;
-      height: 8px;
-      background: var(--border);
-      border-radius: 4px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(31, 27, 22, 0.1);
       overflow: hidden;
     }
-
     .progress-fill {
       height: 100%;
       width: 0%;
       background: var(--accent);
-      transition: width 160ms ease;
+      border-radius: 999px;
+      transition: width 180ms var(--ease), background-color 180ms var(--ease);
     }
-
     .progress-fill.done { background: var(--ok); }
 
     .btn-reset {
       margin-top: 10px;
       width: 100%;
-      padding: 6px 10px;
-      border: 1px solid var(--border);
+      height: 32px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       background: var(--surface);
-      color: var(--ink-muted);
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
+      border: 1px solid var(--hairline-strong);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-2);
       cursor: pointer;
+      transition: background-color 140ms var(--ease), color 140ms var(--ease), transform 140ms var(--ease);
     }
-
     .btn-reset:hover {
+      background: var(--bg);
       color: var(--ink);
-      border-color: var(--ink-muted);
     }
+    .btn-reset:active { transform: scale(0.98); }
 
-    nav.toc {
+    .toc {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
-
     .toc-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-      margin-bottom: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-3);
+      padding: 0 8px 6px 8px;
     }
-
     .toc a {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding: 7px 10px;
-      border-radius: 6px;
-      color: var(--ink);
+      min-height: 36px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      color: var(--ink-2);
       font-size: 14px;
-      font-weight: 500;
-      border-left: 3px solid transparent;
+      font-weight: 400;
+      text-decoration: none;
+      transition: background-color 140ms var(--ease), color 140ms var(--ease);
     }
-
     .toc a:hover {
-      background: var(--paper);
+      background: var(--raised);
+      color: var(--ink);
       text-decoration: none;
     }
-
     .toc a.active {
-      background: var(--accent-soft);
-      color: var(--accent-hover);
-      border-left-color: var(--accent);
-      font-weight: 600;
+      background: var(--raised);
+      color: var(--ink);
+      font-weight: 500;
     }
-
+    .toc-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .toc-left span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .icon-box {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-3);
+    }
     .toc-tag {
-      font-size: 11px;
-      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
-      color: var(--ink-muted);
+      font-family: "JetBrains Mono", "Ubuntu Mono", "Liberation Mono", "Consolas", monospace;
+      font-size: 12px;
+      color: var(--ink-3);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
     }
-
     .toc a.completed .toc-tag {
       color: var(--ok);
-      font-weight: 700;
+      font-weight: 500;
     }
 
-    /* Main Content */
+    /* Konten Utama */
     main.content {
-      padding: 36px 44px 64px;
-      max-width: 880px;
+      padding: 36px 48px 64px 48px;
+      max-width: 960px;
+      width: 100%;
     }
 
-    header.hero {
+    .hero {
       padding-bottom: 24px;
-      border-bottom: 2px solid var(--ink);
-      margin-bottom: 28px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 24px;
     }
-
-    .eyebrow {
-      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+    .hero-meta {
       font-size: 13px;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin: 0 0 8px;
+      font-weight: 500;
+      color: var(--accent-ink);
+      margin: 0 0 8px 0;
     }
-
-    h1 {
-      margin: 0 0 12px;
+    .hero h1 {
+      margin: 0 0 12px 0;
       font-size: 32px;
-      line-height: 1.2;
+      font-weight: 500;
+      line-height: 1.15;
       letter-spacing: -0.02em;
       color: var(--ink);
     }
-
-    .lead {
+    .hero .lead {
       margin: 0;
-      font-size: 17px;
-      color: var(--ink-muted);
-      max-width: 68ch;
+      font-size: 15px;
+      color: var(--ink-2);
+      max-width: 62ch;
+      line-height: 1.6;
     }
 
-    .env-strip {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin: 24px 0 32px;
-    }
-
-    .env-cell {
+    /* Elemen fokal khusus LabKita: Peta Topologi Runtime Offline */
+    .topology-panel {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
+      border: 1px solid var(--hairline);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 2px rgba(31, 27, 22, 0.04);
     }
-
-    .env-cell dt {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--ink-muted);
-      margin-bottom: 4px;
+    .topology-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 14px;
     }
-
-    .env-cell dd {
-      margin: 0;
+    .topology-title {
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--ink);
     }
+    .topology-toolchain {
+      font-family: "JetBrains Mono", "Ubuntu Mono", "Liberation Mono", "Consolas", monospace;
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+    .topology-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .topo-zone {
+      padding: 12px 14px;
+      background: var(--bg);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+    }
+    .topo-zone-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .topo-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink-2);
+    }
+    .topo-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+    }
+    .topo-row code {
+      font-size: 12px;
+    }
+    .topo-note {
+      color: var(--ink-3);
+      font-size: 12px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
 
+    /* Seksi Modul */
     section.module {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 24px 26px;
-      margin-bottom: 22px;
+      border: 1px solid var(--hairline);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      scroll-margin-top: 20px;
+      box-shadow: 0 1px 2px rgba(31, 27, 22, 0.04);
     }
 
     .module-top {
@@ -273,18 +365,18 @@
       gap: 16px;
       margin-bottom: 12px;
     }
-
     .module-num {
-      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+      font-family: "JetBrains Mono", "Ubuntu Mono", "Liberation Mono", "Consolas", monospace;
       font-size: 12px;
-      font-weight: 700;
-      color: var(--accent);
+      font-weight: 500;
+      color: var(--accent-ink);
       margin-bottom: 4px;
+      font-variant-numeric: tabular-nums;
     }
-
-    h2 {
+    .module h2 {
       margin: 0;
-      font-size: 21px;
+      font-size: 20px;
+      font-weight: 500;
       line-height: 1.3;
       color: var(--ink);
     }
@@ -293,198 +385,238 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 11px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: var(--paper);
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1px solid var(--hairline-strong);
+      background: var(--bg);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
+      color: var(--ink-2);
       cursor: pointer;
-      white-space: nowrap;
       user-select: none;
+      flex-shrink: 0;
+      transition: background-color 140ms var(--ease), border-color 140ms var(--ease), color 140ms var(--ease), transform 140ms var(--ease);
     }
-
+    .check-label:hover {
+      background: var(--raised);
+      color: var(--ink);
+    }
+    .check-label:active { transform: scale(0.98); }
     .check-label input {
-      width: 16px;
-      height: 16px;
+      margin: 0;
+      width: 15px;
+      height: 15px;
       accent-color: var(--ok);
       cursor: pointer;
     }
-
     .check-label.is-done {
       background: var(--ok-soft);
-      border-color: #86efac;
+      border-color: var(--ok-border);
       color: var(--ok);
     }
 
-    p { margin: 10px 0; }
-    ul, ol { margin: 10px 0; padding-left: 22px; }
-    li { margin-bottom: 6px; }
+    .module p {
+      margin: 0 0 14px 0;
+      color: var(--ink-2);
+    }
 
     code {
-      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
-      font-size: 0.92em;
-      background: var(--surface-muted);
-      padding: 2px 5px;
-      border-radius: 4px;
+      font-family: "JetBrains Mono", "Ubuntu Mono", "Liberation Mono", "Consolas", monospace;
+      font-size: 0.88em;
+      background: var(--raised);
       color: var(--ink);
-      overflow-wrap: anywhere;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--hairline);
+    }
+    kbd {
+      font-family: "JetBrains Mono", "Ubuntu Mono", "Liberation Mono", "Consolas", monospace;
+      font-size: 12px;
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--hairline-strong);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      padding: 1px 6px;
     }
 
+    /* Blok Perintah */
     .cmd-block {
       margin: 14px 0;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
-      border: 1px solid #1e293b;
+      background: var(--code-bg);
+      border: 1px solid rgba(31, 27, 22, 0.14);
     }
-
     .cmd-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 12px;
-      background: #1e293b;
-      color: #cbd5e1;
+      padding: 8px 12px;
+      background: var(--code-bar);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: "JetBrains Mono", "Ubuntu Mono", "Liberation Mono", "Consolas", monospace;
       font-size: 12px;
-      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
+      color: var(--code-muted);
     }
-
     .btn-copy {
-      padding: 3px 10px;
-      border-radius: 4px;
-      border: 1px solid #475569;
-      background: #0f172a;
-      color: #f8fafc;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 28px;
+      padding: 0 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 6px;
+      color: var(--code-ink);
+      font-family: inherit;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
-      transition: background 120ms ease, border-color 120ms ease;
+      transition: background-color 140ms var(--ease), transform 140ms var(--ease);
     }
-
-    .btn-copy:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-
+    .btn-copy:hover { background: rgba(255, 255, 255, 0.14); }
+    .btn-copy:active { transform: scale(0.97); }
     .btn-copy.copied {
       background: var(--ok);
       border-color: var(--ok);
+      color: #ffffff;
     }
 
     pre {
       margin: 0;
       padding: 14px 16px;
-      background: var(--code-bg);
       color: var(--code-ink);
-      overflow-x: auto;
-      font-family: "Ubuntu Mono", "Liberation Mono", Consolas, monospace;
-      font-size: 13.5px;
+      font-family: "JetBrains Mono", "Ubuntu Mono", "Liberation Mono", "Consolas", monospace;
+      font-size: 13px;
       line-height: 1.55;
+      overflow-x: auto;
     }
 
+    /* Kotak Tugas */
     .task-box {
-      margin-top: 16px;
-      padding: 14px 16px;
-      background: var(--accent-soft);
-      border-left: 4px solid var(--accent);
-      border-radius: 0 6px 6px 0;
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 10px;
+      background: var(--bg);
+      border: 1px solid var(--hairline);
     }
-
     .task-title {
       font-size: 14px;
-      font-weight: 700;
-      color: var(--accent-hover);
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .task-box ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .task-box li {
       margin-bottom: 6px;
-    }
-
-    .note-box {
-      margin-top: 14px;
-      padding: 12px 14px;
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 6px;
       font-size: 14px;
+      color: var(--ink-2);
     }
+    .task-box li:last-child { margin-bottom: 0; }
 
+    /* Tabel Referensi & Penyimpanan */
     .split-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 14px 0;
     }
-
     .mini-panel {
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--paper);
+      padding: 14px 16px;
+      background: var(--raised);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
     }
-
     .mini-panel h3 {
-      margin: 0 0 8px;
-      font-size: 15px;
+      margin: 0 0 6px 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .mini-panel p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink-2);
     }
 
     table.ref-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 12px;
+      margin-top: 10px;
       font-size: 14px;
     }
-
     table.ref-table th, table.ref-table td {
       text-align: left;
-      padding: 9px 10px;
-      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--hairline);
       vertical-align: top;
     }
-
     table.ref-table th {
       font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--ink-muted);
-      background: var(--paper);
+      font-weight: 500;
+      color: var(--ink-3);
     }
+    table.ref-table td { color: var(--ink-2); }
 
     details.hint {
-      margin-top: 10px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 8px 12px;
-      background: var(--surface);
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--hairline);
+      background: var(--bg);
     }
-
     details.hint summary {
-      cursor: pointer;
-      font-weight: 600;
       font-size: 14px;
+      font-weight: 500;
       color: var(--ink);
+      cursor: pointer;
+    }
+    details.hint p {
+      margin: 8px 0 0 0;
+      font-size: 14px;
+      color: var(--ink-2);
     }
 
     footer.doc-foot {
-      margin-top: 32px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--hairline);
       font-size: 13px;
-      color: var(--ink-muted);
+      color: var(--ink-3);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    @media (max-width: 920px) {
+    @media (max-width: 960px) {
       .shell { display: block; }
       aside.sidebar {
         position: static;
         height: auto;
+        width: 100%;
         border-right: none;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--hairline);
+        padding: 16px;
       }
       main.content {
-        width: 100%;
-        padding: 24px 16px 48px;
+        padding: 20px 16px 40px 16px;
+        max-width: 100%;
       }
-      .module-top { flex-wrap: wrap; }
-      .env-strip, .split-grid { grid-template-columns: minmax(0, 1fr); }
-      table.ref-table { display: block; overflow-x: auto; }
+      .topology-grid, .split-grid {
+        grid-template-columns: 1fr;
+      }
+      .module-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .check-label { align-self: flex-start; }
+      .hero h1 { font-size: 26px; }
     }
   </style>
 </head>
@@ -493,72 +625,139 @@
 <div class="shell">
   <aside class="sidebar" aria-label="Navigasi Modul Praktikum">
     <div class="brand">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="40" height="40" role="img" aria-label="Logo LabKita Linux">
-        <rect x="8" y="8" width="112" height="112" rx="24" fill="#1E3A5F" stroke="#38BDF8" stroke-width="5"/>
-        <path d="M36 42 L64 64 L36 86" fill="none" stroke="#38BDF8" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="66" y="76" width="28" height="10" rx="5" fill="#F8FAFC"/>
-        <rect x="86" y="34" width="12" height="12" rx="3" fill="#38BDF8"/>
-      </svg>
+      <div class="brand-mark" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="32" height="32">
+          <path fill="#1f1b16" d="M 32 32 H 72 V 184 H 184 L 224 224 H 32 Z"/>
+          <path fill="#1d4ed8" d="M 96 32 H 132 V 72 L 172 32 H 224 L 160 96 L 224 160 H 172 L 132 120 V 160 H 96 Z"/>
+        </svg>
+      </div>
       <div>
         <div class="brand-title">LabKita Linux</div>
-        <div class="brand-sub">Buku Kerja v0.6</div>
+        <div class="brand-sub">Buku kerja v0.6</div>
       </div>
     </div>
 
     <div class="progress-box">
       <div class="progress-head">
-        <span>Progres Tugas</span>
-        <span id="progressText">0 / 7 modul</span>
+        <span>Progres modul</span>
+        <span class="progress-count" id="progressText">0 / 7 modul</span>
       </div>
       <div class="progress-track" aria-hidden="true">
         <div class="progress-fill" id="progressBar"></div>
       </div>
-      <button type="button" class="btn-reset" id="resetProgress">Reset Progres</button>
+      <button type="button" class="btn-reset" id="resetProgress">
+        <span class="icon-box" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        </span>
+        <span>Reset progres</span>
+      </button>
     </div>
 
     <nav class="toc">
-      <div class="toc-label">Daftar Modul</div>
-      <a href="#modul-1" data-nav="m1"><span>1. Shell &amp; Berkas</span><span class="toc-tag" id="tag-m1">M1</span></a>
-      <a href="#modul-2" data-nav="m2"><span>2. Python Dasar &amp; I/O</span><span class="toc-tag" id="tag-m2">M2</span></a>
-      <a href="#modul-3" data-nav="m3"><span>3. C, GCC &amp; GDB</span><span class="toc-tag" id="tag-m3">M3</span></a>
-      <a href="#modul-4" data-nav="m4"><span>4. Proses &amp; PID</span><span class="toc-tag" id="tag-m4">M4</span></a>
-      <a href="#modul-5" data-nav="m5"><span>5. Threading &amp; Lock</span><span class="toc-tag" id="tag-m5">M5</span></a>
-      <a href="#modul-6" data-nav="m6"><span>6. Akun &amp; Tmpfs</span><span class="toc-tag" id="tag-m6">M6</span></a>
-      <a href="#modul-7" data-nav="m7"><span>7. Proyek Integrasi</span><span class="toc-tag" id="tag-m7">M7</span></a>
-      <a href="#referensi"><span>Referensi Offline</span><span class="toc-tag">MAN</span></a>
+      <div class="toc-label">Daftar modul</div>
+      <a href="#modul-1" data-nav="m1">
+        <span class="toc-left">
+          <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span>
+          <span>1. Shell &amp; Berkas</span>
+        </span>
+        <span class="toc-tag" id="tag-m1">01</span>
+      </a>
+      <a href="#modul-2" data-nav="m2">
+        <span class="toc-left">
+          <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg></span>
+          <span>2. Python Dasar &amp; I/O</span>
+        </span>
+        <span class="toc-tag" id="tag-m2">02</span>
+      </a>
+      <a href="#modul-3" data-nav="m3">
+        <span class="toc-left">
+          <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 14h3"/><path d="M1 9h3"/><path d="M1 14h3"/></svg></span>
+          <span>3. C, GCC &amp; GDB</span>
+        </span>
+        <span class="toc-tag" id="tag-m3">03</span>
+      </a>
+      <a href="#modul-4" data-nav="m4">
+        <span class="toc-left">
+          <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg></span>
+          <span>4. Proses &amp; PID</span>
+        </span>
+        <span class="toc-tag" id="tag-m4">04</span>
+      </a>
+      <a href="#modul-5" data-nav="m5">
+        <span class="toc-left">
+          <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+          <span>5. Threading &amp; Lock</span>
+        </span>
+        <span class="toc-tag" id="tag-m5">05</span>
+      </a>
+      <a href="#modul-6" data-nav="m6">
+        <span class="toc-left">
+          <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          <span>6. Akun &amp; Tmpfs</span>
+        </span>
+        <span class="toc-tag" id="tag-m6">06</span>
+      </a>
+      <a href="#modul-7" data-nav="m7">
+        <span class="toc-left">
+          <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span>
+          <span>7. Proyek Integrasi</span>
+        </span>
+        <span class="toc-tag" id="tag-m7">07</span>
+      </a>
+      <a href="#referensi">
+        <span class="toc-left">
+          <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+          <span>Referensi offline</span>
+        </span>
+        <span class="toc-tag">man</span>
+      </a>
     </nav>
   </aside>
 
   <main class="content">
     <header class="hero">
-      <p class="eyebrow">Lingkungan Praktikum Offline</p>
+      <p class="hero-meta">Lingkungan praktikum offline</p>
       <h1>Panduan Kerja &amp; Tugas Pemrograman Sistem Operasi</h1>
       <p class="lead">
-        Seluruh compiler C/C++, debugger GDB, Python 3, editor Geany, contoh program, dan manual
-        dokumentasi sudah tersedia di dalam sistem tanpa memerlukan sambungan internet.
+        Seluruh kompiler C/C++, debugger GDB, Python 3, editor Geany, contoh program, dan dokumentasi
+        manual sistem sudah terpasang lokal di mesin tanpa memerlukan koneksi internet.
       </p>
     </header>
 
-    <dl class="env-strip" aria-label="Ringkasan Lingkungan Sistem">
-      <div class="env-cell">
-        <dt>Toolchain Bawaan</dt>
-        <dd>GCC, G++, Make, GDB, Python 3, Geany</dd>
+    <section class="topology-panel" aria-label="Peta topologi sistem LabKita Linux">
+      <div class="topology-head">
+        <span class="topology-title">Peta topologi runtime LabKita Linux 0.6</span>
+        <span class="topology-toolchain">GCC 13.3 · G++ · Make · GDB · Python 3.12 · Geany</span>
       </div>
-      <div class="env-cell">
-        <dt>Dua Akun Bawaan</dt>
-        <dd><code>labkita</code> (Admin) &amp; <code>praktikan</code> (0700)</dd>
+      <div class="topology-grid">
+        <div class="topo-zone">
+          <div class="topo-zone-head">
+            <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+            <span>Pemisahan hak akses</span>
+          </div>
+          <div class="topo-rows">
+            <div class="topo-row"><code>labkita</code><span class="topo-note">Admin · grup sudo</span></div>
+            <div class="topo-row"><code>praktikan</code><span class="topo-note">Non-sudo · home 0700</span></div>
+          </div>
+        </div>
+        <div class="topo-zone">
+          <div class="topo-zone-head">
+            <span class="icon-box" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
+            <span>Batas area penyimpanan</span>
+          </div>
+          <div class="topo-rows">
+            <div class="topo-row"><code>~/Praktikum</code><span class="topo-note">Disk persisten · boleh eksekusi</span></div>
+            <div class="topo-row"><code>/run/labkita</code><span class="topo-note">tmpfs 1777 · data saja (noexec)</span></div>
+          </div>
+        </div>
       </div>
-      <div class="env-cell">
-        <dt>Ruang Sementara RAM</dt>
-        <dd><code>/run/labkita</code> (tmpfs, data saja / noexec)</dd>
-      </div>
-    </dl>
+    </section>
 
     <!-- MODUL 1 -->
     <section class="module" id="modul-1">
       <div class="module-top">
         <div>
-          <div class="module-num">MODUL 01</div>
+          <div class="module-num">Modul 01</div>
           <h2>Orientasi Shell, Diagnostik, &amp; Manajemen Berkas</h2>
         </div>
         <label class="check-label" data-label="m1">
@@ -566,7 +765,7 @@
         </label>
       </div>
       <p>
-        Buka Terminal lewat <code>Ctrl + Alt + T</code> atau ikon terminal di dock bawah. Salin
+        Buka Terminal lewat <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd> atau ikon terminal di dock bawah. Salin
         berkas contoh bawaan dari <code>/usr/share/labkita/examples/</code> ke folder pribadi
         <code>~/Praktikum</code>, lalu jalankan pemeriksaan sistem.
       </p>
@@ -579,7 +778,7 @@ ls -la
 labkita-check</pre>
       </div>
       <div class="task-box">
-        <div class="task-title">Tugas 1: Struktur Direktori &amp; Hak Akses</div>
+        <div class="task-title">Tugas 1: Struktur direktori &amp; hak akses</div>
         <ol>
           <li>Di dalam <code>~/Praktikum</code>, buat subdirektori <code>tugas1/src</code>, <code>tugas1/bin</code>, dan <code>tugas1/out</code> dengan satu perintah <code>mkdir -p</code>.</li>
           <li>Ubah izin folder <code>tugas1/out</code> menjadi privat pemilik saja (<code>chmod 700</code>) dan cek hasilnya memakai <code>stat -c "%a %n" tugas1/*</code>.</li>
@@ -592,7 +791,7 @@ labkita-check</pre>
     <section class="module" id="modul-2">
       <div class="module-top">
         <div>
-          <div class="module-num">MODUL 02</div>
+          <div class="module-num">Modul 02</div>
           <h2>Pemrograman Python Dasar &amp; Pengolahan Berkas</h2>
         </div>
         <label class="check-label" data-label="m2">
@@ -600,15 +799,14 @@ labkita-check</pre>
         </label>
       </div>
       <p>
-        Python 3 berjalan langsung di terminal atau lewat editor <strong>Geany</strong>. Mulai
-        dengan menguji skrip contoh <code>hello.py</code>.
+        Python 3 berjalan langsung di terminal atau lewat editor Geany. Mulai dengan menguji skrip contoh <code>hello.py</code>.
       </p>
       <div class="cmd-block">
         <div class="cmd-bar"><span>Terminal Bash</span><button type="button" class="btn-copy">Salin</button></div>
         <pre>python3 ~/Praktikum/hello.py</pre>
       </div>
       <div class="task-box">
-        <div class="task-title">Tugas 2: Rekap Nilai Mahasiswa Offline</div>
+        <div class="task-title">Tugas 2: Rekap nilai mahasiswa offline</div>
         <ol>
           <li>Buat berkas data <code>~/Praktikum/nilai.txt</code> berisi minimal 6 baris format <code>Nama,Nilai</code> (contoh: <code>Andi,85</code>).</li>
           <li>Tulis skrip <code>rekap_nilai.py</code> yang membaca <code>nilai.txt</code>, menghitung rata-rata, nilai tertinggi, dan nilai terendah.</li>
@@ -621,7 +819,7 @@ labkita-check</pre>
     <section class="module" id="modul-3">
       <div class="module-top">
         <div>
-          <div class="module-num">MODUL 03</div>
+          <div class="module-num">Modul 03</div>
           <h2>Bahasa C, Alokasi Memori Dinamis, &amp; Debugging GDB</h2>
         </div>
         <label class="check-label" data-label="m3">
@@ -640,7 +838,7 @@ gcc -Wall -Wextra -g hello.c -o hello &amp;&amp; ./hello
 gcc -Wall -Wextra -g memory_demo.c -o memory_demo &amp;&amp; ./memory_demo</pre>
       </div>
       <div class="task-box">
-        <div class="task-title">Tugas 3: Eksperimen Memori &amp; Breakpoint GDB</div>
+        <div class="task-title">Tugas 3: Eksperimen memori &amp; breakpoint GDB</div>
         <ol>
           <li>Salin <code>memory_demo.c</code> ke <code>tugas_mem.c</code>, ubah agar menerima jumlah elemen dari input pengguna (<code>scanf</code>) dan mengisi deret kuadrat.</li>
           <li>Tambahkan fungsi <code>cetak_statistik()</code> untuk mencari nilai maksimum di array heap tersebut.</li>
@@ -653,7 +851,7 @@ gcc -Wall -Wextra -g memory_demo.c -o memory_demo &amp;&amp; ./memory_demo</pre>
     <section class="module" id="modul-4">
       <div class="module-top">
         <div>
-          <div class="module-num">MODUL 04</div>
+          <div class="module-num">Modul 04</div>
           <h2>Manajemen Proses, <code>fork()</code>, &amp; Pengamatan PID/PPID</h2>
         </div>
         <label class="check-label" data-label="m4">
@@ -661,8 +859,7 @@ gcc -Wall -Wextra -g memory_demo.c -o memory_demo &amp;&amp; ./memory_demo</pre>
         </label>
       </div>
       <p>
-        Setiap proses Linux memiliki nomor unik <strong>PID</strong> dan proses induk
-        <strong>PPID</strong>. Berkas <code>processes.py</code> memakai <code>fork</code> agar
+        Setiap proses Linux memiliki nomor unik PID dan proses induk PPID. Berkas <code>processes.py</code> memakai <code>fork</code> agar
         proses anak menunjuk langsung ke proses induknya.
       </p>
       <div class="cmd-block">
@@ -670,7 +867,7 @@ gcc -Wall -Wextra -g memory_demo.c -o memory_demo &amp;&amp; ./memory_demo</pre>
         <pre>python3 ~/Praktikum/processes.py</pre>
       </div>
       <div class="task-box">
-        <div class="task-title">Tugas 4: Pohon Proses 4 Worker</div>
+        <div class="task-title">Tugas 4: Pohon proses 4 worker</div>
         <ol>
           <li>Buat <code>multi_worker.py</code> yang meluncurkan 4 proses anak bersamaan, masing-masing tidur selama 5 detik (<code>time.sleep(5)</code>) agar sempat diamati.</li>
           <li>Saat skrip berjalan, buka tab terminal kedua dan jalankan <code>ps -ef --forest | grep python3</code> untuk membuktikan satu PID induk membawahi 4 PID anak.</li>
@@ -683,7 +880,7 @@ gcc -Wall -Wextra -g memory_demo.c -o memory_demo &amp;&amp; ./memory_demo</pre>
     <section class="module" id="modul-5">
       <div class="module-top">
         <div>
-          <div class="module-num">MODUL 05</div>
+          <div class="module-num">Modul 05</div>
           <h2>Multithreading, Shared Memory, &amp; Sinkronisasi Lock</h2>
         </div>
         <label class="check-label" data-label="m5">
@@ -692,17 +889,17 @@ gcc -Wall -Wextra -g memory_demo.c -o memory_demo &amp;&amp; ./memory_demo</pre>
       </div>
       <p>
         Berbeda dengan proses terpisah, seluruh thread berada di dalam satu PID dan berbagi ruang
-        memori global yang sama. Akses serentak ke variabel yang sama dapat memicu <em>race condition</em>.
+        memori global yang sama. Akses serentak ke variabel yang sama dapat memicu race condition.
       </p>
       <div class="cmd-block">
         <div class="cmd-bar"><span>Terminal Bash</span><button type="button" class="btn-copy">Salin</button></div>
         <pre>python3 ~/Praktikum/thread_demo.py</pre>
       </div>
       <div class="task-box">
-        <div class="task-title">Tugas 5: Simulasi &amp; Perbaikan Race Condition</div>
+        <div class="task-title">Tugas 5: Simulasi &amp; perbaikan race condition</div>
         <ol>
           <li>Tulis <code>race_lab.py</code> berisi 4 thread yang masing-masing menaikkan penghitung global <code>saldo = saldo + 1</code> sebanyak 100.000 kali (target akhir seharusnya 400.000).</li>
-          <li>Bandingkan hasil eksekusi <strong>tanpa</strong> <code>threading.Lock()</code> dan <strong>dengan</strong> <code>with lock:</code>.</li>
+          <li>Bandingkan hasil eksekusi tanpa <code>threading.Lock()</code> dan dengan <code>with lock:</code>.</li>
           <li>Catat durasi waktu masing-masing pendekatan menggunakan <code>time.perf_counter()</code>.</li>
         </ol>
       </div>
@@ -712,7 +909,7 @@ gcc -Wall -Wextra -g memory_demo.c -o memory_demo &amp;&amp; ./memory_demo</pre>
     <section class="module" id="modul-6">
       <div class="module-top">
         <div>
-          <div class="module-num">MODUL 06</div>
+          <div class="module-num">Modul 06</div>
           <h2>Isolasi Akun Praktikan &amp; Ruang Kerja RAM (<code>tmpfs</code>)</h2>
         </div>
         <label class="check-label" data-label="m6">
@@ -733,16 +930,16 @@ mount | grep "on /run "</pre>
       </div>
       <div class="split-grid">
         <div class="mini-panel">
-          <h3>Disimpan Permanen</h3>
+          <h3>Disimpan permanen</h3>
           <p><code>~/Praktikum</code><br>Simpan kode sumber C/Python dan hasil biner terkompilasi agar tetap ada setelah reboot.</p>
         </div>
         <div class="mini-panel">
-          <h3>Temporer RAM (Noexec)</h3>
+          <h3>Temporer RAM (noexec)</h3>
           <p><code>/run/labkita/$USER</code><br>Gunakan untuk log uji atau berkas data besar sementara. Jangan taruh executable di sini karena <code>/run</code> dipasang <code>noexec</code>.</p>
         </div>
       </div>
       <div class="task-box">
-        <div class="task-title">Tugas 6: Pengujian Sticky Bit &amp; Tmpfs</div>
+        <div class="task-title">Tugas 6: Pengujian sticky bit &amp; tmpfs</div>
         <ol>
           <li>Buat folder kerja sementara <code>mkdir -p /run/labkita/$USER</code> dan tulis file log pengujian sebesar 5 MB memakai <code>dd if=/dev/zero of=/run/labkita/$USER/uji.bin bs=1M count=5</code>.</li>
           <li>Amati perubahan pemakaian di <code>df -h /run/labkita</code>, lalu hapus lagi berkas sementara tersebut.</li>
@@ -755,7 +952,7 @@ mount | grep "on /run "</pre>
     <section class="module" id="modul-7">
       <div class="module-top">
         <div>
-          <div class="module-num">MODUL 07</div>
+          <div class="module-num">Modul 07</div>
           <h2>Proyek Mini Integrasi C + Python (Offline End-to-End)</h2>
         </div>
         <label class="check-label" data-label="m7">
@@ -767,7 +964,7 @@ mount | grep "on /run "</pre>
         dalam satu alur pipa kerja lokal tanpa jaringan.
       </p>
       <div class="task-box">
-        <div class="task-title">Tugas 7: Generator Data C &amp; Penganalisis Python</div>
+        <div class="task-title">Tugas 7: Generator data C &amp; penganalisis Python</div>
         <ol>
           <li>Buat program C <code>gen_log.c</code> yang menulis 50 baris data simulasi suhu (<code>detik,suhu</code>) ke berkas <code>/run/labkita/$USER/suhu.csv</code>.</li>
           <li>Kompilasi dengan <code>gcc -Wall -Wextra -O2 gen_log.c -o ~/Praktikum/gen_log</code>.</li>
@@ -780,7 +977,7 @@ mount | grep "on /run "</pre>
     <section class="module" id="referensi">
       <div class="module-top">
         <div>
-          <div class="module-num">REFERENSI CEPAT</div>
+          <div class="module-num">Referensi cepat</div>
           <h2>Manual &amp; Diagnostik Tanpa Internet</h2>
         </div>
       </div>
@@ -788,39 +985,39 @@ mount | grep "on /run "</pre>
         <thead>
           <tr>
             <th>Perintah</th>
-            <th>Fungsi Offline</th>
+            <th>Fungsi offline</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><code>labkita-check</code></td>
-            <td>Memeriksa kesiapan compiler, panduan HTML Firefox Snap, locale, tema, Plymouth, dan ruang RAM.</td>
+            <td>Memeriksa kesiapan compiler, panduan HTML Firefox Snap, locale, tema, Plymouth, dan ruang RAM</td>
           </tr>
           <tr>
             <td><code>man gcc</code></td>
-            <td>Manual lengkap opsi kompiler C/C++ (<code>-Wall</code>, <code>-g</code>, <code>-O2</code>, <code>-pthread</code>).</td>
+            <td>Manual lengkap opsi kompiler C/C++ (<code>-Wall</code>, <code>-g</code>, <code>-O2</code>, <code>-pthread</code>)</td>
           </tr>
           <tr>
             <td><code>man 3 malloc</code></td>
-            <td>Dokumentasi fungsi alokasi heap C (<code>malloc</code>, <code>calloc</code>, <code>realloc</code>, <code>free</code>).</td>
+            <td>Dokumentasi fungsi alokasi heap C (<code>malloc</code>, <code>calloc</code>, <code>realloc</code>, <code>free</code>)</td>
           </tr>
           <tr>
             <td><code>man 2 fork</code></td>
-            <td>Dokumentasi system call pembuatan proses anak pada kernel Linux.</td>
+            <td>Dokumentasi system call pembuatan proses anak pada kernel Linux</td>
           </tr>
           <tr>
             <td><code>python3 -m pydoc threading</code></td>
-            <td>Dokumentasi modul standar Python langsung di terminal (ganti <code>threading</code> sesuai kebutuhan).</td>
+            <td>Dokumentasi modul standar Python langsung di terminal (ganti <code>threading</code> sesuai kebutuhan)</td>
           </tr>
           <tr>
             <td><code>sudo labkita-postinstall &lt;nama&gt;</code></td>
-            <td>Untuk admin: menambah akun mahasiswa terisolasi baru (non-<code>sudo</code>, home <code>0700</code>).</td>
+            <td>Untuk admin: menambah akun mahasiswa terisolasi baru (non-<code>sudo</code>, home <code>0700</code>)</td>
           </tr>
         </tbody>
       </table>
 
       <details class="hint">
-        <summary>Tips Navigasi Halaman Manual (<code>man</code>)</summary>
+        <summary>Navigasi halaman manual (<code>man</code>)</summary>
         <p>
           Tekan <code>Panah Atas / Bawah</code> atau <code>Spasi</code> untuk menggulir halaman,
           ketik <code>/kata_kunci</code> lalu <code>Enter</code> untuk mencari kata (tekan <code>n</code>
@@ -829,7 +1026,7 @@ mount | grep "on /run "</pre>
       </details>
 
       <details class="hint">
-        <summary>Mengapa Biner Tidak Boleh Dijalankan dari <code>/run/labkita</code>?</summary>
+        <summary>Alasan biner tidak dijalankan dari <code>/run/labkita</code></summary>
         <p>
           Partisi <code>/run</code> pada Ubuntu dipasang oleh systemd dengan flag keamanan <code>noexec</code>.
           Letakkan kode sumber dan file eksekusi di <code>~/Praktikum</code>, lalu simpan file log atau
@@ -839,7 +1036,8 @@ mount | grep "on /run "</pre>
     </section>
 
     <footer class="doc-foot">
-      LabKita Linux 0.6 &middot; Program Studi Informatika, Universitas Siliwangi &middot; Dokumentasi Lokal Offline
+      <span>LabKita Linux 0.6 · Program Studi Informatika, Universitas Siliwangi</span>
+      <span>Dokumentasi lokal offline</span>
     </footer>
   </main>
 </div>
@@ -851,6 +1049,8 @@ mount | grep "on /run "</pre>
     var progressBar = document.getElementById("progressBar");
     var progressText = document.getElementById("progressText");
     var resetBtn = document.getElementById("resetProgress");
+    var copyIconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+    var checkIconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
 
     function loadState() {
       try {
@@ -865,7 +1065,7 @@ mount | grep "on /run "</pre>
       try {
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       } catch (e) {
-        /* Fallback sunyi jika browser memblokir storage pada file:// */
+        /* Abaikan bila browser memblokir storage pada file:// */
       }
     }
 
@@ -882,7 +1082,10 @@ mount | grep "on /run "</pre>
         var nav = document.querySelector('.toc a[data-nav="' + mod + '"]');
         var tag = document.getElementById("tag-" + mod);
         if (nav) nav.classList.toggle("completed", isDone);
-        if (tag) tag.textContent = isDone ? "OK" : mod.toUpperCase();
+        if (tag) {
+          var num = mod.slice(1);
+          tag.textContent = isDone ? "OK" : (num.length === 1 ? "0" + num : num);
+        }
 
         if (isDone) doneCount += 1;
       });
@@ -917,13 +1120,15 @@ mount | grep "on /run "</pre>
       var pre = block.querySelector("pre");
       if (!btn || !pre) return;
 
+      btn.innerHTML = copyIconSvg + "<span>Salin</span>";
+
       btn.addEventListener("click", function () {
         var text = pre.textContent;
         function markCopied() {
-          btn.textContent = "Tersalin";
+          btn.innerHTML = checkIconSvg + "<span>Tersalin</span>";
           btn.classList.add("copied");
           window.setTimeout(function () {
-            btn.textContent = "Salin";
+            btn.innerHTML = copyIconSvg + "<span>Salin</span>";
             btn.classList.remove("copied");
           }, 1500);
         }

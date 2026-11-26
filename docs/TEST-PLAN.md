@@ -122,9 +122,9 @@ Berdasarkan pemeriksaan isi berkas di atas, dirumuskan hipotesis teknis berikut:
 Pembaruan cabang `feat/v06-autoinstall-brand` (`tools/build_v06.py`) memverifikasi langsung perbaikan atas temuan ikon WhiteSur, penghapusan Wizard installer yang panjang, penerapan logo LabKita di Plymouth & GDM, serta buku kerja HTML 7 modul.
 
 ### A. Integritas Berkas & Lint
-- **Berkas ISO Final:** `labkita-linux-0.6-amd64.iso` berukuran `6.083.645.440 bytes` (~5,67 GiB).
-- **SHA256:** `6a9a055b2833e3ef64e4633db81c061992a73ba4ae91f599c45b9943fdfcd115`
-- **MD5:** `0dd73d162837435295dda31b0e901652`
+- **Berkas ISO Final:** `labkita-linux-0.6-amd64.iso` berukuran `6.083.305.472 bytes` (~5,67 GiB).
+- **SHA256:** `78a58f0f757b63b97b46e21a520a2c2ea7a205458119192c8f4ed10d2fe9bde1`
+- **MD5:** `7db00f4c1bfbdf06df62c77bfd0e14c7`
 - **Verifikasi Loop-Mount ISO (`md5sum.txt`):** `MD5SUM_ALL_OK` (mengecualikan `boot.catalog` & `eltorito.img`).
 - **Validasi Skrip Lokal (`bash tools/verify-linux.sh`):** **LULUS** (sintaks Bash, contoh Python/proses, unit systemd, penolakan host).
 
@@ -134,10 +134,10 @@ Lingkungan uji: VMware Workstation, disk virtual kosong 40 GB, RAM 6144 MB (`592
 | Skenario Uji (0.6) | Hasil Aktual di VM 0.6 | Status | Bukti |
 | :--- | :--- | :---: | :--- |
 | **GRUB & Zero-Touch Autoinstall (`nocloud`)** | Menu GRUB default (`Pasang Otomatis LabKita Linux 0.6`) menyelesaikan instalasi ke disk tanpa input manual dalam ~4 menit, tanpa dialog akun/bug OpenGL | **LULUS** | `docs/evidence/0.6-01-grub-autoinstall.png`, `0.6-02` |
-| **Splash Plymouth & Layar Login GDM** | Splash boot Plymouth dan layar login GDM menampilkan logo LabKita; daftar akun langsung memuat **LabKita Admin** & **praktikan** | **LULUS** | `docs/evidence/0.6-03-plymouth-logo.png`, `0.6-04` |
-| **Desktop Admin & Kelengkapan Ikon WhiteSur** | Login `labkita` langsung masuk desktop tanpa GNOME Initial Setup/popup upgrade; Settings & App Grid menampilkan seluruh ikon utuh tanpa ikon kosong | **LULUS** | `docs/evidence/0.6-05`, `0.6-06`, `0.6-07` |
+| **Splash Plymouth & Layar Login GDM** | Splash boot Plymouth dan layar login GDM menampilkan logo **Keystone LK** LabKita; daftar akun langsung memuat **LabKita Admin** & **praktikan** | **LULUS** | `docs/evidence/0.6-03-plymouth-logo.png`, `0.6-04` |
+| **Desktop Admin & Kelengkapan Ikon WhiteSur** | Login `labkita` langsung masuk desktop wallpaper **Cobalt Architectural Slate** tanpa GNOME Initial Setup/popup upgrade; Settings & App Grid menampilkan seluruh ikon utuh tanpa ikon kosong | **LULUS** | `docs/evidence/0.6-05`, `0.6-06`, `0.6-07` |
 | **Diagnostik `labkita-check` (Rebuild Final)** | Seluruh 25 baris pemeriksaan menghasilkan **SEMUA PEMERIKSAAN LULUS**, termasuk `Logo Login GDM LabKita` dan baca Firefox Snap (`AppArmor OK`) | **LULUS** | `docs/evidence/0.6-11-labkita-check-pass.png` |
-| **Panduan Kerja 7 Modul & Firefox Snap + Selenium Edge** | Terbuka di Firefox Snap via `labkita-guide`; audit Edge/Selenium memastikan `no_overflow=True` di `1280x800` & `390x844` CDP, `0` error konsol, tombol `Salin` & `localStorage` aktif, kontras >= `4.79:1` | **LULUS** | `docs/evidence/0.6-08-guide-workbook-firefox.png` |
+| **Panduan Kerja 7 Modul (`unslop`) & Firefox Snap + Selenium Edge** | Terbuka di Firefox Snap via `labkita-guide`; audit Edge/Selenium memastikan `no_overflow=True` di `1280x800` & `390x844` CDP, `0` error konsol, `0` `text-transform: uppercase`, tombol `Salin` & `localStorage` aktif, kontras >= `4.62:1` | **LULUS** | `docs/evidence/0.6-08-guide-workbook-firefox.png` |
 | **Isolasi & Toolchain Akun `praktikan`** | `stat /home/praktikan` = `700`, `uid=1001` grup `labkita-praktikum`, `sudo -n true` ditolak, kompilasi `gcc ~/Praktikum/hello.c` & `python3 ~/Praktikum/thread_demo.py` sukses offline | **LULUS** | `docs/evidence/0.6-09`, `0.6-10` |
 
 ### C. Observasi Sumber Daya 0.6 & Catatan VMware Workstation

@@ -28,16 +28,19 @@ Proyek **LabKita Linux (0.2 - 0.6)** menggunakan komponen antarmuka sumber terbu
 - **Lisensi:** SIL Open Font License, Version 1.1 (OFL-1.1)
 - **Penggunaan:** Font antarmuka sistem (pengganti font San Francisco/SF Pro) untuk seluruh elemen antarmuka desktop, dokumen, dan bilah judul jendela (*titlebar*).
 
-## 5. Wallpaper Orisinal LabKita Linux
+## 5. Wallpaper Orisinal LabKita Linux (Cobalt Architectural Slate)
 - **Perancang:** Tim Pengembang LabKita Linux (Dafa Zahran, Rafly Fauzi Pratama, Muhammad Ilham Rizky, Vadien Athallah Lukman)
 - **Lisensi:** Creative Commons Attribution 4.0 International (CC-BY 4.0) / MIT
-- **Deskripsi:** Desain gradien mesh orisinal dengan transisi warna *deep navy slate* ke *ocean cyan*, *indigo violet*, dan *emerald teal*, dilengkapi lambang geometris LabKita Linux. Dibuat secara mandiri tanpa menggunakan wallpaper Apple.
+- **Deskripsi:** Wallpaper arsitektural tenang bernuansa *deep slate* (`#0C1220` ke `#111A2E`) dengan kisi garis halus, satu aksen garis struktural cobalt 45 derajat (`#2563EB`), dan emblem geometris **Keystone LK** (`tools/generate_wallpaper.py`). Dibuat secara mandiri tanpa aset berpemilik pihak ketiga.
 
 ## 6. Basis Sistem Distribusi Upstream
 - **Distribusi Basis:** Ubuntu 24.04.5 LTS (Noble Numbat) Desktop amd64 oleh Canonical Ltd.
 - **Kernel & Kompiler:** Linux Kernel (GPL-2.0), GNU Compiler Collection (GPL-3.0), Python 3 (PSF License), Geany IDE (GPL-2.0). Catatan lisensi hulu tersimpan lengkap pada `/usr/share/doc/*/copyright`.
 
-## 7. Identitas Merek & Aset Logo Resmi LabKita Linux (0.6)
+## 7. Identitas Merek & Aset Logo Resmi LabKita Linux (Keystone LK)
 - **Perancang:** Tim Pengembang LabKita Linux (Dafa Zahran, Rafly Fauzi Pratama, Muhammad Ilham Rizky, Vadien Athallah Lukman)
-- **Skrip Generator & Lokasi Aset:** [`tools/generate_brand_assets.py`](../tools/generate_brand_assets.py) dan [`assets/brand/`](../assets/brand/) (`labkita-mark.svg`, `labkita-wordmark-dark.svg`, `labkita-wordmark-light.svg`, beserta berkas PNG 4x supersampled untuk Plymouth, layar login GDM `labkita-gdm-logo.png`, README, dan laporan akhir).
+- **Skrip Generator & Lokasi Aset:** [`tools/generate_brand_assets.py`](../tools/generate_brand_assets.py) dan [`assets/brand/`](../assets/brand/) (`labkita-mark.svg`, `labkita-mark-dark.svg`, `labkita-mark-black.svg`, `labkita-mark-white.svg`, `labkita-wordmark-dark.svg`, `labkita-wordmark-light.svg`, beserta berkas PNG 4x supersampled untuk Plymouth, layar login GDM `labkita-gdm-logo.png`, README, dan laporan akhir).
 - **Lisensi:** Creative Commons Attribution 4.0 International (CC-BY 4.0) / MIT License.
+
+## 8. Acuan Metode Desain Antarmuka Buku Kerja (unslop)
+- **Kredit:** Panduan kerja HTML 7 modul diadaptasi mengikuti prinsip desain [unslop](https://github.com/heydamir/unslop) oleh Damir Sokolovsky ([@heydamir](https://x.com/heydamir)), dilisensikan di bawah **CC BY 4.0**, menggunakan ikon garis gaya Lucide (`stroke-width="1.5"`).

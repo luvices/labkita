@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="title-lk-white">
+  <title id="title-lk-white">LabKita Linux</title>
+  <g id="symbol">
+    <path fill="#FFFFFF" d="M 32 32 H 72 V 184 H 184 L 224 224 H 32 Z"/>
+    <path fill="#FFFFFF" d="M 96 32 H 132 V 72 L 172 32 H 224 L 160 96 L 224 160 H 172 L 132 120 V 160 H 96 Z"/>
+  </g>
+</svg>

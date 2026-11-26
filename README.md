@@ -25,10 +25,10 @@ LabKita Linux dirancang agar komputer laboratorium dan mesin virtual dapat dipas
 | **Versi** | `0.6` (tag `v0.6-iso`) |
 | **Basis Sistem** | Ubuntu 24.04.5 LTS Desktop (`x86_64` / `amd64`) |
 | **Nama Berkas ISO** | `labkita-linux-0.6-amd64.iso` |
-| **Ukuran Berkas** | `6.083.645.440 bytes` (~5,67 GiB) |
+| **Ukuran Berkas** | `6.083.305.472 bytes` (~5,67 GiB) |
 | **Tautan Unduhan** | [Unduh ISO 0.6 di Google Drive](https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing) |
-| **SHA256** | `6a9a055b2833e3ef64e4633db81c061992a73ba4ae91f599c45b9943fdfcd115` |
-| **MD5** | `0dd73d162837435295dda31b0e901652` |
+| **SHA256** | `78a58f0f757b63b97b46e21a520a2c2ea7a205458119192c8f4ed10d2fe9bde1` |
+| **MD5** | `7db00f4c1bfbdf06df62c77bfd0e14c7` |
 | **Metode Build** | Script WSL [`tools/build_v06.py`](tools/build_v06.py) (tanpa bloat `minimal.standard`, dengan `nocloud` autoinstall) |
 
 <details>
@@ -37,13 +37,13 @@ LabKita Linux dirancang agar komputer laboratorium dan mesin virtual dapat dipas
 **Windows (PowerShell):**
 ```powershell
 Get-FileHash -Algorithm SHA256 .\labkita-linux-0.6-amd64.iso
-# 6A9A055B2833E3EF64E4633DB81C061992A73BA4AE91F599C45B9943FDFCD115
+# 78A58F0F757B63B97B46E21A520A2C2EA7A205458119192C8F4ED10D2FE9BDE1
 ```
 
 **Linux / macOS (Bash):**
 ```bash
 sha256sum labkita-linux-0.6-amd64.iso
-# 6a9a055b2833e3ef64e4633db81c061992a73ba4ae91f599c45b9943fdfcd115  labkita-linux-0.6-amd64.iso
+# 78a58f0f757b63b97b46e21a520a2c2ea7a205458119192c8f4ed10d2fe9bde1  labkita-linux-0.6-amd64.iso
 ```
 
 </details>
@@ -83,7 +83,7 @@ sha256sum labkita-linux-0.6-amd64.iso
 - **Dual Akun Siap Pakai Saat Pertama Boot:**
   - `labkita` (password default: `labkita`) sebagai administrator (`sudo`), tanpa popup GNOME Initial Setup atau notifikasi upgrade rilis.
   - `praktikan` (password default: `praktikan`) sebagai akun mahasiswa non-`sudo` di grup `labkita-praktikum` dengan direktori privat `/home/praktikan` mode `0700` dan salinan awal `~/Praktikum`. *(Ganti kata sandi default sebelum dipakai di lingkungan publik.)*
-- **Identitas Resmi LabKita &amp; Pemulihan Ikon WhiteSur:** Logo terminal geometris [`assets/brand/`](assets/brand/) terpasang pada splash boot **Plymouth** serta layar masuk **GDM** via `dconf`. Ekstraksi tar menjaga keutuhan symlink ikon WhiteSur serta menjalankan `gtk-update-icon-cache` sehingga seluruh ikon Dock, App Grid, dan Pengaturan tampil penuh.
+- **Identitas Resmi LabKita &amp; Pemulihan Ikon WhiteSur:** Logo monogram geometris **Keystone LK** [`assets/brand/`](assets/brand/) serta wallpaper **Cobalt Architectural Slate** terpasang pada splash boot **Plymouth**, layar masuk **GDM** via `dconf`, dan desktop. Ekstraksi tar menjaga keutuhan symlink ikon WhiteSur serta menjalankan `gtk-update-icon-cache` sehingga seluruh ikon Dock, App Grid, dan Pengaturan tampil penuh.
 - **Toolchain Luring &amp; Penghapusan Bloat Aman:** Dilengkapi GCC/G++ 13.3.0, GNU Make 4.3, GDB, Python 3.12.3, Geany 2.0, Nano, Git 2.43, `manpages-dev`, serta `python3-doc`. Paket hiburan/kantor yang tidak diperlukan dan `unattended-upgrades` dibersihkan lewat [`config/remove-packages.txt`](config/remove-packages.txt) dengan guard proteksi paket desktop inti.
 - **Buku Kerja Praktikum 7 Modul Ramah Sandbox:** `labkita-guide` menyalin [`payload/usr/share/labkita/guide/index.html`](payload/usr/share/labkita/guide/index.html) ke `~/Dokumen/Panduan-LabKita/` agar terbaca normal oleh Firefox Snap tanpa terblokir AppArmor. Materi mencakup 7 modul (Shell, Python I/O, C/GCC/GDB, Proses/PID, Threading/Lock, Akun/`tmpfs`, dan Proyek Integrasi), tombol salin perintah, dan pelacak progres `localStorage`.
 - **Workspace Temporer RAM (`tmpfs`):** Layanan `labkita-runtime.service` menyediakan `/run/labkita` berizin sticky bit `1777` untuk data sementara *(partisi `/run` bersifat `noexec`, sehingga kompilasi dan eksekusi biner C dilakukan dari `~/Praktikum`)*.

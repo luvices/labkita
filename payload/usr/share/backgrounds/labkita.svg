@@ -1,85 +1,63 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160" width="3840" height="2160">
   <defs>
-    <!-- Background Base Gradient -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0f172a" />
-      <stop offset="35%" stop-color="#1e1b4b" />
-      <stop offset="70%" stop-color="#0e3a6c" />
-      <stop offset="100%" stop-color="#064e3b" />
+    <linearGradient id="slateTone" x1="0" y1="0" x2="0" y2="2160" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0C1220"/>
+      <stop offset="100%" stop-color="#111A2E"/>
     </linearGradient>
-
-    <!-- Vibrant Mesh Glow 1 (Cyan / Ocean) -->
-    <radialGradient id="glowOcean" cx="25%" cy="30%" r="55%">
-      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.85" />
-      <stop offset="45%" stop-color="#0369a1" stop-opacity="0.45" />
-      <stop offset="100%" stop-color="#0284c7" stop-opacity="0" />
-    </radialGradient>
-
-    <!-- Vibrant Mesh Glow 2 (Indigo / Violet) -->
-    <radialGradient id="glowViolet" cx="80%" cy="40%" r="60%">
-      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.75" />
-      <stop offset="50%" stop-color="#6d28d9" stop-opacity="0.35" />
-      <stop offset="100%" stop-color="#4c1d95" stop-opacity="0" />
-    </radialGradient>
-
-    <!-- Vibrant Mesh Glow 3 (Emerald / Teal) -->
-    <radialGradient id="glowTeal" cx="60%" cy="85%" r="50%">
-      <stop offset="0%" stop-color="#0d9488" stop-opacity="0.7" />
-      <stop offset="60%" stop-color="#0f766e" stop-opacity="0.25" />
-      <stop offset="100%" stop-color="#134e4a" stop-opacity="0" />
-    </radialGradient>
-
-    <!-- Flowing Wave Gradient -->
-    <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4" />
-      <stop offset="50%" stop-color="#818cf8" stop-opacity="0.2" />
-      <stop offset="100%" stop-color="#c084fc" stop-opacity="0.05" />
-    </linearGradient>
-
-    <linearGradient id="wave2" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.35" />
-      <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.2" />
-      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.05" />
-    </linearGradient>
-
-    <!-- Subtle Center Frosted Disc -->
-    <radialGradient id="centerGlow" cx="50%" cy="50%" r="40%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.06" />
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
-    </radialGradient>
   </defs>
-
-  <!-- Base Rectangle -->
-  <rect width="3840" height="2160" fill="url(#bgGrad)" />
-
-  <!-- Ambient Light Orbs -->
-  <rect width="3840" height="2160" fill="url(#glowOcean)" />
-  <rect width="3840" height="2160" fill="url(#glowViolet)" />
-  <rect width="3840" height="2160" fill="url(#glowTeal)" />
-
-  <!-- Minimalist Organic Waves -->
-  <path d="M 0,1100 Q 960,650 1920,1050 T 3840,900 L 3840,2160 L 0,2160 Z" fill="url(#wave1)" />
-  <path d="M 0,1450 Q 1200,980 2400,1500 T 3840,1350 L 3840,2160 L 0,2160 Z" fill="url(#wave2)" />
-
-  <!-- Center Ambient -->
-  <circle cx="1920" cy="1080" r="1200" fill="url(#centerGlow)" />
-
-  <!-- Minimalist LabKita Emblem in Center -->
-  <g transform="translate(1920, 1020)" text-anchor="middle">
-    <!-- Geometric Flask & Compass Node -->
-    <circle cx="0" cy="-60" r="52" fill="none" stroke="#ffffff" stroke-width="3.5" opacity="0.85" />
-    <path d="M -24,-60 L 24,-60 M 0,-84 L 0,-36" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" opacity="0.9" />
-    
-    <!-- Outer accent orbital arc -->
-    <path d="M -80,-60 A 80 80 0 0 1 80 -60" fill="none" stroke="#818cf8" stroke-width="2" stroke-dasharray="6 8" opacity="0.6" />
-
-    <!-- Typography -->
-    <text x="0" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif" font-size="52" font-weight="600" fill="#ffffff" letter-spacing="4" opacity="0.95">LabKita Linux</text>
-    <text x="0" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif" font-size="22" font-weight="400" fill="#94a3b8" letter-spacing="8" opacity="0.85">SISTEM OPERASI PRAKTIKUM MANDIRI</text>
+  <rect width="3840" height="2160" fill="url(#slateTone)"/>
+  <g stroke="#94A3B8" stroke-opacity="0.045" stroke-width="2">
+    <line x1="128" y1="0" x2="128" y2="2160"/>
+    <line x1="256" y1="0" x2="256" y2="2160"/>
+    <line x1="384" y1="0" x2="384" y2="2160"/>
+    <line x1="512" y1="0" x2="512" y2="2160"/>
+    <line x1="640" y1="0" x2="640" y2="2160"/>
+    <line x1="768" y1="0" x2="768" y2="2160"/>
+    <line x1="896" y1="0" x2="896" y2="2160"/>
+    <line x1="1024" y1="0" x2="1024" y2="2160"/>
+    <line x1="1152" y1="0" x2="1152" y2="2160"/>
+    <line x1="1280" y1="0" x2="1280" y2="2160"/>
+    <line x1="1408" y1="0" x2="1408" y2="2160"/>
+    <line x1="1536" y1="0" x2="1536" y2="2160"/>
+    <line x1="1664" y1="0" x2="1664" y2="2160"/>
+    <line x1="1792" y1="0" x2="1792" y2="2160"/>
+    <line x1="1920" y1="0" x2="1920" y2="2160"/>
+    <line x1="2048" y1="0" x2="2048" y2="2160"/>
+    <line x1="2176" y1="0" x2="2176" y2="2160"/>
+    <line x1="2304" y1="0" x2="2304" y2="2160"/>
+    <line x1="2432" y1="0" x2="2432" y2="2160"/>
+    <line x1="2560" y1="0" x2="2560" y2="2160"/>
+    <line x1="2688" y1="0" x2="2688" y2="2160"/>
+    <line x1="2816" y1="0" x2="2816" y2="2160"/>
+    <line x1="2944" y1="0" x2="2944" y2="2160"/>
+    <line x1="3072" y1="0" x2="3072" y2="2160"/>
+    <line x1="3200" y1="0" x2="3200" y2="2160"/>
+    <line x1="3328" y1="0" x2="3328" y2="2160"/>
+    <line x1="3456" y1="0" x2="3456" y2="2160"/>
+    <line x1="3584" y1="0" x2="3584" y2="2160"/>
+    <line x1="3712" y1="0" x2="3712" y2="2160"/>
+    <line x1="0" y1="128" x2="3840" y2="128"/>
+    <line x1="0" y1="256" x2="3840" y2="256"/>
+    <line x1="0" y1="384" x2="3840" y2="384"/>
+    <line x1="0" y1="512" x2="3840" y2="512"/>
+    <line x1="0" y1="640" x2="3840" y2="640"/>
+    <line x1="0" y1="768" x2="3840" y2="768"/>
+    <line x1="0" y1="896" x2="3840" y2="896"/>
+    <line x1="0" y1="1024" x2="3840" y2="1024"/>
+    <line x1="0" y1="1152" x2="3840" y2="1152"/>
+    <line x1="0" y1="1280" x2="3840" y2="1280"/>
+    <line x1="0" y1="1408" x2="3840" y2="1408"/>
+    <line x1="0" y1="1536" x2="3840" y2="1536"/>
+    <line x1="0" y1="1664" x2="3840" y2="1664"/>
+    <line x1="0" y1="1792" x2="3840" y2="1792"/>
+    <line x1="0" y1="1920" x2="3840" y2="1920"/>
+    <line x1="0" y1="2048" x2="3840" y2="2048"/>
   </g>
-
-  <!-- Bottom subtle build badge -->
-  <g transform="translate(1920, 2080)" text-anchor="middle">
-    <text font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-size="16" fill="#64748b" letter-spacing="2" opacity="0.65">LABKITA LINUX 0.3 &bull; NOBLE NUMBAT BASED &bull; OFFLINE EDITION</text>
+  <line x1="2160" y1="0" x2="3840" y2="1680" stroke="#2563EB" stroke-opacity="0.28" stroke-width="4"/>
+  <g transform="translate(1800, 816) scale(0.9375)">
+    <path fill="#F1F5F9" d="M 32 32 H 72 V 184 H 184 L 224 224 H 32 Z"/>
+    <path fill="#38BDF8" d="M 96 32 H 132 V 72 L 172 32 H 224 L 160 96 L 224 160 H 172 L 132 120 V 160 H 96 Z"/>
   </g>
+  <text x="1920" y="1136" text-anchor="middle" font-family="Inter, Ubuntu, system-ui, sans-serif" font-size="68" font-weight="500" fill="#F1F5F9" letter-spacing="1">LabKita Linux</text>
+  <text x="1920" y="1196" text-anchor="middle" font-family="Inter, Ubuntu, system-ui, sans-serif" font-size="30" font-weight="400" fill="#94A3B8" letter-spacing="2">Sistem Operasi Praktikum Offline</text>
 </svg>

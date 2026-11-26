@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate crisp 4x-supersampled LabKita Linux brand PNG assets for Plymouth, GDM, and docs."""
+"""Generate crisp 4x-supersampled LabKita Linux Keystone LK brand PNG assets for Plymouth, GDM, and docs."""
 
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -35,41 +35,25 @@ def load_font(size: int, bold: bool = True):
     return ImageFont.load_default()
 
 
-def draw_mark(draw: ImageDraw.ImageDraw, x0: float, y0: float, size: float):
-    """Draw the geometric cobalt-slate LabKita mark matching assets/brand/labkita-mark.svg."""
-    s = size
-    radius = s * (24.0 / 112.0)
-    stroke = max(2, int(round(s * (4.0 / 112.0))))
-    draw.rounded_rectangle(
-        (x0, y0, x0 + s, y0 + s),
-        radius=radius,
-        fill=(30, 58, 95, 255),       # #1E3A5F
-        outline=(56, 189, 248, 255),  # #38BDF8
-        width=stroke,
-    )
-    # Prompt chevron ">"
-    p1 = (x0 + s * 0.25, y0 + s * 0.305)
-    p2 = (x0 + s * 0.50, y0 + s * 0.50)
-    p3 = (x0 + s * 0.25, y0 + s * 0.695)
-    cw = max(2, int(round(s * 0.105)))
-    draw.line([p1, p2, p3], fill=(56, 189, 248, 255), width=cw, joint="curve")
-    # Rounded endcaps on chevron tips
-    r_cap = cw / 2.0
-    for px, py in (p1, p2, p3):
-        draw.ellipse((px - r_cap, py - r_cap, px + r_cap, py + r_cap), fill=(56, 189, 248, 255))
+def draw_mark(draw: ImageDraw.ImageDraw, x0: float, y0: float, size: float, dark_bg: bool = True):
+    """Draw the architectural Keystone LK two-polygon mark matching assets/brand/labkita-mark*.svg."""
+    scale = size / 256.0
+    l_color = (241, 245, 249, 255) if dark_bg else (15, 23, 42, 255)    # #F1F5F9 / #0F172A
+    k_color = (56, 189, 248, 255) if dark_bg else (29, 78, 216, 255)    # #38BDF8 / #1D4ED8
 
-    # Underscore "_"
-    draw.rounded_rectangle(
-        (x0 + s * 0.515, y0 + s * 0.61, x0 + s * 0.77, y0 + s * 0.70),
-        radius=max(1, int(round(s * 0.045))),
-        fill=(248, 250, 252, 255),
-    )
-    # Top-right lab status node
-    draw.rounded_rectangle(
-        (x0 + s * 0.68, y0 + s * 0.23, x0 + s * 0.79, y0 + s * 0.34),
-        radius=max(1, int(round(s * 0.025))),
-        fill=(56, 189, 248, 255),
-    )
+    def pt(px, py):
+        return (x0 + px * scale, y0 + py * scale)
+
+    # L polygon
+    l_pts = [pt(32, 32), pt(72, 32), pt(72, 184), pt(184, 184), pt(224, 224), pt(32, 224)]
+    draw.polygon(l_pts, fill=l_color)
+
+    # K polygon
+    k_pts = [
+        pt(96, 32), pt(132, 32), pt(132, 72), pt(172, 32), pt(224, 32),
+        pt(160, 96), pt(224, 160), pt(172, 160), pt(132, 120), pt(132, 160), pt(96, 160),
+    ]
+    draw.polygon(k_pts, fill=k_color)
 
 
 def render_wordmark(width: int, height: int, dark_bg: bool, out_path: Path):
@@ -79,17 +63,17 @@ def render_wordmark(width: int, height: int, dark_bg: bool, out_path: Path):
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    mark_size = int(H * 0.62)
-    mark_x = int(W * 0.03)
+    mark_size = int(H * 0.72)
+    mark_x = int(W * 0.02)
     mark_y = (H - mark_size) // 2
-    draw_mark(draw, mark_x, mark_y, mark_size)
+    draw_mark(draw, mark_x, mark_y, mark_size, dark_bg=dark_bg)
 
-    text_x = mark_x + mark_size + int(W * 0.045)
+    text_x = mark_x + mark_size + int(W * 0.035)
     title_font = load_font(int(H * 0.28), bold=True)
     sub_font = load_font(int(H * 0.145), bold=False)
 
-    title_primary = (248, 250, 252, 255) if dark_bg else (15, 23, 42, 255)
-    title_accent = (56, 189, 248, 255) if dark_bg else (2, 132, 199, 255)
+    title_primary = (241, 245, 249, 255) if dark_bg else (15, 23, 42, 255)
+    title_accent = (56, 189, 248, 255) if dark_bg else (29, 78, 216, 255)
     sub_color = (148, 163, 184, 255) if dark_bg else (71, 85, 105, 255)
 
     y_title = int(H * 0.22)
@@ -112,14 +96,14 @@ def render_fallback(out_path: Path):
     img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    mark_size = int(S * 0.56)
-    draw_mark(draw, (S - mark_size) // 2, int(S * 0.08), mark_size)
+    mark_size = int(S * 0.62)
+    draw_mark(draw, (S - mark_size) // 2, int(S * 0.06), mark_size, dark_bg=True)
 
-    font = load_font(int(S * 0.16), bold=True)
+    font = load_font(int(S * 0.155), bold=True)
     text = "LabKita"
     bbox = draw.textbbox((0, 0), text, font=font)
     tw = bbox[2] - bbox[0]
-    draw.text(((S - tw) / 2 - bbox[0], int(S * 0.72)), text, font=font, fill=(248, 250, 252, 255))
+    draw.text(((S - tw) / 2 - bbox[0], int(S * 0.72)), text, font=font, fill=(241, 245, 249, 255))
 
     final = img.resize((size, size), Image.Resampling.LANCZOS)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -132,8 +116,7 @@ def render_mark_png(size: int, out_path: Path):
     S = size * scale
     img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
-    pad = int(S * 0.06)
-    draw_mark(draw, pad, pad, S - 2 * pad)
+    draw_mark(draw, 0, 0, S, dark_bg=False)
     final = img.resize((size, size), Image.Resampling.LANCZOS)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     final.save(out_path, "PNG")
@@ -141,12 +124,9 @@ def render_mark_png(size: int, out_path: Path):
 
 
 def main():
-    # Plymouth assets
     render_wordmark(248, 87, dark_bg=True, out_path=SPINNER_DIR / "watermark.png")
     render_fallback(SPINNER_DIR / "bgrt-fallback.png")
-    # GDM login screen logo (matches Ubuntu's 256x89 ubuntu-logo-text-dark.png footprint)
     render_wordmark(256, 89, dark_bg=True, out_path=PIXMAPS_DIR / "labkita-gdm-logo.png")
-    # Doc/README high-res exports if raster preview is needed
     render_mark_png(256, BRAND_DIR / "labkita-mark.png")
     render_wordmark(512, 178, dark_bg=True, out_path=BRAND_DIR / "labkita-wordmark-dark.png")
     render_wordmark(512, 178, dark_bg=False, out_path=BRAND_DIR / "labkita-wordmark-light.png")

@@ -1,10 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="LabKita Linux Logo Mark">
-  <rect x="8" y="8" width="112" height="112" rx="24" fill="#1E3A5F"/>
-  <rect x="8" y="8" width="112" height="112" rx="24" fill="none" stroke="#38BDF8" stroke-width="4"/>
-  <!-- Prompt chevron ">" -->
-  <path d="M36 42 L64 64 L36 86" fill="none" stroke="#38BDF8" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Command underscore "_" -->
-  <rect x="66" y="76" width="28" height="10" rx="5" fill="#F8FAFC"/>
-  <!-- Technical status node -->
-  <rect x="86" y="34" width="12" height="12" rx="3" fill="#38BDF8"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="title-lk">
+  <title id="title-lk">LabKita Linux</title>
+  <g id="symbol">
+    <path fill="#0F172A" d="M 32 32 H 72 V 184 H 184 L 224 224 H 32 Z"/>
+    <path fill="#1D4ED8" d="M 96 32 H 132 V 72 L 172 32 H 224 L 160 96 L 224 160 H 172 L 132 120 V 160 H 96 Z"/>
+  </g>
 </svg>
