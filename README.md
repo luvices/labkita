@@ -18,7 +18,7 @@
   <a href="docs/TEST-PLAN.md">Laporan Uji 0.6</a>
 </p>
 
-**LabKita Linux** adalah distribusi desktop berbasis **Ubuntu 24.04.5 LTS** yang dirancang khusus untuk komputer laboratorium dan mesin virtual praktikum pemrograman maupun Sistem Operasi secara **luring (*offline*)**.
+**LabKita Linux** adalah distro Linux berbasis **Ubuntu 24.04.5 LTS** untuk praktikum pemrograman dasar tanpa internet, dilengkapi Python, GCC, editor kode Geany, dan dokumentasi *offline*.
 
 Satu kali pemasangan otomatis menghasilkan sistem desktop berbahasa Indonesia lengkap dengan pemisahan akun admin/mahasiswa, *toolchain* C/C++ dan Python, identitas grafis resmi **Keystone LK**, serta buku kerja interaktif 7 modul.
 
