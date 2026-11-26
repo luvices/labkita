@@ -22,7 +22,7 @@ LabKita Linux dirancang agar komputer laboratorium dan mesin virtual dapat dipas
 
 | Atribut | Detail |
 | :--- | :--- |
-| **Versi** | `0.6` (cabang `feat/v06-autoinstall-brand`) |
+| **Versi** | `0.6` (tag `v0.6-iso`) |
 | **Basis Sistem** | Ubuntu 24.04.5 LTS Desktop (`x86_64` / `amd64`) |
 | **Nama Berkas ISO** | `labkita-linux-0.6-amd64.iso` |
 | **Ukuran Berkas** | `6.083.645.440 bytes` (~5,67 GiB) |
