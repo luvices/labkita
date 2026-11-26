@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="./assets/readme/hero.svg" width="100%" alt="LabKita Linux 0.6 - Distribusi Ubuntu 24.04.5 LTS siap pakai untuk praktikum pemrograman C/C++, Python, dan Sistem Operasi secara luring">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/hero-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/readme/hero-light.svg">
+    <img src="./assets/readme/hero-light.svg" width="100%" alt="LabKita Linux 0.6 - Distribusi Ubuntu 24.04.5 LTS siap pakai untuk praktikum pemrograman C/C++, Python, dan Sistem Operasi secara luring">
+  </picture>
 </p>
 
 <p align="center">
@@ -50,7 +54,11 @@ Seluruh tangkapan layar berikut diambil langsung dari pengujian instalasi penuh 
 ## Arsitektur Sistem
 
 <p align="center">
-  <img src="./assets/readme/architecture.svg" width="100%" alt="Diagram tiga tahap arsitektur LabKita Linux 0.6: Boot dan Autoinstall nocloud, isolasi dual akun labkita vs praktikan 0700, serta toolchain luring di Praktikum dan tmpfs RAM">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/architecture-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/readme/architecture-light.svg">
+    <img src="./assets/readme/architecture-light.svg" width="100%" alt="Diagram pemisahan hak akses dan zona penyimpanan LabKita Linux 0.6: autoinstall nocloud, admin labkita sudo, batas isolasi praktikan 0700, Praktikum, Panduan AppArmor OK, dan tmpfs RAM">
+  </picture>
 </p>
 
 | Komponen | Lokasi di Sistem Terpasang | Fungsi Utama |
@@ -137,7 +145,7 @@ sudo python3 tools/build_v06.py \
 labkita-linux/
 ├── assets/
 │   ├── brand/                    # SVG & PNG logo Keystone LK dan wordmark resmi
-│   └── readme/                   # Aset visual hero dan arsitektur README
+│   └── readme/                   # Aset visual hero & arsitektur README (light/dark SVG)
 ├── config/
 │   ├── packages.txt              # Daftar paket toolchain & lokalisasi luring
 │   └── remove-packages.txt       # Daftar pembersihan bloat aman berproteksi

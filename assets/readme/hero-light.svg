@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="360" viewBox="0 0 1200 360"
+     role="img" aria-labelledby="hero-title-light hero-desc-light">
+  <title id="hero-title-light">LabKita Linux 0.6 - Distribusi Ubuntu 24.04.5 LTS untuk Praktikum Luring</title>
+  <desc id="hero-desc-light">Lembar spesifikasi rilis LabKita Linux 0.6 menampilkan logo Keystone LK, ringkasan Ubuntu 24.04.5 LTS untuk praktikum C/C++, Python, dan Sistem Operasi luring, serta tabel spesifikasi instalasi otomatis dan hasil pemeriksaan labkita-check 25 dari 25 lulus.</desc>
+
+  <rect x="0.5" y="0.5" width="1199" height="359" rx="16" fill="#FAFAFA" stroke="#E4E4E7" stroke-width="1"/>
+  <line x1="664" y1="40" x2="664" y2="320" stroke="#E4E4E7" stroke-width="1"/>
+
+  <g id="identity-light">
+    <g transform="translate(48, 44) scale(0.28)">
+      <path fill="#171717" d="M 32 32 H 72 V 184 H 184 L 224 224 H 32 Z"/>
+      <path fill="#1D4ED8" d="M 96 32 H 132 V 72 L 172 32 H 224 L 160 96 L 224 160 H 172 L 132 120 V 160 H 96 Z"/>
+    </g>
+
+    <text x="136" y="90"
+          font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace"
+          font-size="18" font-weight="400" fill="#737373">Rilis 0.6 · amd64</text>
+
+    <text x="48" y="180"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif"
+          font-size="52" font-weight="500" letter-spacing="-0.8" fill="#171717">LabKita Linux</text>
+
+    <text x="48" y="228"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif"
+          font-size="21" font-weight="400" fill="#525252">Ubuntu 24.04.5 LTS siap pakai untuk praktikum</text>
+    <text x="48" y="258"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif"
+          font-size="21" font-weight="400" fill="#525252">pemrograman C/C++, Python, dan Sistem Operasi luring</text>
+
+    <text x="48" y="314"
+          font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace"
+          font-size="18" font-weight="400" fill="#737373">Autoinstall nocloud · Dual akun · 7 modul luring</text>
+  </g>
+
+  <g id="spec-ledger-light">
+    <text x="700" y="76" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="400" fill="#737373">Basis</text>
+    <text x="1152" y="76" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="18.5" font-weight="500" fill="#171717">Ubuntu 24.04.5 LTS</text>
+    <line x1="700" y1="102" x2="1152" y2="102" stroke="#E4E4E7" stroke-width="1"/>
+
+    <text x="700" y="130" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="400" fill="#737373">Pemasangan</text>
+    <text x="1152" y="130" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="18.5" font-weight="500" fill="#171717">Autoinstall (~4 menit)</text>
+    <line x1="700" y1="156" x2="1152" y2="156" stroke="#E4E4E7" stroke-width="1"/>
+
+    <text x="700" y="184" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="400" fill="#737373">Akun bawaan</text>
+    <text x="1152" y="184" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="18.5" font-weight="500" fill="#171717">labkita / praktikan (0700)</text>
+    <line x1="700" y1="210" x2="1152" y2="210" stroke="#E4E4E7" stroke-width="1"/>
+
+    <text x="700" y="238" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="400" fill="#737373">Ukuran ISO</text>
+    <text x="1152" y="238" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="18.5" font-weight="500" fill="#171717">5,67 GiB</text>
+    <line x1="700" y1="264" x2="1152" y2="264" stroke="#E4E4E7" stroke-width="1"/>
+
+    <text x="700" y="292" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="400" fill="#737373">labkita-check</text>
+    <text x="1152" y="292" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="18.5" font-weight="600" fill="#15803D">25 / 25 lulus</text>
+  </g>
+</svg>
