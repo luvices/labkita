@@ -1,135 +1,133 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/labkita-wordmark-dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="assets/brand/labkita-wordmark-light.svg">
-    <img alt="LabKita Linux Logo" src="assets/brand/labkita-wordmark-light.svg" width="320">
-  </picture>
+  <img src="./assets/readme/hero.svg" width="100%" alt="LabKita Linux 0.6 - Distribusi Ubuntu 24.04.5 LTS siap pakai untuk praktikum pemrograman C/C++, Python, dan Sistem Operasi secara luring">
 </p>
 
-# LabKita Linux
+<p align="center">
+  <a href="#unduhan--verifikasi-iso-06">Unduh ISO 0.6</a>
+  &nbsp;·&nbsp;
+  <a href="#bukti-verifikasi-06">Tangkapan Layar</a>
+  &nbsp;·&nbsp;
+  <a href="#arsitektur-sistem">Arsitektur</a>
+  &nbsp;·&nbsp;
+  <a href="#mulai-cepat-di-vmware--virtualbox">Panduan VMware</a>
+  &nbsp;·&nbsp;
+  <a href="docs/TEST-PLAN.md">Laporan Uji 0.6</a>
+</p>
 
-**Distribusi Linux berbasis Ubuntu 24.04.5 LTS yang siap pakai untuk praktikum pemrograman dasar dan sistem operasi secara luring (*offline*).**
+**LabKita Linux** adalah distribusi desktop berbasis **Ubuntu 24.04.5 LTS** yang dirancang khusus untuk komputer laboratorium dan mesin virtual praktikum pemrograman maupun Sistem Operasi secara **luring (*offline*)**.
 
-LabKita Linux dirancang agar komputer laboratorium dan mesin virtual dapat dipasang tanpa langkah wizard panjang dan langsung dipakai dengan dua akun siap guna (`labkita` untuk admin/asisten dan `praktikan` terisolasi non-`sudo` untuk mahasiswa), lengkap dengan *toolchain* C/C++ & Python, logo merek resmi di splash boot maupun layar login GDM, serta buku kerja praktikum 7 modul ramah sandbox Firefox Snap.
-
-![Desktop LabKita Linux 0.6](docs/evidence/0.6-05-desktop-labkita.png)
+Satu kali pemasangan otomatis menghasilkan sistem desktop berbahasa Indonesia lengkap dengan pemisahan akun admin/mahasiswa, *toolchain* C/C++ dan Python, identitas grafis resmi **Keystone LK**, serta buku kerja interaktif 7 modul.
 
 ---
 
-## Unduhan & Verifikasi (Rilis 0.6 & Rilis Dasar 0.5)
+## Bukti Verifikasi 0.6
 
-### Rilis 0.6 (Autoinstall, Dual Akun Bawaan, & Branding Lengkap)
+Seluruh tangkapan layar berikut diambil langsung dari pengujian instalasi penuh `labkita-linux-0.6-amd64.iso` pada VMware Workstation:
 
-| Atribut | Detail |
+| Desktop LabKita Linux 0.6 | Layar Login GDM (Keystone LK + Dual Akun) |
+| :---: | :---: |
+| ![Desktop LabKita Linux 0.6 dengan wallpaper Cobalt Architectural Slate](docs/evidence/0.6-05-desktop-labkita.png) | ![Layar Login GDM LabKita Linux 0.6 dengan akun LabKita Admin dan praktikan](docs/evidence/0.6-04-gdm-dual-accounts.png) |
+
+| Buku Kerja 7 Modul (Firefox Snap AppArmor OK) | Diagnostik Mandiri (`labkita-check` 25/25 Lulus) |
+| :---: | :---: |
+| ![Buku kerja HTML 7 modul terbuka di Firefox Snap tanpa blokir AppArmor](docs/evidence/0.6-08-guide-workbook-firefox.png) | ![Keluaran labkita-check menampilkan semua 25 pemeriksaan lulus](docs/evidence/0.6-11-labkita-check-pass.png) |
+
+| App Grid & Ikon WhiteSur Lengkap | Akun `praktikan` (`0700`) & Kompilasi Luring |
+| :---: | :---: |
+| ![App Grid menampilkan seluruh ikon WhiteSur tanpa ikon kosong](docs/evidence/0.6-06-app-grid-icons.png) | ![Akun praktikan non-sudo mengompilasi program C dan Python secara luring](docs/evidence/0.6-10-praktikan-offline-compile.png) |
+
+---
+
+## Mengapa LabKita Linux
+
+- **Autoinstall Nol-Langkah (`nocloud`):** Memasang sistem ke disk secara otomatis dalam ~4 menit tanpa wizard panjang maupun kendala render dialog akun pada VM. Entri manual dan *Safe Graphics* tetap tersedia di menu GRUB.
+- **Pemisahan Akun Admin & Mahasiswa:** Akun **`labkita`** (`sudo`) disiapkan untuk asisten/pengelola lab, sedangkan **`praktikan`** berada pada grup `labkita-praktikum` tanpa hak `sudo` dengan direktori privat `/home/praktikan` mode `0700`. *(Ganti kata sandi default sebelum dipakai di lingkungan terbuka.)*
+- **Toolchain Luring & Pembersihan Bloat Aman:** Tersedia `gcc`/`g++` 13.3.0, GNU Make 4.3, GDB, Python 3.12.3, Geany 2.0, Nano, Git 2.43, `manpages-dev`, dan `python3-doc`. Paket hiburan/kantor yang tidak diperlukan dibersihkan via [`config/remove-packages.txt`](config/remove-packages.txt) dengan guard proteksi paket desktop inti.
+- **Buku Kerja 7 Modul Ramah Sandbox & `tmpfs`:** Perintah `labkita-guide` menyalin [`payload/usr/share/labkita/guide/index.html`](payload/usr/share/labkita/guide/index.html) ke `~/Dokumen/Panduan-LabKita/` agar terbaca langsung oleh Firefox Snap tanpa blokir AppArmor. Layanan `labkita-runtime.service` menyediakan `/run/labkita` (`tmpfs` mode `1777`, `noexec`).
+
+---
+
+## Arsitektur Sistem
+
+<p align="center">
+  <img src="./assets/readme/architecture.svg" width="100%" alt="Diagram tiga tahap arsitektur LabKita Linux 0.6: Boot dan Autoinstall nocloud, isolasi dual akun labkita vs praktikan 0700, serta toolchain luring di Praktikum dan tmpfs RAM">
+</p>
+
+| Komponen | Lokasi di Sistem Terpasang | Fungsi Utama |
+| :--- | :--- | :--- |
+| **Autoinstall & Branding** | `nocloud/user-data`, `/usr/share/plymouth/`, `/usr/share/pixmaps/` | Pemasangan otomatis, logo **Keystone LK** di Plymouth/GDM, wallpaper **Cobalt Architectural Slate** |
+| **Akun & Isolasi** | `labkita` (`sudo`), `praktikan` (`labkita-praktikum`, `0700`) | Memisahkan wewenang administrasi asisten dari ruang kerja mahasiswa (`labkita-postinstall`) |
+| **Toolchain & Contoh** | `~/Praktikum/`, `gcc`, `gdb`, `python3`, `geany` | Latihan pemrograman C, manajemen proses (`fork`), multithreading, dan memori luring |
+| **Diagnostik & Panduan** | [`labkita-check`](payload/usr/local/bin/labkita-check), [`labkita-guide`](payload/usr/local/bin/labkita-guide) | Verifikasi kesiapan lab 25 poin serta buku kerja interaktif 7 modul + checklist `localStorage` |
+
+---
+
+## Unduhan & Verifikasi ISO 0.6
+
+| Atribut | Detail Rilis `0.6` (`v0.6-iso`) |
 | :--- | :--- |
-| **Versi** | `0.6` (tag `v0.6-iso`) |
 | **Basis Sistem** | Ubuntu 24.04.5 LTS Desktop (`x86_64` / `amd64`) |
 | **Nama Berkas ISO** | `labkita-linux-0.6-amd64.iso` |
 | **Ukuran Berkas** | `6.083.305.472 bytes` (~5,67 GiB) |
 | **Tautan Unduhan** | [Unduh ISO 0.6 di Google Drive](https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing) |
-| **SHA256** | `78a58f0f757b63b97b46e21a520a2c2ea7a205458119192c8f4ed10d2fe9bde1` |
-| **MD5** | `7db00f4c1bfbdf06df62c77bfd0e14c7` |
-| **Metode Build** | Script WSL [`tools/build_v06.py`](tools/build_v06.py) (tanpa bloat `minimal.standard`, dengan `nocloud` autoinstall) |
+| **SHA256** | `78a58f0f757b63b97b46e21a520a2c2ea7a205458119192c8f4ed10d2fe9bde1` ([`.sha256`](dist/labkita-linux-0.6-amd64.iso.sha256)) |
+| **MD5** | `7db00f4c1bfbdf06df62c77bfd0e14c7` ([`.md5`](dist/labkita-linux-0.6-amd64.iso.md5)) |
 
 <details>
-<summary>Cara verifikasi integritas berkas ISO 0.6 (Windows &amp; Linux)</summary>
+<summary>Verifikasi hash integritas ISO di Windows (PowerShell) dan Linux/macOS (Bash)</summary>
 
 **Windows (PowerShell):**
 ```powershell
 Get-FileHash -Algorithm SHA256 .\labkita-linux-0.6-amd64.iso
-# 78A58F0F757B63B97B46E21A520A2C2EA7A205458119192C8F4ED10D2FE9BDE1
+# Harus cocok: 78A58F0F757B63B97B46E21A520A2C2EA7A205458119192C8F4ED10D2FE9BDE1
 ```
 
 **Linux / macOS (Bash):**
 ```bash
-sha256sum labkita-linux-0.6-amd64.iso
-# 78a58f0f757b63b97b46e21a520a2c2ea7a205458119192c8f4ed10d2fe9bde1  labkita-linux-0.6-amd64.iso
+sha256sum -c dist/labkita-linux-0.6-amd64.iso.sha256
 ```
 
 </details>
 
-### Arsip Rilis Dasar 0.5 (`v0.5-iso`)
-
-| Atribut | Detail |
-| :--- | :--- |
-| **Versi Dasar** | `0.5` (tag `v0.5-iso` di `main`) |
-| **Nama Berkas ISO** | `labkita-linux-0.5-amd64.iso` (`6.643.179.520 bytes` / ~6,19 GiB) |
-| **Tautan Unduhan** | [Unduh ISO 0.5 di Google Drive](https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing) |
-| **SHA256 / MD5** | `d0dae277d140decd3e1ecaff9b908c551109a10efd069b1472acd34b046f5f1c` / `b73178250b61cdfd900e3a3f8bdca660` |
-
-*(Rilis `0.1`-`0.4` hanya disimpan dalam arsip checksum pengujian pada folder `dist/`.)*
+*(Arsip build rilis sebelumnya tersedia pada riwayat tag Git `v0.4-iso` dan `v0.5-iso`.)*
 
 ---
 
-## Tangkapan Layar Verifikasi 0.6
+## Mulai Cepat di VMware & VirtualBox
 
-| GRUB Autoinstall Nol-Langkah | Layar Login GDM (Logo LabKita + Dual Akun) |
-| :---: | :---: |
-| ![GRUB Autoinstall 0.6](docs/evidence/0.6-01-grub-autoinstall.png) | ![Layar Login GDM 0.6](docs/evidence/0.6-04-gdm-dual-accounts.png) |
+**Spesifikasi VM Disarankan:** Linux Ubuntu 64-bit, minimal 2 vCPU, RAM 4 GB (`4096 MB`), ruang disk kosong 25 GB (disarankan 40 GB), resolusi layar `1280x800` atau lebih tinggi.
 
-| Buku Kerja Praktikum 7 Modul (Firefox Snap) | Pemeriksaan Sistem (`labkita-check`) |
-| :---: | :---: |
-| ![Panduan Kerja v0.6 di Firefox Snap](docs/evidence/0.6-08-guide-workbook-firefox.png) | ![Hasil labkita-check 0.6](docs/evidence/0.6-11-labkita-check-pass.png) |
-
-| App Grid &amp; Ikon WhiteSur Lengkap | Akun `praktikan` Non-Sudo &amp; Kompilasi Luring |
-| :---: | :---: |
-| ![App Grid WhiteSur 0.6](docs/evidence/0.6-06-app-grid-icons.png) | ![Praktikan Compile C & Python Threading](docs/evidence/0.6-10-praktikan-offline-compile.png) |
-
----
-
-## Fitur Utama (0.6)
-
-- **Autoinstall Nol-Langkah (`nocloud`):** Memasang sistem ke disk secara otomatis tanpa melalui dialog panjang installer ataupun bug render kotak abu-abu OpenGL VMware pada pembuatan akun. Entri manual dan *Safe Graphics* tetap tersedia di menu GRUB sebagai opsi cadangan.
-- **Dual Akun Siap Pakai Saat Pertama Boot:**
-  - `labkita` (password default: `labkita`) sebagai administrator (`sudo`), tanpa popup GNOME Initial Setup atau notifikasi upgrade rilis.
-  - `praktikan` (password default: `praktikan`) sebagai akun mahasiswa non-`sudo` di grup `labkita-praktikum` dengan direktori privat `/home/praktikan` mode `0700` dan salinan awal `~/Praktikum`. *(Ganti kata sandi default sebelum dipakai di lingkungan publik.)*
-- **Identitas Resmi LabKita &amp; Pemulihan Ikon WhiteSur:** Logo monogram geometris **Keystone LK** [`assets/brand/`](assets/brand/) serta wallpaper **Cobalt Architectural Slate** terpasang pada splash boot **Plymouth**, layar masuk **GDM** via `dconf`, dan desktop. Ekstraksi tar menjaga keutuhan symlink ikon WhiteSur serta menjalankan `gtk-update-icon-cache` sehingga seluruh ikon Dock, App Grid, dan Pengaturan tampil penuh.
-- **Toolchain Luring &amp; Penghapusan Bloat Aman:** Dilengkapi GCC/G++ 13.3.0, GNU Make 4.3, GDB, Python 3.12.3, Geany 2.0, Nano, Git 2.43, `manpages-dev`, serta `python3-doc`. Paket hiburan/kantor yang tidak diperlukan dan `unattended-upgrades` dibersihkan lewat [`config/remove-packages.txt`](config/remove-packages.txt) dengan guard proteksi paket desktop inti.
-- **Buku Kerja Praktikum 7 Modul Ramah Sandbox:** `labkita-guide` menyalin [`payload/usr/share/labkita/guide/index.html`](payload/usr/share/labkita/guide/index.html) ke `~/Dokumen/Panduan-LabKita/` agar terbaca normal oleh Firefox Snap tanpa terblokir AppArmor. Materi mencakup 7 modul (Shell, Python I/O, C/GCC/GDB, Proses/PID, Threading/Lock, Akun/`tmpfs`, dan Proyek Integrasi), tombol salin perintah, dan pelacak progres `localStorage`.
-- **Workspace Temporer RAM (`tmpfs`):** Layanan `labkita-runtime.service` menyediakan `/run/labkita` berizin sticky bit `1777` untuk data sementara *(partisi `/run` bersifat `noexec`, sehingga kompilasi dan eksekusi biner C dilakukan dari `~/Praktikum`)*.
-
----
-
-## Panduan Penggunaan
-
-### Spesifikasi Mesin Virtual Disarankan
-- **Sistem Tamu:** Linux / Ubuntu (64-bit)
-- **CPU &amp; RAM:** Minimal 2 vCPU, 4 GB RAM (`4096 MB`)
-- **Penyimpanan &amp; Layar:** Minimal 25 GB disk kosong (direkomendasikan 40 GB), resolusi 1280x800 atau lebih tinggi
-
-### Instalasi Otomatis &amp; Mulai Praktikum
-1. Pasang `labkita-linux-0.6-amd64.iso` pada VMware Workstation atau VirtualBox, lalu biarkan menu GRUB default **"Pasang Otomatis LabKita Linux 0.6 (Admin + Praktikan)"** berjalan (sekitar 4 menit).
-2. Setelah sistem selesai memasang dan masuk ke layar login GDM, pilih **praktikan** (`praktikan`) untuk mahasiswa atau **LabKita Admin** (`labkita` / `labkita`) untuk asisten.
-3. Buka panduan di browser dengan mengetik `labkita-guide` di Terminal (`Ctrl + Alt + T`), lalu uji contoh praktikum:
+1. Pasang `labkita-linux-0.6-amd64.iso` pada VM dan biarkan entri GRUB default **"Pasang Otomatis LabKita Linux 0.6 (Admin + Praktikan)"** menyelesaikan instalasi (~4 menit).
+2. Setelah masuk layar login **GDM**, pilih **praktikan** (sandi default: `praktikan`) untuk mahasiswa atau **LabKita Admin** (`labkita` / `labkita`) untuk pengelola lab.
+3. Buka Terminal (`Ctrl + Alt + T`), jalankan panduan dan verifikasi cepat:
    ```bash
+   labkita-guide
    cd "$HOME/Praktikum"
    python3 hello.py
-   python3 thread_demo.py
    gcc -Wall -Wextra hello.c -o hello && ./hello
    labkita-check
    ```
 
-> **Catatan Penting VMware Workstation:**
-> - Saat membuat VM baru, pilih **"I will install the operating system later."** lalu pasangkan file ISO lewat `Customize Hardware -> CD/DVD (SATA)` agar fitur *Easy Install* bawaan VMware tidak menimpa konfigurasi `autoinstall` `nocloud` LabKita.
-> - Setelah instalasi selesai dan reboot ke disk, matikan centang **Connect at power on** pada CD/DVD dan pastikan **Display -> Accelerate 3D graphics** aktif supaya sesi desktop GUI tidak blank hitam setelah login. Apabila sesi Wayland masih menampilkan layar hitam, klik nama akun di GDM lalu pilih **Ubuntu on Xorg** dari ikon gerigi di pojok kanan bawah sebelum menekan Enter.
+> [!IMPORTANT]
+> **Pengaturan Penting VMware Workstation:**
+> - Saat membuat VM baru, pilih **"I will install the operating system later."** lalu arahkan ISO melalui *Customize Hardware -> CD/DVD (SATA)* agar fitur *Easy Install* VMware tidak menimpa seed `autoinstall` `nocloud` LabKita.
+> - Setelah instalasi selesai dan reboot ke disk, matikan **Connect at power on** pada CD/DVD serta aktifkan **Display -> Accelerate 3D graphics**. Jika layar hitam masih muncul setelah login di host tertentu, klik ikon gerigi kanan bawah pada layar login GDM lalu pilih **Ubuntu on Xorg**.
 
 ---
 
-## Ringkasan Pengujian &amp; Tolok Ukur Empiris
+## Reproduksi Build & Validasi Lokal
 
-Pengujian verifikasi `0.6` berjalan nyata di VMware Workstation (`40 GB` disk kosong, `6144 MB` RAM / `5921 MiB` terbaca Linux, 2 vCPU, NIC NAT terhubung): autoinstall tuntas dalam ~4 menit, layar GDM menampilkan logo LabKita serta kedua akun, desktop bersih tanpa dialog sambutan, seluruh ikon tampil utuh, isolasi akun `praktikan` (`0700`, non-`sudo`) terkonfirmasi, serta `labkita-check` lulus penuh. Pada observasi pasca-autoinstall di VM 6 GB RAM tersebut (kernel `7.0.0-44-generic`) tercatat penggunaan `free -m` `1.076 MiB` (avail `4.844 MiB`), `systemd-analyze` `22,207s`, dan penggunaan rootfs `11 GB / 40 GB`.
+Seluruh pembangunan ISO `0.6` dijalankan di WSL/Linux menggunakan [`tools/build_v06.py`](tools/build_v06.py) di atas berkas ISO resmi Ubuntu 24.04.5 LTS Desktop:
 
-Untuk riwayat benchmark komparatif `0.1`-`0.5` yang terstandarisasi pada **VM uji identik 4 GB RAM (`3911 MiB`)** dengan **5 kali cold boot per versi**:
+```bash
+# Validasi sintaks skrip, contoh program, dan unit systemd tanpa root
+bash tools/verify-linux.sh
 
-| Versi (Riwayat Uji) | Metode Build | Kernel Terinstal | Rata-rata RAM (`free -m`) | Rata-rata Boot (`systemd-analyze`) | Catatan Status |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **0.5** *(basis rilis)* | WSL (`build_v05.py`) | `7.0.0-43-generic` | `1.042,8 MiB` *(1.031-1.054)* | `9,036s` *(8,349-9,515s)* | Lulus penuh (GUI manual resmi) |
-| **0.4** *(arsip)* | Cubic | `7.0.0-43-generic` | `1.062,6 MiB` *(1.043-1.075)* | `9,185s` *(8,520-10,713s)* | Autologin pulih; GUI gagal |
-| **0.3** *(arsip)* | Cubic | `7.0.0-43-generic` | `1.058,2 MiB` *(1.046-1.067)* | `8,808s` *(8,460-9,014s)* | Lulus via TUI |
-| **0.2** *(arsip)* | Cubic | `7.0.0-31-generic` | `1.068,2 MiB` *(1.058-1.080)* | `9,317s` *(9,072-9,458s)* | Lulus via TUI |
-| **0.1** *(arsip)* | Cubic | `7.0.0-31-generic` | `1.038,2 MiB` *(1.016-1.056)* | `8,460s` *(8,359-8,676s)* | Lulus via TUI |
-
-> **Catatan Analisis:** Pengukuran `0.6` dilakukan pada VM 6 GB RAM pasca-autoinstall (1x observasi), sedangkan seri `0.1`-`0.5` diukur 5x cold boot pada VM 4 GB RAM, sehingga tidak diklaim lebih cepat/hemat antarversi. Detail log eksperimen awal terdokumentasi di [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md) dan [`docs/CONTROL-EXPERIMENT.md`](docs/CONTROL-EXPERIMENT.md).
+# Bangun ulang ISO LabKita Linux 0.6 di WSL/Linux
+sudo python3 tools/build_v06.py \
+  --source-iso /path/ke/ubuntu-24.04.5.1-desktop-amd64.iso \
+  --output-iso build/labkita-linux-0.6-amd64.iso
+```
 
 ---
 
@@ -138,32 +136,33 @@ Untuk riwayat benchmark komparatif `0.1`-`0.5` yang terstandarisasi pada **VM uj
 ```text
 labkita-linux/
 ├── assets/
-│   └── brand/                    # SVG & PNG marka dan wordmark resmi LabKita Linux
+│   ├── brand/                    # SVG & PNG logo Keystone LK dan wordmark resmi
+│   └── readme/                   # Aset visual hero dan arsitektur README
 ├── config/
 │   ├── packages.txt              # Daftar paket toolchain & lokalisasi luring
-│   └── remove-packages.txt       # Daftar pembersihan bloat aman (dengan guard proteksi)
+│   └── remove-packages.txt       # Daftar pembersihan bloat aman berproteksi
 ├── dist/
-│   ├── labkita-linux-0.6-amd64.iso.*   # Checksum SHA256 & MD5 rilis 0.6
-│   └── labkita-linux-0.1..0.5-amd64.iso.*   # Arsip checksum rilis terdahulu
+│   └── labkita-linux-0.6-amd64.iso.{md5,sha256}
 ├── docs/
-│   └── evidence/                 # Tangkapan layar nyata pengujian VMware (0.3-0.6)
+│   ├── CONTRIBUTING.md           # Alur kerja Git & konvensi tim
+│   ├── CREDITS.md                # Lisensi & atribusi komponen sumber terbuka
+│   ├── TEST-PLAN.md              # Hasil verifikasi nyata VMware rilis 0.6
+│   └── evidence/                 # Tangkapan layar verifikasi VMware 0.6
 ├── payload/
-│   ├── etc/                      # dconf (desktop & GDM), skel, locale, & systemd
-│   └── usr/                      # Skrip labkita-check, guide, postinstall, ikon WhiteSur, & buku kerja HTML
-├── scripts/
-│   └── customize.sh              # Skrip kustomisasi chroot
+│   ├── etc/                      # dconf (desktop & GDM), skel, & labkita-runtime.service
+│   └── usr/                      # Skrip labkita-*, tema WhiteSur, ikon, & buku kerja HTML
 └── tools/
-    ├── build_v06.py              # Builder ISO 0.6 di WSL (Autoinstall nocloud + branding)
-    ├── build_v05.py              # Builder ISO 0.5 di WSL (tag v0.5-iso)
-    ├── generate_brand_assets.py  # Generator aset logo Plymouth, GDM, dan README
-    └── verify-linux.sh           # Validasi skrip & payload lokal
+    ├── build_v06.py              # Pipeline pembangun ISO 0.6 (autoinstall nocloud)
+    ├── generate_brand_assets.py  # Generator logo Plymouth & GDM dari SVG resmi
+    ├── generate_wallpaper.py     # Generator wallpaper Cobalt Architectural Slate
+    └── verify-linux.sh           # Validasi sintaks & unit systemd lokal
 ```
 
 ---
 
 ## Tim Pengembang & Lisensi
 
-Dikembangkan oleh **Dafa Zahran**, **Rafly Fauzi Pratama**, **Muhammad Ilham Rizky**, dan **Vadien Athallah Lukman**. Panduan kontribusi kode tersedia di [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
+Dikembangkan oleh **Dafa Zahran**, **Rafly Fauzi Pratama**, **Muhammad Ilham Rizky**, dan **Vadien Athallah Lukman**. Panduan kontribusi kode tersedia di [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) dan catatan verifikasi lengkap di [`docs/TEST-PLAN.md`](docs/TEST-PLAN.md).
 
 - Skrip dan konfigurasi LabKita dilisensikan di bawah [MIT License](LICENSE).
-- Tema WhiteSur, font Inter, serta komponen sistem Ubuntu mengikuti lisensi proyek hulu masing-masing; rincian lengkap tercantum pada [`docs/CREDITS.md`](docs/CREDITS.md).
+- Tema WhiteSur, font Inter, serta paket sistem Ubuntu mengikuti lisensi proyek hulu masing-masing; rincian tercantum di [`docs/CREDITS.md`](docs/CREDITS.md).

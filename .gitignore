@@ -13,3 +13,7 @@ build/
 *.mp4
 *.mkv
 *.mov
+Thumbs.db
+.DS_Store
+*.bak
+scratch/

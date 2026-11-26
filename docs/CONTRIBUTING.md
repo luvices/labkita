@@ -97,7 +97,7 @@ Sebelum mendorong (*push*) perubahan ke GitHub:
 
 | Nama | NPM | Peran Utama | Fokus Kontribusi |
 | :--- | :---: | :--- | :--- |
-| **Dafa Zahran** | 257006111188 | Ketua & Integrasi Build | Manajemen rilis ISO Cubic, integrasi repositori, merge PR. |
+| **Dafa Zahran** | 257006111188 | Ketua & Integrasi Build | Manajemen rilis ISO LabKita Linux, integrasi repositori, merge PR. |
 | **Rafly Fauzi Pratama** | 257006111152 | Core Dev & Toolchain | Skrip kustomisasi sistem, materi contoh kode C/Python, video demo. |
 | **Muhammad Ilham Rizky** | 257006111154 | System, Security & QA | Benchmark memori/booting, evaluasi izin sudo/0700, uji instalasi disk. |
 | **Vadien Athallah Lukman** | 257006111160 | UI/UX, Docs & Media | Desain antarmuka/wallpaper, penyusunan laporan akhir PDF, slide PPTX. |
