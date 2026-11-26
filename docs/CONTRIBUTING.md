@@ -97,7 +97,7 @@ Sebelum mendorong (*push*) perubahan ke GitHub:
 
 | Nama | NPM | Peran Utama | Fokus Kontribusi |
 | :--- | :---: | :--- | :--- |
-| **Dafa Zahran** | 257006111188 | Ketua & Integrasi Build | Manajemen rilis ISO LabKita Linux, integrasi repositori, merge PR. |
-| **Rafly Fauzi Pratama** | 257006111152 | Core Dev & Toolchain | Skrip kustomisasi sistem, materi contoh kode C/Python, video demo. |
-| **Muhammad Ilham Rizky** | 257006111154 | System, Security & QA | Benchmark memori/booting, evaluasi izin sudo/0700, uji instalasi disk. |
-| **Vadien Athallah Lukman** | 257006111160 | UI/UX, Docs & Media | Desain antarmuka/wallpaper, penyusunan laporan akhir PDF, slide PPTX. |
+| **Dafa Zahran** | 257006111188 | Ketua, Arsitektur Sistem & Build ISO | Pipeline build ISO 0.6 (`autoinstall nocloud`), pengelolaan repositori GitHub, manajemen rilis & integrasi sistem. |
+| **Vadien Athallah Lukman** | 257006111160 | UI/UX, Branding & Dokumentasi Teknis | Identitas merek Keystone LK, wallpaper, pemulihan ikon WhiteSur, buku kerja 7 modul, visual README & penataan dokumentasi. |
+| **Rafly Fauzi Pratama** | 257006111152 | Penyusunan Laporan & Materi Praktikum | Menyusun narasi laporan proyek (BAB I-V), uji fungsional materi/contoh C & Python serta panduan kerja luring, dan naskah demo. |
+| **Muhammad Ilham Rizky** | 257006111154 | Penyusunan Laporan, QA & Evaluasi Keamanan | Pengujian instalasi, isolasi akun `praktikan` (`0700`, non-`sudo`) & `tmpfs` di VMware, rekap data hasil uji dan evaluasi ke laporan akhir. |

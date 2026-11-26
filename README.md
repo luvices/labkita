@@ -77,7 +77,7 @@ Seluruh tangkapan layar berikut diambil langsung dari pengujian instalasi penuh 
 | **Basis Sistem** | Ubuntu 24.04.5 LTS Desktop (`x86_64` / `amd64`) |
 | **Nama Berkas ISO** | `labkita-linux-0.6-amd64.iso` |
 | **Ukuran Berkas** | `6.083.305.472 bytes` (~5,67 GiB) |
-| **Tautan Unduhan** | [Unduh ISO 0.6 di Google Drive](https://drive.google.com/drive/folders/10ZI4s-CYWAKA8GsHbTBCZm-p0QArp8lM?usp=sharing) |
+| **Tautan Unduhan** | [Unduh ISO 0.6 di Google Drive](https://drive.google.com/file/d/1RDzopdN0bBrd8b0lgcdtbKWmOZcizxIV/view?usp=sharing) |
 | **SHA256** | `78a58f0f757b63b97b46e21a520a2c2ea7a205458119192c8f4ed10d2fe9bde1` ([`.sha256`](dist/labkita-linux-0.6-amd64.iso.sha256)) |
 | **MD5** | `7db00f4c1bfbdf06df62c77bfd0e14c7` ([`.md5`](dist/labkita-linux-0.6-amd64.iso.md5)) |
 
