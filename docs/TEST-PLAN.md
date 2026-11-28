@@ -29,3 +29,7 @@ Lingkungan uji: VMware Workstation, disk virtual kosong 40 GB, RAM 6144 MB (`592
 - **Konfigurasi VMware Workstation GUI:**
   - Saat membuat mesin virtual baru, pilih **"I will install the operating system later."** agar fitur *Easy Install* VMware tidak menimpa seed `autoinstall` `nocloud` LabKita.
   - Setelah autoinstall selesai dan reboot ke disk, nonaktifkan centang **Connect at power on** pada CD/DVD dan aktifkan **Display -> Accelerate 3D graphics**. Jika layar hitam masih terjadi pada sesi Wayland di host tertentu, pilih **Ubuntu on Xorg** pada ikon gerigi kanan bawah di layar login GDM.
+
+---
+
+Lihat juga: [Checklist QA & Evaluasi Keamanan](QA-CHECKLIST.md)
