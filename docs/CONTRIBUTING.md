@@ -100,4 +100,4 @@ Sebelum mendorong (*push*) perubahan ke GitHub:
 | **Dafa Zahran** | 257006111188 | Ketua, Arsitektur Sistem & Build ISO | Pipeline build ISO 0.6 (`autoinstall nocloud`), pengelolaan repositori GitHub, manajemen rilis & integrasi sistem. |
 | **Vadien Athallah Lukman** | 257006111160 | UI/UX, Branding & Dokumentasi Teknis | Identitas merek Keystone LK, wallpaper, pemulihan ikon WhiteSur, buku kerja 7 modul, visual README & penataan dokumentasi. |
 | **Rafly Fauzi Pratama** | 257006111152 | Penyusunan Laporan & Materi Praktikum | Menyusun narasi laporan proyek (BAB I-V), uji fungsional materi/contoh C & Python serta panduan kerja luring, dan naskah demo. |
-| **Muhammad Ilham Rizky** | 257006111154 | Penyusunan Laporan, QA & Evaluasi Keamanan | Pengujian instalasi, isolasi akun `praktikan` (`0700`, non-`sudo`) & `tmpfs` di VMware, rekap data hasil uji dan evaluasi ke laporan akhir. |
+| **Muhammad Ilham Rizky** | 257006111154 | QA, Evaluasi Keamanan & Penyusunan Laporan | Menyusun checklist QA & evaluasi keamanan (`docs/QA-CHECKLIST.md`), pengujian isolasi akun `praktikan` (`0700`, non-`sudo`) & `tmpfs` di VMware, serta rekap hasil uji ke laporan akhir. |

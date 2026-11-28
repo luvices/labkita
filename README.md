@@ -154,6 +154,7 @@ labkita-linux/
 ├── docs/
 │   ├── CONTRIBUTING.md           # Alur kerja Git & konvensi tim
 │   ├── CREDITS.md                # Lisensi & atribusi komponen sumber terbuka
+│   ├── QA-CHECKLIST.md           # Daftar cek QA & evaluasi keamanan 0.6
 │   ├── TEST-PLAN.md              # Hasil verifikasi nyata VMware rilis 0.6
 │   └── evidence/                 # Tangkapan layar verifikasi VMware 0.6
 ├── payload/
